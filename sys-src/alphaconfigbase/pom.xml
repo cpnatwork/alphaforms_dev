@@ -146,17 +146,15 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:svn:svn+ssh://faui6svn.informatik.uni-erlangen.de/proj/svn/projekte/promed/alphaflow/junction/alphaflow-default/devT_otw/sys-src/alphaflow
-		</connection>
-		<developerConnection>scm:svn:svn+ssh://faui6svn.informatik.uni-erlangen.de/proj/svn/projekte/promed/alphaflow/junction/alphaflow-default/devT_otw/sys-src/alphaflow
-		</developerConnection>
+		<connection>scm:svn:https://svn.origo.ethz.ch/alphaflow/dev/trunk/sys-src</connection>
+		<developerConnection>scm:svn:https://svn.origo.ethz.ch/alphaflow/dev/trunk/sys-src</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
 
 	<issueManagement>
-		<system>JIRA</system>
-		<url>http://faui6jira:8080/browse/ALPHAFLOW</url>
+		<system>Origo</system>
+		<url>http://alphaforms.origo.ethz.ch/issues</url>
 	</issueManagement>
 
 	<!-- TODO <ciManagement> <system>continuum</system> <url>http://127.0.0.1:8080/continuum</url> 
