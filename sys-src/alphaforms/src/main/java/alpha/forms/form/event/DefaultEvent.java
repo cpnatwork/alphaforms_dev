@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -50,7 +51,7 @@ public class DefaultEvent implements Event {
 	 * @param form
 	 *            the form
 	 */
-	public DefaultEvent(FormWidget source, AlphaForm form) {
+	public DefaultEvent(final FormWidget source, final AlphaForm form) {
 		this.source = source;
 		this.form = form;
 	}
@@ -62,7 +63,7 @@ public class DefaultEvent implements Event {
 	 */
 	@Override
 	public FormWidget getSource() {
-		return source;
+		return this.source;
 	}
 
 	/*
@@ -82,7 +83,7 @@ public class DefaultEvent implements Event {
 	 */
 	@Override
 	public void stopPropagation() {
-		isPropagationStopped = true;
+		this.isPropagationStopped = true;
 	}
 
 	/*
@@ -92,8 +93,8 @@ public class DefaultEvent implements Event {
 	 * alpha.forms.form.event.Event#addAction(alpha.forms.form.event.Action)
 	 */
 	@Override
-	public void addAction(Action action) {
-		actions.add(action);
+	public void addAction(final Action action) {
+		this.actions.add(action);
 	}
 
 	/*
@@ -103,8 +104,8 @@ public class DefaultEvent implements Event {
 	 * alpha.forms.form.event.Event#removeAction(alpha.forms.form.event.Action)
 	 */
 	@Override
-	public void removeAction(Action action) {
-		actions.remove(action);
+	public void removeAction(final Action action) {
+		this.actions.remove(action);
 	}
 
 	/**
@@ -113,7 +114,7 @@ public class DefaultEvent implements Event {
 	 * @return the actions
 	 */
 	public List<Action> getActions() {
-		return actions;
+		return this.actions;
 	}
 
 	/*
@@ -123,8 +124,8 @@ public class DefaultEvent implements Event {
 	 */
 	@Override
 	public void fire() {
-		for (Action a : actions) {
-			if (!isPropagationStopped) {
+		for (final Action a : this.actions) {
+			if (!this.isPropagationStopped) {
 				a.execute(this);
 			}
 		}
@@ -137,8 +138,8 @@ public class DefaultEvent implements Event {
 	 */
 	@Override
 	public EventMemento createMemento() {
-		EventMemento ev = new EventMemento();
-		for (Action a : actions) {
+		final EventMemento ev = new EventMemento();
+		for (final Action a : this.actions) {
 			ev.addAction(a.createMemento());
 		}
 		return ev;
@@ -152,12 +153,12 @@ public class DefaultEvent implements Event {
 	 * )
 	 */
 	@Override
-	public void setMemento(EventMemento m) {
-		actions.clear();
-		for (ActionMemento am : m.getActions()) {
-			Action a = ActionFactory.getInstance().createScriptedAction();
+	public void setMemento(final EventMemento m) {
+		this.actions.clear();
+		for (final ActionMemento am : m.getActions()) {
+			final Action a = ActionFactory.getInstance().createScriptedAction();
 			a.setMemento(am);
-			actions.add(a);
+			this.actions.add(a);
 		}
 	}
 

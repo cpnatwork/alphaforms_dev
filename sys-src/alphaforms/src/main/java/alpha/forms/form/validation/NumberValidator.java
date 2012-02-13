@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -42,7 +43,7 @@ public class NumberValidator implements Validator {
 	protected final String errorMessage = "'%s' is not a number.";
 
 	/** The number type. */
-	private List<NumberType> numberType = new ArrayList<NumberType>();
+	private final List<NumberType> numberType = new ArrayList<NumberType>();
 
 	/** The error. */
 	private String error = "";
@@ -52,8 +53,8 @@ public class NumberValidator implements Validator {
 	 */
 	public NumberValidator() {
 		super();
-		for (NumberType t : NumberType.values()) {
-			numberType.add(t);
+		for (final NumberType t : NumberType.values()) {
+			this.numberType.add(t);
 		}
 	}
 
@@ -65,32 +66,32 @@ public class NumberValidator implements Validator {
 	 * .ValidationContext, java.lang.Object)
 	 */
 	@Override
-	public boolean validate(ValidationContext ctx, Object value) {
+	public boolean validate(final ValidationContext ctx, final Object value) {
 		boolean validates = false;
-		if (numberType.contains(NumberType.ntInteger)) {
+		if (this.numberType.contains(NumberType.ntInteger)) {
 			try {
 				Integer.parseInt((String) value);
 				validates = true;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 			}
 		}
-		if (numberType.contains(NumberType.ntDouble)) {
+		if (this.numberType.contains(NumberType.ntDouble)) {
 			try {
 				Double.parseDouble((String) value);
 				validates = true;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 			}
 		}
-		if (numberType.contains(NumberType.ntFloat)) {
+		if (this.numberType.contains(NumberType.ntFloat)) {
 			try {
 				Float.parseFloat((String) value);
 				validates = true;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 			}
 		}
 		if (!validates) {
-			error = String.format(errorMessage,
-					value == null ? null : value.toString());
+			this.error = String.format(this.errorMessage, value == null ? null
+					: value.toString());
 		}
 		return validates;
 	}
@@ -102,23 +103,24 @@ public class NumberValidator implements Validator {
 	 */
 	@Override
 	public JPanel getOptionUI() {
-		JPanel panel = new JPanel(new FlowLayout());
+		final JPanel panel = new JPanel(new FlowLayout());
 		for (final NumberType t : NumberType.values()) {
 			final JCheckBox cb = new JCheckBox();
 			cb.setText(t.getLabel());
-			cb.setSelected(numberType.contains(t));
+			cb.setSelected(this.numberType.contains(t));
 			cb.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent ev) {
+				public void actionPerformed(final ActionEvent ev) {
 					if (cb.isSelected()) {
-						numberType.add(t);
+						NumberValidator.this.numberType.add(t);
 					} else {
-						if (numberType.size() == 1) {
+						if (NumberValidator.this.numberType.size() == 1) {
 							cb.setSelected(true);
 							return;
 						}
-						if (numberType.contains(t))
-							numberType.remove(t);
+						if (NumberValidator.this.numberType.contains(t)) {
+							NumberValidator.this.numberType.remove(t);
+						}
 					}
 				}
 			});
@@ -134,10 +136,10 @@ public class NumberValidator implements Validator {
 	 */
 	@Override
 	public Map<String, String> getSettingsMap() {
-		HashMap<String, String> settings = new HashMap<String, String>();
-		StringBuilder sb = new StringBuilder();
+		final HashMap<String, String> settings = new HashMap<String, String>();
+		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
-		for (NumberType t : numberType) {
+		for (final NumberType t : this.numberType) {
 			if (!first) {
 				sb.append(",");
 			}
@@ -155,7 +157,7 @@ public class NumberValidator implements Validator {
 	 * alpha.forms.form.validation.Validator#isCompatibleWith(java.lang.Class)
 	 */
 	@Override
-	public boolean isCompatibleWith(Class<? extends FormWidget> widgetType) {
+	public boolean isCompatibleWith(final Class<? extends FormWidget> widgetType) {
 		return widgetType.equals(TextField.class);
 	}
 
@@ -186,7 +188,7 @@ public class NumberValidator implements Validator {
 	 */
 	@Override
 	public String toString() {
-		return getHandle();
+		return this.getHandle();
 	}
 
 	/**
@@ -212,7 +214,7 @@ public class NumberValidator implements Validator {
 		 * @param label
 		 *            the label
 		 */
-		NumberType(String label) {
+		NumberType(final String label) {
 			this.label = label;
 		}
 
@@ -222,7 +224,7 @@ public class NumberValidator implements Validator {
 		 * @return the label
 		 */
 		public String getLabel() {
-			return label;
+			return this.label;
 		}
 
 		/**
@@ -242,9 +244,9 @@ public class NumberValidator implements Validator {
 	 */
 	@Override
 	public ValidatorMemento createMemento() {
-		ValidatorMemento m = new ValidatorMemento();
-		m.setHandle(getHandle());
-		m.addAttribute("numberType", numberType);
+		final ValidatorMemento m = new ValidatorMemento();
+		m.setHandle(this.getHandle());
+		m.addAttribute("numberType", this.numberType);
 		return m;
 	}
 
@@ -256,15 +258,15 @@ public class NumberValidator implements Validator {
 	 * model.ValidatorMemento)
 	 */
 	@Override
-	public void setMemento(ValidatorMemento m) {
-		numberType.clear();
+	public void setMemento(final ValidatorMemento m) {
+		this.numberType.clear();
 		System.out.println("setMemento");
 		String valueString = m.getAttributes().get("numberType").toString();
-		if (valueString != null && valueString.length() > 2) {
+		if ((valueString != null) && (valueString.length() > 2)) {
 			valueString = valueString.substring(1, valueString.length() - 1);
-			String[] values = valueString.split(",");
-			for (String value : values) {
-				numberType.add(NumberType.valueOf(value));
+			final String[] values = valueString.split(",");
+			for (final String value : values) {
+				this.numberType.add(NumberType.valueOf(value));
 			}
 		}
 	}
@@ -276,7 +278,7 @@ public class NumberValidator implements Validator {
 	 */
 	@Override
 	public String getError() {
-		return error;
+		return this.error;
 	}
 
 }

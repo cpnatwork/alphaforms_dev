@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -42,7 +43,7 @@ public class ScriptedAction implements Action {
 	 * @param jsEngine
 	 *            the js engine
 	 */
-	public ScriptedAction(ScriptEngine jsEngine) {
+	public ScriptedAction(final ScriptEngine jsEngine) {
 		this.jsEngine = jsEngine;
 	}
 
@@ -52,7 +53,7 @@ public class ScriptedAction implements Action {
 	 * @return the script code
 	 */
 	public String getScriptCode() {
-		return scriptCode;
+		return this.scriptCode;
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class ScriptedAction implements Action {
 	 * @param scriptCode
 	 *            the new script code
 	 */
-	public void setScriptCode(String scriptCode) {
+	public void setScriptCode(final String scriptCode) {
 		this.scriptCode = scriptCode;
 	}
 
@@ -71,32 +72,33 @@ public class ScriptedAction implements Action {
 	 * @see alpha.forms.form.event.Action#execute(alpha.forms.form.event.Event)
 	 */
 	@Override
-	public void execute(Event event) {
-		String funcName = "action_" + this.hashCode();
-		for (FormWidget w : event.getAlphaForm().getWidgets()) {
-			jsEngine.put(w.getName(), w);
+	public void execute(final Event event) {
+		final String funcName = "action_" + this.hashCode();
+		for (final FormWidget w : event.getAlphaForm().getWidgets()) {
+			this.jsEngine.put(w.getName(), w);
 			if (w instanceof ContainerWidget) {
-				ContainerWidget co = (ContainerWidget) w;
-				for (FormWidget cw : co.getChildren()) {
-					jsEngine.put(w.getName() + "$" + cw.getName(), cw);
+				final ContainerWidget co = (ContainerWidget) w;
+				for (final FormWidget cw : co.getChildren()) {
+					this.jsEngine.put(w.getName() + "$" + cw.getName(), cw);
 				}
 			}
 		}
-		if (jsEngine != null) {
+		if (this.jsEngine != null) {
 			try {
-				StringBuilder sb = new StringBuilder();
+				final StringBuilder sb = new StringBuilder();
 				// afe__execute is a wrapper to make "this" point to the widget
 				// in the action's javascript.
 				// ctx is the AlphaForm
 				sb.append("function afe__execute(funcName, widget, context) {"
 						+ "this[funcName].call(widget, context);" + "}");
-				sb.append("function " + funcName + "(ctx) {" + scriptCode + "}");
-				jsEngine.eval(sb.toString());
-				((Invocable) jsEngine).invokeFunction("afe__execute", funcName,
-						event.getSource(), event.getAlphaForm());
-			} catch (ScriptException e) {
+				sb.append("function " + funcName + "(ctx) {" + this.scriptCode
+						+ "}");
+				this.jsEngine.eval(sb.toString());
+				((Invocable) this.jsEngine).invokeFunction("afe__execute",
+						funcName, event.getSource(), event.getAlphaForm());
+			} catch (final ScriptException e) {
 				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
+			} catch (final NoSuchMethodException e) {
 				e.printStackTrace();
 			}
 
@@ -120,9 +122,9 @@ public class ScriptedAction implements Action {
 	 */
 	@Override
 	public ActionMemento createMemento() {
-		ActionMemento m = new ActionMemento();
-		m.setName(toString());
-		m.setScriptCode(scriptCode);
+		final ActionMemento m = new ActionMemento();
+		m.setName(this.toString());
+		m.setScriptCode(this.scriptCode);
 		return m;
 	}
 
@@ -134,8 +136,8 @@ public class ScriptedAction implements Action {
 	 * )
 	 */
 	@Override
-	public void setMemento(ActionMemento m) {
-		scriptCode = m.getScriptCode();
+	public void setMemento(final ActionMemento m) {
+		this.scriptCode = m.getScriptCode();
 	}
 
 }

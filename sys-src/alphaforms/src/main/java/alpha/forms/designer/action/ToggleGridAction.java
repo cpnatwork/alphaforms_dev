@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -21,6 +22,7 @@ package alpha.forms.designer.action;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import alpha.forms.designer.view.FormCanvas;
 import alpha.forms.form.AlphaForm;
@@ -30,11 +32,16 @@ import alpha.forms.form.AlphaForm;
  */
 public class ToggleGridAction extends AbstractAction {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1775257707078267285L;
+
 	/** The form. */
-	private AlphaForm form;
+	private final AlphaForm form;
 
 	/** The canvas. */
-	private FormCanvas canvas;
+	private final FormCanvas canvas;
 
 	/**
 	 * Instantiates a new toggle grid action.
@@ -46,11 +53,12 @@ public class ToggleGridAction extends AbstractAction {
 	 * @param canvas
 	 *            the canvas
 	 */
-	public ToggleGridAction(String text, AlphaForm form, FormCanvas canvas) {
+	public ToggleGridAction(final String text, final AlphaForm form,
+			final FormCanvas canvas) {
 		super(text);
 		this.form = form;
 		this.canvas = canvas;
-		putValue(SELECTED_KEY, canvas.isShowGrid());
+		this.putValue(Action.SELECTED_KEY, canvas.isShowGrid());
 	}
 
 	/*
@@ -60,10 +68,10 @@ public class ToggleGridAction extends AbstractAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent ev) {
-		canvas.setShowGrid(!canvas.isShowGrid());
-		putValue(SELECTED_KEY, canvas.isShowGrid());
-		canvas.repaint();
+	public void actionPerformed(final ActionEvent ev) {
+		this.canvas.setShowGrid(!this.canvas.isShowGrid());
+		this.putValue(Action.SELECTED_KEY, this.canvas.isShowGrid());
+		this.canvas.repaint();
 	}
 
 }

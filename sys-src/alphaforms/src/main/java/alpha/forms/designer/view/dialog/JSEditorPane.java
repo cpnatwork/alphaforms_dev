@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -37,11 +38,11 @@ public class JSEditorPane extends JEditorPane {
 	 */
 	public JSEditorPane() {
 		super();
-		setFont(new Font("Courier New", Font.PLAIN, 13));
-		setBackground(new Color(100, 100, 100));
-		setForeground(new Color(255, 255, 255));
-		setSelectedTextColor(new Color(255, 255, 255));
-		getDocument().putProperty(PlainDocument.tabSizeAttribute, 4);
+		this.setFont(new Font("Courier New", Font.PLAIN, 13));
+		this.setBackground(new Color(100, 100, 100));
+		this.setForeground(new Color(255, 255, 255));
+		this.setSelectedTextColor(new Color(255, 255, 255));
+		this.getDocument().putProperty(PlainDocument.tabSizeAttribute, 4);
 	}
 
 }

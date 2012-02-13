@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -47,19 +48,19 @@ import alpha.forms.widget.model.FormWidget;
 public class PropertyEditorModel implements TableModel, Subscriber {
 
 	/** The form. */
-	private AlphaForm form;
+	private final AlphaForm form;
 
 	/** The view. */
-	private PropertyEditorPanel view;
+	private final PropertyEditorPanel view;
 
 	/** The data map. */
-	private Map<String, WidgetProperty> dataMap = new HashMap<String, WidgetProperty>();
+	private final Map<String, WidgetProperty> dataMap = new HashMap<String, WidgetProperty>();
 
 	/** The prop names. */
-	private List<String> propNames = new ArrayList<String>();
+	private final List<String> propNames = new ArrayList<String>();
 
 	/** The model listeners. */
-	private List<TableModelListener> modelListeners = new ArrayList<TableModelListener>();
+	private final List<TableModelListener> modelListeners = new ArrayList<TableModelListener>();
 
 	/** The selected components. */
 	private List<FormWidget> selectedComponents = null;
@@ -72,7 +73,8 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @param view
 	 *            the view
 	 */
-	public PropertyEditorModel(AlphaForm form, PropertyEditorPanel view) {
+	public PropertyEditorModel(final AlphaForm form,
+			final PropertyEditorPanel view) {
 		super();
 		this.form = form;
 		this.view = view;
@@ -86,7 +88,7 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * .model.Signal)
 	 */
 	@Override
-	public void signalReceived(Signal s) {
+	public void signalReceived(final Signal s) {
 		// TODO Auto-generated method stub
 
 	}
@@ -99,8 +101,8 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * TableModelListener)
 	 */
 	@Override
-	public void addTableModelListener(TableModelListener l) {
-		modelListeners.add(l);
+	public void addTableModelListener(final TableModelListener l) {
+		this.modelListeners.add(l);
 	}
 
 	/*
@@ -109,14 +111,13 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @see javax.swing.table.TableModel#getColumnClass(int)
 	 */
 	@Override
-	public Class<?> getColumnClass(int col) {
-		if (col == 0) {
+	public Class<?> getColumnClass(final int col) {
+		if (col == 0)
 			return String.class;
-		} else if (col == 1) {
+		else if (col == 1)
 			return Object.class;
-		} else {
+		else
 			return Object.class;
-		}
 	}
 
 	/*
@@ -136,8 +137,8 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 *            the row
 	 * @return the property for row
 	 */
-	private WidgetProperty getPropertyForRow(int row) {
-		return dataMap.get(propNames.get(row));
+	private WidgetProperty getPropertyForRow(final int row) {
+		return this.dataMap.get(this.propNames.get(row));
 	}
 
 	/*
@@ -146,14 +147,13 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @see javax.swing.table.TableModel#getColumnName(int)
 	 */
 	@Override
-	public String getColumnName(int col) {
-		if (col == 0) {
+	public String getColumnName(final int col) {
+		if (col == 0)
 			return "Name";
-		} else if (col == 1) {
+		else if (col == 1)
 			return "Value";
-		} else {
+		else
 			return "-";
-		}
 	}
 
 	/*
@@ -163,7 +163,7 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 */
 	@Override
 	public int getRowCount() {
-		return dataMap.size();
+		return this.dataMap.size();
 	}
 
 	/*
@@ -172,14 +172,13 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @see javax.swing.table.TableModel#getValueAt(int, int)
 	 */
 	@Override
-	public Object getValueAt(int row, int col) {
-		if (col == 0) {
-			return propNames.get(row);
-		} else if (col == 1) {
-			return dataMap.get(propNames.get(row)).getValue();
-		} else {
+	public Object getValueAt(final int row, final int col) {
+		if (col == 0)
+			return this.propNames.get(row);
+		else if (col == 1)
+			return this.dataMap.get(this.propNames.get(row)).getValue();
+		else
 			return "-";
-		}
 
 	}
 
@@ -189,7 +188,7 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @see javax.swing.table.TableModel#isCellEditable(int, int)
 	 */
 	@Override
-	public boolean isCellEditable(int row, int col) {
+	public boolean isCellEditable(final int row, final int col) {
 		return col == 1;
 	}
 
@@ -201,15 +200,15 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * .TableModelListener)
 	 */
 	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		modelListeners.remove(l);
+	public void removeTableModelListener(final TableModelListener l) {
+		this.modelListeners.remove(l);
 	}
 
 	/**
 	 * Fire table data changed.
 	 */
 	public void fireTableDataChanged() {
-		for (TableModelListener l : modelListeners) {
+		for (final TableModelListener l : this.modelListeners) {
 			l.tableChanged(new TableModelEvent(this));
 		}
 	}
@@ -220,15 +219,16 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
 	 */
 	@Override
-	public void setValueAt(Object value, int row, int col) {
-		String key = propNames.get(row);
-		WidgetProperty p = dataMap.get(key);
+	public void setValueAt(Object value, final int row, final int col) {
+		final String key = this.propNames.get(row);
+		final WidgetProperty p = this.dataMap.get(key);
 		p.setValue(value);
 		Object o;
-		if (selectedComponents != null && !selectedComponents.isEmpty()) {
-			o = selectedComponents.get(0);
+		if ((this.selectedComponents != null)
+				&& !this.selectedComponents.isEmpty()) {
+			o = this.selectedComponents.get(0);
 		} else {
-			o = form;
+			o = this.form;
 		}
 		try {
 			if (p.getType().equals(int.class)
@@ -238,10 +238,10 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 				// value = Enum.valueOf(p.getType(), (String)value);
 			}
 			p.getSetter().invoke(o, value);
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
-			updateDataModel(selectedComponents);
+		} catch (final IllegalArgumentException e) {
+		} catch (final IllegalAccessException e) {
+		} catch (final InvocationTargetException e) {
+			this.updateDataModel(this.selectedComponents);
 			if (e.getCause() instanceof WidgetNameExistsException) {
 				JOptionPane.showMessageDialog(null, e.getCause().getMessage(),
 						"Error while renaming widget",
@@ -250,7 +250,7 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 			e.printStackTrace();
 		}
 
-		PropertyUpdatedSignal s = new PropertyUpdatedSignal();
+		final PropertyUpdatedSignal s = new PropertyUpdatedSignal();
 		s.setSource(this);
 		s.setPropertyName(key);
 		SignalManager.getInstance().sendSignal(s, "propertyEditor");
@@ -263,8 +263,8 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 *            the row
 	 * @return the widget property for row
 	 */
-	public WidgetProperty getWidgetPropertyForRow(int row) {
-		return dataMap.get(propNames.get(row));
+	public WidgetProperty getWidgetPropertyForRow(final int row) {
+		return this.dataMap.get(this.propNames.get(row));
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @return the selected components
 	 */
 	public List<FormWidget> getSelectedComponents() {
-		return selectedComponents;
+		return this.selectedComponents;
 	}
 
 	/**
@@ -291,22 +291,22 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @param widgets
 	 *            the widgets
 	 */
-	public void updateDataModel(List<FormWidget> widgets) {
-		selectedComponents = widgets;
-		dataMap.clear();
-		propNames.clear();
+	public void updateDataModel(final List<FormWidget> widgets) {
+		this.selectedComponents = widgets;
+		this.dataMap.clear();
+		this.propNames.clear();
 		Class c = null;
 		Object o = null;
-		if (widgets != null && !widgets.isEmpty()) {
+		if ((widgets != null) && !widgets.isEmpty()) {
 			c = widgets.get(0).getClass();
 			o = widgets.get(0);
 		} else {
-			c = form.getClass();
-			o = form;
+			c = this.form.getClass();
+			o = this.form;
 		}
-		findProperties(c, o);
-		view.stopTableEditing();
-		fireTableDataChanged();
+		this.findProperties(c, o);
+		this.view.stopTableEditing();
+		this.fireTableDataChanged();
 	}
 
 	/**
@@ -317,20 +317,20 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 	 * @param o
 	 *            the o
 	 */
-	private void findProperties(Class c, Object o) {
+	private void findProperties(Class c, final Object o) {
 		while (c != null) {
-			for (Field f : c.getDeclaredFields()) {
+			for (final Field f : c.getDeclaredFields()) {
 				f.setAccessible(true);
-				alpha.forms.propertyEditor.model.annotation.WidgetProperty ap = f
+				final alpha.forms.propertyEditor.model.annotation.WidgetProperty ap = f
 						.getAnnotation(alpha.forms.propertyEditor.model.annotation.WidgetProperty.class);
-				if (ap != null && ap.display()) {
-					WidgetProperty p = new WidgetProperty();
+				if ((ap != null) && ap.display()) {
+					final WidgetProperty p = new WidgetProperty();
 					p.setName((ap.name().isEmpty()) ? f.getName() : ap.name());
 					p.setCategory(ap.category());
 					p.setDescription(ap.description());
 					try {
 						p.setValue(f.get(o));
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -363,19 +363,19 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 					try {
 						setter = c.getMethod(setterName, f.getType());
 						getter = c.getMethod(getterName);
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					p.setSetter(setter);
 					p.setGetter(getter);
 					p.setType(f.getType());
-					if (f.getGenericType() != null
-							&& f.getGenericType() instanceof ParameterizedType) {
-						ParameterizedType gt = (ParameterizedType) f
+					if ((f.getGenericType() != null)
+							&& (f.getGenericType() instanceof ParameterizedType)) {
+						final ParameterizedType gt = (ParameterizedType) f
 								.getGenericType();
-						if (gt.getActualTypeArguments() != null
-								&& gt.getActualTypeArguments().length > 0) {
+						if ((gt.getActualTypeArguments() != null)
+								&& (gt.getActualTypeArguments().length > 0)) {
 							p.setGenericType((Class) gt
 									.getActualTypeArguments()[0]);
 							p.setType((Class) gt.getRawType());
@@ -384,8 +384,8 @@ public class PropertyEditorModel implements TableModel, Subscriber {
 					if (setter == null) {
 						p.setReadonly(true);
 					}
-					propNames.add(p.getName());
-					dataMap.put(p.getName(), p);
+					this.propNames.add(p.getName());
+					this.dataMap.put(p.getName(), p);
 				}
 			}
 			c = c.getSuperclass();

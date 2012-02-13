@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -32,7 +33,7 @@ public class UpdateStatusSignal extends Signal {
 	 * @return the status
 	 */
 	public String getStatus() {
-		return status;
+		return this.status;
 	}
 
 	/**
@@ -41,7 +42,7 @@ public class UpdateStatusSignal extends Signal {
 	 * @param status
 	 *            the new status
 	 */
-	public void setStatus(String status) {
+	public void setStatus(final String status) {
 		this.status = status;
 	}
 

@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -21,6 +22,7 @@ package alpha.forms.designer.action;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import alpha.forms.designer.view.FormCanvas;
 import alpha.forms.form.AlphaForm;
@@ -32,11 +34,16 @@ import alpha.forms.widget.model.container.ContainerWidget;
  */
 public class DeleteWidgetAction extends AbstractAction {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3097692541727173791L;
+
 	/** The form. */
-	private AlphaForm form;
+	private final AlphaForm form;
 
 	/** The canvas. */
-	private FormCanvas canvas;
+	private final FormCanvas canvas;
 
 	/** The widget. */
 	private FormWidget widget = null;
@@ -51,11 +58,12 @@ public class DeleteWidgetAction extends AbstractAction {
 	 * @param canvas
 	 *            the canvas
 	 */
-	public DeleteWidgetAction(String text, AlphaForm form, FormCanvas canvas) {
+	public DeleteWidgetAction(final String text, final AlphaForm form,
+			final FormCanvas canvas) {
 		super(text);
 		this.form = form;
 		this.canvas = canvas;
-		putValue(SELECTED_KEY, canvas.isShowGrid());
+		this.putValue(Action.SELECTED_KEY, canvas.isShowGrid());
 	}
 
 	/*
@@ -65,17 +73,17 @@ public class DeleteWidgetAction extends AbstractAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent ev) {
-		if (widget != null) {
-			ContainerWidget c = (ContainerWidget) widget.getParent();
+	public void actionPerformed(final ActionEvent ev) {
+		if (this.widget != null) {
+			final ContainerWidget c = (ContainerWidget) this.widget.getParent();
 			if (c != null) {
-				c.removeChild(widget);
+				c.removeChild(this.widget);
 			} else {
-				form.getWidgets().remove(widget);
+				this.form.getWidgets().remove(this.widget);
 			}
-			setWidget(null);
+			this.setWidget(null);
 
-			canvas.repaint();
+			this.canvas.repaint();
 		}
 	}
 
@@ -85,7 +93,7 @@ public class DeleteWidgetAction extends AbstractAction {
 	 * @param widget
 	 *            the new widget
 	 */
-	public void setWidget(FormWidget widget) {
+	public void setWidget(final FormWidget widget) {
 		this.widget = widget;
 		this.setEnabled(widget != null);
 	}

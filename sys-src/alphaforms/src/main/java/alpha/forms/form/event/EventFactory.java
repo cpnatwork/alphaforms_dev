@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -35,9 +36,10 @@ public class EventFactory {
 	 * @return single instance of EventFactory
 	 */
 	public static EventFactory getInstance() {
-		if (factory == null)
-			factory = new EventFactory();
-		return factory;
+		if (EventFactory.factory == null) {
+			EventFactory.factory = new EventFactory();
+		}
+		return EventFactory.factory;
 	}
 
 	/**
@@ -53,7 +55,7 @@ public class EventFactory {
 	 *            the widget
 	 * @return the default event
 	 */
-	public DefaultEvent createDefaultEvent(FormWidget widget) {
+	public DefaultEvent createDefaultEvent(final FormWidget widget) {
 		return new DefaultEvent(widget, AlphaFormProvider.getForm());
 	}
 }

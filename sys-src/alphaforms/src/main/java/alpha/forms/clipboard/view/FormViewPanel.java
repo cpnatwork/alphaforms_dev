@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -43,7 +44,7 @@ public class FormViewPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/** The model. */
-	private AlphaForm model;
+	private final AlphaForm model;
 
 	/**
 	 * Instantiates a new form view panel.
@@ -51,14 +52,14 @@ public class FormViewPanel extends JPanel {
 	 * @param model
 	 *            the model
 	 */
-	public FormViewPanel(AlphaForm model) {
+	public FormViewPanel(final AlphaForm model) {
 		this.model = model;
 		this.setMinimumSize(new Dimension(640, 480));
 		this.setLayout(new BorderLayout());
 
-		JPanel header = new JPanel(new GridBagLayout());
+		final JPanel header = new JPanel(new GridBagLayout());
 		header.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		GridBagConstraints c = new GridBagConstraints();
+		final GridBagConstraints c = new GridBagConstraints();
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
@@ -66,7 +67,7 @@ public class FormViewPanel extends JPanel {
 		c.anchor = GridBagConstraints.LINE_START;
 		c.weightx = 0.2;
 
-		JLabel formTitle = new JLabel(model.getTitle());
+		final JLabel formTitle = new JLabel(model.getTitle());
 		formTitle.setFont(formTitle.getFont().deriveFont(18.0f));
 
 		header.add(formTitle, c);
@@ -93,23 +94,23 @@ public class FormViewPanel extends JPanel {
 		c.gridy = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+		final JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
 
 		header.add(separator, c);
 
 		this.add(header, BorderLayout.NORTH);
 
-		JPanel form = new JPanel();
+		final JPanel form = new JPanel();
 		form.setLayout(null);
 
 		form.setMinimumSize(new Dimension(model.getWidth(), model.getHeight()));
 		form.setPreferredSize(new Dimension(model.getWidth(), model.getHeight()));
 
-		for (FormWidget w : model.getWidgets()) {
+		for (final FormWidget w : model.getWidgets()) {
 			form.add(w.getUi());
 		}
 
-		JScrollPane scrollPane = new JScrollPane(form);
+		final JScrollPane scrollPane = new JScrollPane(form);
 		scrollPane.setBorder(null);
 
 		this.add(scrollPane, BorderLayout.CENTER);

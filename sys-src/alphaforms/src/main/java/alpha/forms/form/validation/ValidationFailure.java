@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -42,7 +43,7 @@ public class ValidationFailure {
 	 * @param validator
 	 *            the validator
 	 */
-	public ValidationFailure(FormWidget source, Validator validator) {
+	public ValidationFailure(final FormWidget source, final Validator validator) {
 		super();
 		this.source = source;
 		this.validator = validator;
@@ -58,8 +59,8 @@ public class ValidationFailure {
 	 * @param message
 	 *            the message
 	 */
-	public ValidationFailure(FormWidget source, Validator validator,
-			String message) {
+	public ValidationFailure(final FormWidget source,
+			final Validator validator, final String message) {
 		super();
 		this.source = source;
 		this.validator = validator;
@@ -72,7 +73,7 @@ public class ValidationFailure {
 	 * @return the source
 	 */
 	public FormWidget getSource() {
-		return source;
+		return this.source;
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class ValidationFailure {
 	 * @param source
 	 *            the new source
 	 */
-	public void setSource(FormWidget source) {
+	public void setSource(final FormWidget source) {
 		this.source = source;
 	}
 
@@ -91,7 +92,7 @@ public class ValidationFailure {
 	 * @return the validator
 	 */
 	public Validator getValidator() {
-		return validator;
+		return this.validator;
 	}
 
 	/**
@@ -100,7 +101,7 @@ public class ValidationFailure {
 	 * @param validator
 	 *            the new validator
 	 */
-	public void setValidator(Validator validator) {
+	public void setValidator(final Validator validator) {
 		this.validator = validator;
 	}
 
@@ -110,7 +111,7 @@ public class ValidationFailure {
 	 * @return the message
 	 */
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class ValidationFailure {
 	 * @param message
 	 *            the new message
 	 */
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 
@@ -130,10 +131,12 @@ public class ValidationFailure {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(source.getName()).append(".").append(validator.getHandle());
-		sb.append(" (").append(source.getClass().getSimpleName()).append("): ");
-		sb.append(message);
+		final StringBuilder sb = new StringBuilder();
+		sb.append(this.source.getName()).append(".")
+				.append(this.validator.getHandle());
+		sb.append(" (").append(this.source.getClass().getSimpleName())
+				.append("): ");
+		sb.append(this.message);
 		return sb.toString();
 	}
 

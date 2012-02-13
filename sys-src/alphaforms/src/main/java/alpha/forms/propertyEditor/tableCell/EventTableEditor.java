@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -55,20 +56,25 @@ import alpha.forms.propertyEditor.model.PropertyEditorModel;
 public class EventTableEditor extends AbstractCellEditor implements
 		TableCellRenderer, TableCellEditor {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1400839998848781595L;
+
 	/** The property editor model. */
 	private final PropertyEditorModel propertyEditorModel;
 
 	/** The panel. */
-	private JPanel panel;
+	private final JPanel panel;
 
 	/** The label. */
-	private JLabel label;
+	private final JLabel label;
 
 	/** The dialog. */
-	private JDialog dialog;
+	private final JDialog dialog;
 
 	/** The event. */
-	private DefaultEvent event;
+	private final DefaultEvent event;
 
 	/**
 	 * Instantiates a new event table editor.
@@ -78,37 +84,37 @@ public class EventTableEditor extends AbstractCellEditor implements
 	 * @param event
 	 *            the event
 	 */
-	public EventTableEditor(PropertyEditorModel propertyEditorModel,
+	public EventTableEditor(final PropertyEditorModel propertyEditorModel,
 			final DefaultEvent event) {
 		this.propertyEditorModel = propertyEditorModel;
 		this.event = event;
 
-		panel = new JPanel();
-		label = new JLabel("(event)");
+		this.panel = new JPanel();
+		this.label = new JLabel("(event)");
 
-		JButton edit = new JButton("...");
+		final JButton edit = new JButton("...");
 		edit.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				dialog.setVisible(true);
-				fireEditingStopped();
+			public void actionPerformed(final ActionEvent arg0) {
+				EventTableEditor.this.dialog.setVisible(true);
+				EventTableEditor.this.fireEditingStopped();
 			}
 
 		});
-		panel.setLayout(new BorderLayout());
-		panel.add(label, BorderLayout.CENTER);
-		panel.add(edit, BorderLayout.EAST);
+		this.panel.setLayout(new BorderLayout());
+		this.panel.add(this.label, BorderLayout.CENTER);
+		this.panel.add(edit, BorderLayout.EAST);
 
-		dialog = new JDialog((JFrame) null, "Action List", true);
-		dialog.setLocationRelativeTo(this.propertyEditorModel.getPanel());
-		dialog.setLayout(new BorderLayout());
-		JPanel panel = new JPanel(new BorderLayout());
+		this.dialog = new JDialog((JFrame) null, "Action List", true);
+		this.dialog.setLocationRelativeTo(this.propertyEditorModel.getPanel());
+		this.dialog.setLayout(new BorderLayout());
+		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
 		final DefaultListModel lm = new DefaultListModel();
 
-		for (Action a : event.getActions()) {
+		for (final Action a : event.getActions()) {
 			if (a instanceof ScriptedAction) {
 				lm.addElement(a);
 			}
@@ -121,8 +127,8 @@ public class EventTableEditor extends AbstractCellEditor implements
 		remove.setEnabled(false);
 		remove.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				Action a = (Action) list.getSelectedValue();
+			public void actionPerformed(final ActionEvent ev) {
+				final Action a = (Action) list.getSelectedValue();
 				event.removeAction(a);
 				lm.removeElement(a);
 			}
@@ -131,12 +137,12 @@ public class EventTableEditor extends AbstractCellEditor implements
 		final JButton add = new JButton("Add");
 		add.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
+			public void actionPerformed(final ActionEvent ev) {
 
-				ScriptedAction action = ActionFactory.getInstance()
+				final ScriptedAction action = ActionFactory.getInstance()
 						.createScriptedAction();
 
-				ScriptedActionDialog input = ScriptedActionDialog
+				final ScriptedActionDialog input = ScriptedActionDialog
 						.create(action);
 
 				input.setVisible(true);
@@ -147,17 +153,17 @@ public class EventTableEditor extends AbstractCellEditor implements
 			}
 		});
 
-		JButton ok = new JButton("Ok");
+		final JButton ok = new JButton("Ok");
 		ok.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				dialog.setVisible(false);
+			public void actionPerformed(final ActionEvent ev) {
+				EventTableEditor.this.dialog.setVisible(false);
 			}
 
 		});
 
-		JPanel btnPanel = new JPanel(new FlowLayout());
+		final JPanel btnPanel = new JPanel(new FlowLayout());
 		btnPanel.add(add);
 		btnPanel.add(remove);
 		btnPanel.add(ok);
@@ -167,38 +173,38 @@ public class EventTableEditor extends AbstractCellEditor implements
 		list.addMouseListener(new MouseListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent ev) {
+			public void mouseClicked(final MouseEvent ev) {
 				if (ev.getClickCount() >= 2) {
-					int index = list.locationToIndex(ev.getPoint());
-					ScriptedAction action = (ScriptedAction) list.getModel()
-							.getElementAt(index);
-					ScriptedActionDialog dialog = ScriptedActionDialog
+					final int index = list.locationToIndex(ev.getPoint());
+					final ScriptedAction action = (ScriptedAction) list
+							.getModel().getElementAt(index);
+					final ScriptedActionDialog dialog = ScriptedActionDialog
 							.create(action);
 					dialog.setVisible(true);
 				}
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
+			public void mouseEntered(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseExited(MouseEvent arg0) {
+			public void mouseExited(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mousePressed(MouseEvent arg0) {
+			public void mousePressed(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseReleased(MouseEvent arg0) {
+			public void mouseReleased(final MouseEvent arg0) {
 			}
 
 		});
 
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void valueChanged(ListSelectionEvent ev) {
+			public void valueChanged(final ListSelectionEvent ev) {
 
 				if (list.getSelectedIndex() != -1) {
 					remove.setEnabled(true);
@@ -209,8 +215,8 @@ public class EventTableEditor extends AbstractCellEditor implements
 			}
 		});
 
-		dialog.add(panel, BorderLayout.CENTER);
-		dialog.pack();
+		this.dialog.add(panel, BorderLayout.CENTER);
+		this.dialog.pack();
 	}
 
 	/*
@@ -220,7 +226,7 @@ public class EventTableEditor extends AbstractCellEditor implements
 	 */
 	@Override
 	public Object getCellEditorValue() {
-		return event;
+		return this.event;
 	}
 
 	/*
@@ -231,17 +237,18 @@ public class EventTableEditor extends AbstractCellEditor implements
 	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
 	 */
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int col) {
+	public Component getTableCellRendererComponent(final JTable table,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int col) {
 		if (isSelected) {
-			panel.setBackground(table.getSelectionBackground());
-			panel.setForeground(table.getSelectionForeground());
+			this.panel.setBackground(table.getSelectionBackground());
+			this.panel.setForeground(table.getSelectionForeground());
 		} else {
-			panel.setBackground(table.getBackground());
-			panel.setForeground(table.getForeground());
+			this.panel.setBackground(table.getBackground());
+			this.panel.setForeground(table.getForeground());
 		}
-		panel.setOpaque(true);
-		return panel;
+		this.panel.setOpaque(true);
+		return this.panel;
 	}
 
 	/*
@@ -252,10 +259,11 @@ public class EventTableEditor extends AbstractCellEditor implements
 	 * .JTable, java.lang.Object, boolean, int, int)
 	 */
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int arg3, int arg4) {
-		panel.setOpaque(true);
-		return panel;
+	public Component getTableCellEditorComponent(final JTable table,
+			final Object value, final boolean isSelected, final int arg3,
+			final int arg4) {
+		this.panel.setOpaque(true);
+		return this.panel;
 	}
 
 }

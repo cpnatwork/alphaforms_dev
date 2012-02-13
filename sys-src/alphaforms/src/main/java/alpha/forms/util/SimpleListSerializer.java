@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -26,13 +27,13 @@ import java.util.Collection;
 public class SimpleListSerializer {
 
 	/** The start token. */
-	private String startToken;
+	private final String startToken;
 
 	/** The end token. */
-	private String endToken;
+	private final String endToken;
 
 	/** The separator. */
-	private String separator;
+	private final String separator;
 
 	/**
 	 * Instantiates a new simple list serializer.
@@ -44,7 +45,8 @@ public class SimpleListSerializer {
 	 * @param separator
 	 *            the separator
 	 */
-	public SimpleListSerializer(String start, String end, String separator) {
+	public SimpleListSerializer(final String start, final String end,
+			final String separator) {
 		this.startToken = start;
 		this.endToken = end;
 		this.separator = separator;
@@ -56,7 +58,7 @@ public class SimpleListSerializer {
 	 * @param separator
 	 *            the separator
 	 */
-	public SimpleListSerializer(String separator) {
+	public SimpleListSerializer(final String separator) {
 		this("[", "]", separator);
 	}
 
@@ -74,22 +76,22 @@ public class SimpleListSerializer {
 	 *            the list
 	 * @return the string
 	 */
-	public String serialize(Collection<?> list) {
-		StringBuilder sb = new StringBuilder();
+	public String serialize(final Collection<?> list) {
+		final StringBuilder sb = new StringBuilder();
 		boolean start = true;
-		sb.append(startToken);
-		for (Object item : list) {
+		sb.append(this.startToken);
+		for (final Object item : list) {
 			if (!start) {
-				sb.append(separator);
+				sb.append(this.separator);
 			}
 			start = false;
 			if (item instanceof Collection) {
-				sb.append(serialize((Collection<?>) item));
+				sb.append(this.serialize((Collection<?>) item));
 			} else {
 				sb.append(item.toString());
 			}
 		}
-		sb.append(endToken);
+		sb.append(this.endToken);
 		return sb.toString();
 	}
 

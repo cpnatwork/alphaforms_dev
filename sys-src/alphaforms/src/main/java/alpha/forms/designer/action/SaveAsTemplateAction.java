@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -35,11 +36,16 @@ import alpha.forms.widget.model.FormWidget;
  */
 public class SaveAsTemplateAction extends AbstractAction {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2785048161304057175L;
+
 	/** The form. */
-	private AlphaForm form;
+	private final AlphaForm form;
 
 	/** The canvas. */
-	private FormCanvas canvas;
+	private final FormCanvas canvas;
 
 	/**
 	 * Instantiates a new save as template action.
@@ -51,7 +57,8 @@ public class SaveAsTemplateAction extends AbstractAction {
 	 * @param canvas
 	 *            the canvas
 	 */
-	public SaveAsTemplateAction(String text, AlphaForm form, FormCanvas canvas) {
+	public SaveAsTemplateAction(final String text, final AlphaForm form,
+			final FormCanvas canvas) {
 		super(text);
 		this.form = form;
 		this.canvas = canvas;
@@ -64,18 +71,18 @@ public class SaveAsTemplateAction extends AbstractAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent ev) {
-		List<FormWidget> selectedItems = canvas.getSelectedItems();
+	public void actionPerformed(final ActionEvent ev) {
+		final List<FormWidget> selectedItems = this.canvas.getSelectedItems();
 		if (selectedItems.size() > 0) {
-			FormWidget w = selectedItems.get(0);
-			String templateName = (String) JOptionPane.showInputDialog(null,
+			final FormWidget w = selectedItems.get(0);
+			final String templateName = JOptionPane.showInputDialog(null,
 					"Template Name:", "Create Template...",
 					JOptionPane.QUESTION_MESSAGE);
 
 			try {
 				WidgetTemplateMngr.getInstance().saveAsTemplate(w,
 						templateName, false);
-			} catch (TemplateWithNameExistsException e) {
+			} catch (final TemplateWithNameExistsException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

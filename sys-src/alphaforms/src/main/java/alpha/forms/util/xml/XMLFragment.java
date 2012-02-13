@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -31,7 +32,7 @@ import alpha.forms.util.SimpleListSerializer;
 public class XMLFragment {
 
 	/** The attributes. */
-	private Map<String, Object> attributes = new HashMap<String, Object>();
+	private final Map<String, Object> attributes = new HashMap<String, Object>();
 
 	/** The value. */
 	private String value;
@@ -45,7 +46,7 @@ public class XMLFragment {
 	 * @param value
 	 *            the value
 	 */
-	public XMLFragment(Object value) {
+	public XMLFragment(final Object value) {
 		if (value != null) {
 			this.value = value.toString();
 		}
@@ -65,7 +66,7 @@ public class XMLFragment {
 	 *            the attributes
 	 * @return the xML fragment
 	 */
-	public XMLFragment withAttributes(Map<String, Object> attributes) {
+	public XMLFragment withAttributes(final Map<String, Object> attributes) {
 		this.attributes.putAll(attributes);
 		return this;
 	}
@@ -79,7 +80,7 @@ public class XMLFragment {
 	 *            the value
 	 * @return the xML fragment
 	 */
-	public XMLFragment withAttribute(String key, Object value) {
+	public XMLFragment withAttribute(final String key, final Object value) {
 		this.attributes.put(key, value);
 		return this;
 	}
@@ -91,7 +92,7 @@ public class XMLFragment {
 	 *            the tag
 	 * @return the xML fragment
 	 */
-	public XMLFragment wrapIn(String tag) {
+	public XMLFragment wrapIn(final String tag) {
 		this.tag = tag;
 		return this;
 	}
@@ -111,21 +112,23 @@ public class XMLFragment {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<").append(tag);
-		for (Entry<String, Object> e : attributes.entrySet()) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("<").append(this.tag);
+		for (final Entry<String, Object> e : this.attributes.entrySet()) {
 			sb.append(" ").append(e.getKey()).append("=\"");
 			if (e.getValue() instanceof Collection) {
-				SimpleListSerializer sl = new SimpleListSerializer();
+				final SimpleListSerializer sl = new SimpleListSerializer();
 				sb.append(sl.serialize((Collection<?>) e.getValue()));
 			} else {
 				sb.append(e.getValue());
 			}
 			sb.append("\"");
 		}
-		if (value != null) {
-			sb.append(">").append(value).append("</").append(tag).append(">");
+		if (this.value != null) {
+			sb.append(">").append(this.value).append("</").append(this.tag)
+					.append(">");
 		} else {
 			sb.append(" />");
 		}

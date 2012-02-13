@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -41,17 +42,22 @@ import alpha.forms.form.event.ScriptedAction;
  */
 public class ScriptedActionDialog extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5913221713200413285L;
+
 	/** The action. */
 	private ScriptedAction action;
 
 	/** The code. */
-	private JSEditorPane code;
+	private final JSEditorPane code;
 
 	/** The save. */
-	private JButton save;
+	private final JButton save;
 
 	/** The cancel. */
-	private JButton cancel;
+	private final JButton cancel;
 
 	/** The was cancled. */
 	private boolean wasCancled;
@@ -66,8 +72,8 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 	 *            the action
 	 * @return the scripted action dialog
 	 */
-	public static ScriptedActionDialog create(ScriptedAction action) {
-		ScriptedActionDialog dialog = new ScriptedActionDialog();
+	public static ScriptedActionDialog create(final ScriptedAction action) {
+		final ScriptedActionDialog dialog = new ScriptedActionDialog();
 		dialog.setAction(action);
 		return dialog;
 	}
@@ -77,29 +83,29 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 	 */
 	public ScriptedActionDialog() {
 		super((Frame) null, "Script Action:", true);
-		setLocationRelativeTo(null);
-		setLayout(new BorderLayout());
-		setResizable(true);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		this.setResizable(true);
 
-		code = new JSEditorPane();
-		code.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-		code.setSize(200, 300);
+		this.code = new JSEditorPane();
+		this.code.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		this.code.setSize(200, 300);
 
-		JPanel buttonPanel = new JPanel(new FlowLayout());
+		final JPanel buttonPanel = new JPanel(new FlowLayout());
 
-		save = new JButton("Save");
-		save.addActionListener(this);
-		save.setActionCommand("save");
-		cancel = new JButton("Cancel");
-		cancel.addActionListener(this);
-		cancel.setActionCommand("cancel");
+		this.save = new JButton("Save");
+		this.save.addActionListener(this);
+		this.save.setActionCommand("save");
+		this.cancel = new JButton("Cancel");
+		this.cancel.addActionListener(this);
+		this.cancel.setActionCommand("cancel");
 
-		buttonPanel.add(save);
-		buttonPanel.add(cancel);
+		buttonPanel.add(this.save);
+		buttonPanel.add(this.cancel);
 
-		add(new JScrollPane(code), BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
-		getRootPane().setDefaultButton(save);
+		this.add(new JScrollPane(this.code), BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.SOUTH);
+		this.getRootPane().setDefaultButton(this.save);
 	}
 
 	/**
@@ -108,9 +114,9 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 	 * @param action
 	 *            the new action
 	 */
-	public void setAction(ScriptedAction action) {
+	public void setAction(final ScriptedAction action) {
 		this.action = action;
-		code.setText(action.getScriptCode());
+		this.code.setText(action.getScriptCode());
 	}
 
 	/*
@@ -118,11 +124,12 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 	 * 
 	 * @see java.awt.Dialog#setVisible(boolean)
 	 */
-	public void setVisible(boolean flag) {
+	@Override
+	public void setVisible(final boolean flag) {
 		if (flag == true) {
-			pack();
-			wasCancled = false;
-			wasSaved = false;
+			this.pack();
+			this.wasCancled = false;
+			this.wasSaved = false;
 		}
 		super.setVisible(flag);
 	}
@@ -133,7 +140,7 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 	 * @return true, if successful
 	 */
 	public boolean wasCancled() {
-		return wasCancled;
+		return this.wasCancled;
 	}
 
 	/**
@@ -142,7 +149,7 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 	 * @return true, if successful
 	 */
 	public boolean wasSaved() {
-		return wasSaved;
+		return this.wasSaved;
 	}
 
 	/*
@@ -152,16 +159,17 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals("save")) {
-			String source = code.getText();
-			ScriptEngine engine = ActionFactory.getInstance().getScriptEngine();
+			final String source = this.code.getText();
+			final ScriptEngine engine = ActionFactory.getInstance()
+					.getScriptEngine();
 			try {
 				engine.eval("function stest(widget, form) {" + source + "}");
-				setVisible(false);
-				wasSaved = true;
-				action.setScriptCode(code.getText());
-			} catch (ScriptException ex) {
+				this.setVisible(false);
+				this.wasSaved = true;
+				this.action.setScriptCode(this.code.getText());
+			} catch (final ScriptException ex) {
 				JOptionPane.showMessageDialog(
 						null,
 						"There is an error in the script on line "
@@ -169,8 +177,8 @@ public class ScriptedActionDialog extends JDialog implements ActionListener {
 						"Script Error", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (e.getActionCommand().equals("cancel")) {
-			setVisible(false);
-			wasCancled = true;
+			this.setVisible(false);
+			this.wasCancled = true;
 		}
 	}
 }

@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -39,10 +40,11 @@ public class GroupWidgetMemento extends WidgetMemento implements
 	 */
 	@Override
 	protected String renderValue() {
-		List<FormWidget> childList = (List<FormWidget>) value;
-		StringBuilder sb = new StringBuilder();
-		for (FormWidget w : childList) {
-			WidgetMemento m = ((MementoOriginator) w).createWidgetMemento();
+		final List<FormWidget> childList = (List<FormWidget>) this.value;
+		final StringBuilder sb = new StringBuilder();
+		for (final FormWidget w : childList) {
+			final WidgetMemento m = ((MementoOriginator) w)
+					.createWidgetMemento();
 			sb.append(m.getXML());
 		}
 		return new XMLFragment(sb.toString()).wrapIn("children").toString();
@@ -56,23 +58,25 @@ public class GroupWidgetMemento extends WidgetMemento implements
 	 * .XMLDocumentSection)
 	 */
 	@Override
-	protected void loadValue(XMLDocumentSection xml) {
+	protected void loadValue(final XMLDocumentSection xml) {
 		System.out.println("children");
-		List<XMLDocumentSection> widgetSectionList = xml
+		final List<XMLDocumentSection> widgetSectionList = xml
 				.getDocumentSections("children/widget");
-		List<FormWidget> childList = new ArrayList<FormWidget>();
-		for (XMLDocumentSection widgetSection : widgetSectionList) {
-			String widgetName = widgetSection.getAttribute("name");
-			String widgetClass = widgetSection.getAttribute("type");
-			FormWidget w = WidgetFactory.createWidget(widgetClass, widgetName);
+		final List<FormWidget> childList = new ArrayList<FormWidget>();
+		for (final XMLDocumentSection widgetSection : widgetSectionList) {
+			final String widgetName = widgetSection.getAttribute("name");
+			final String widgetClass = widgetSection.getAttribute("type");
+			final FormWidget w = WidgetFactory.createWidget(widgetClass,
+					widgetName);
 
-			WidgetMemento m = ((MementoOriginator) w).createWidgetMemento();
+			final WidgetMemento m = ((MementoOriginator) w)
+					.createWidgetMemento();
 			m.loadXML(widgetSection);
 
 			((MementoOriginator) w).setWidgetMemento(m);
 			childList.add(w);
 		}
-		value = childList;
+		this.value = childList;
 	}
 
 }

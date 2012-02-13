@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -44,16 +45,15 @@ public class NotNullValidator implements Validator {
 	 * .ValidationContext, java.lang.Object)
 	 */
 	@Override
-	public boolean validate(ValidationContext ctx, Object value) {
+	public boolean validate(final ValidationContext ctx, final Object value) {
 		if (value != null) {
-			if (value instanceof String && ((String) value).isEmpty()) {
-				error = errorMessage;
+			if ((value instanceof String) && ((String) value).isEmpty()) {
+				this.error = this.errorMessage;
 				return false;
-			} else {
+			} else
 				return true;
-			}
 		} else {
-			error = errorMessage;
+			this.error = this.errorMessage;
 			return false;
 		}
 	}
@@ -75,7 +75,7 @@ public class NotNullValidator implements Validator {
 	 * alpha.forms.form.validation.Validator#isCompatibleWith(java.lang.Class)
 	 */
 	@Override
-	public boolean isCompatibleWith(Class<? extends FormWidget> widgetType) {
+	public boolean isCompatibleWith(final Class<? extends FormWidget> widgetType) {
 		return true;
 	}
 
@@ -84,6 +84,7 @@ public class NotNullValidator implements Validator {
 	 * 
 	 * @see java.lang.Object#clone()
 	 */
+	@Override
 	public Validator clone() {
 		return new NotNullValidator();
 	}
@@ -93,8 +94,9 @@ public class NotNullValidator implements Validator {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
-		return getHandle();
+		return this.getHandle();
 	}
 
 	/*
@@ -124,8 +126,8 @@ public class NotNullValidator implements Validator {
 	 */
 	@Override
 	public ValidatorMemento createMemento() {
-		ValidatorMemento m = new ValidatorMemento();
-		m.setHandle(getHandle());
+		final ValidatorMemento m = new ValidatorMemento();
+		m.setHandle(this.getHandle());
 		return m;
 	}
 
@@ -137,7 +139,7 @@ public class NotNullValidator implements Validator {
 	 * model.ValidatorMemento)
 	 */
 	@Override
-	public void setMemento(ValidatorMemento m) {
+	public void setMemento(final ValidatorMemento m) {
 	}
 
 	/*
@@ -147,7 +149,7 @@ public class NotNullValidator implements Validator {
 	 */
 	@Override
 	public String getError() {
-		return error;
+		return this.error;
 	}
 
 }

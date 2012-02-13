@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -56,7 +57,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @return the validators
 	 */
 	public List<ValidatorMemento> getValidators() {
-		return validators;
+		return this.validators;
 	}
 
 	/**
@@ -65,7 +66,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param validators
 	 *            the new validators
 	 */
-	public void setValidators(List<ValidatorMemento> validators) {
+	public void setValidators(final List<ValidatorMemento> validators) {
 		this.validators = validators;
 	}
 
@@ -76,20 +77,20 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 */
 	@Override
 	public String getXML() {
-		StringBuilder sb = new StringBuilder();
-		for (ValidatorMemento m : validators) {
+		final StringBuilder sb = new StringBuilder();
+		for (final ValidatorMemento m : this.validators) {
 			sb.append(m.getXML()).append("\n");
 		}
-		if (events != null) {
-			for (EventMemento m : events) {
+		if (this.events != null) {
+			for (final EventMemento m : this.events) {
 				sb.append(m.getXML()).append("\n");
 			}
 		}
-		sb.append(renderValue());
+		sb.append(this.renderValue());
 		return new XMLFragment(sb.toString()).wrapIn("widget")
-				.withAttributes(attributes)
-				.withAttribute("type", type.getName())
-				.withAttribute("name", name).toString();
+				.withAttributes(this.attributes)
+				.withAttribute("type", this.type.getName())
+				.withAttribute("name", this.name).toString();
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @return the string
 	 */
 	protected String renderValue() {
-		return new XMLFragment(value).wrapIn("value").toString();
+		return new XMLFragment(this.value).wrapIn("value").toString();
 	}
 
 	/*
@@ -109,31 +110,31 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * .util.xml.XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
+	public void loadXML(final XMLDocumentSection xml) {
 		try {
-			type = Class.forName(xml.getAttribute("type"));
-		} catch (ClassNotFoundException e1) {
+			this.type = Class.forName(xml.getAttribute("type"));
+		} catch (final ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
-		name = xml.getAttribute("name");
-		for (Entry<String, String> e : xml.getAttributes().entrySet()) {
-			attributes.put(e.getKey(), e.getValue());
+		this.name = xml.getAttribute("name");
+		for (final Entry<String, String> e : xml.getAttributes().entrySet()) {
+			this.attributes.put(e.getKey(), e.getValue());
 		}
-		List<XMLDocumentSection> validatorSectionList = xml
+		final List<XMLDocumentSection> validatorSectionList = xml
 				.getDocumentSections("validator");
-		for (XMLDocumentSection validatorSection : validatorSectionList) {
-			ValidatorMemento m = new ValidatorMemento();
+		for (final XMLDocumentSection validatorSection : validatorSectionList) {
+			final ValidatorMemento m = new ValidatorMemento();
 			m.loadXML(validatorSection);
-			validators.add(m);
+			this.validators.add(m);
 		}
-		List<XMLDocumentSection> eventSectionList = xml
+		final List<XMLDocumentSection> eventSectionList = xml
 				.getDocumentSections("event");
-		for (XMLDocumentSection eventSection : eventSectionList) {
-			EventMemento m = new EventMemento();
+		for (final XMLDocumentSection eventSection : eventSectionList) {
+			final EventMemento m = new EventMemento();
 			m.loadXML(eventSection);
-			events.add(m);
+			this.events.add(m);
 		}
-		loadValue(xml);
+		this.loadValue(xml);
 	}
 
 	/**
@@ -142,9 +143,9 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param xml
 	 *            the xml
 	 */
-	protected void loadValue(XMLDocumentSection xml) {
+	protected void loadValue(final XMLDocumentSection xml) {
 		if (xml.getSingleSection("value") != null) {
-			value = xml.getSingleSection("value").getTextContent();
+			this.value = xml.getSingleSection("value").getTextContent();
 		}
 	}
 
@@ -154,7 +155,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @return the type
 	 */
 	public Class getType() {
-		return type;
+		return this.type;
 	}
 
 	/**
@@ -163,7 +164,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param type
 	 *            the new type
 	 */
-	public void setType(Class type) {
+	public void setType(final Class type) {
 		this.type = type;
 	}
 
@@ -173,7 +174,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -182,7 +183,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -192,7 +193,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @return the attributes
 	 */
 	public Map<String, Object> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	/**
@@ -203,8 +204,8 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param value
 	 *            the value
 	 */
-	public void addAttribute(String name, Object value) {
-		attributes.put(name, value);
+	public void addAttribute(final String name, final Object value) {
+		this.attributes.put(name, value);
 	}
 
 	/**
@@ -213,7 +214,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param attributes
 	 *            the attributes
 	 */
-	public void setAttributes(Map<String, Object> attributes) {
+	public void setAttributes(final Map<String, Object> attributes) {
 		this.attributes = attributes;
 	}
 
@@ -223,7 +224,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @return the value
 	 */
 	public Object getValue() {
-		return value;
+		return this.value;
 	}
 
 	/**
@@ -232,7 +233,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param value
 	 *            the new value
 	 */
-	public void setValue(Object value) {
+	public void setValue(final Object value) {
 		this.value = value;
 	}
 
@@ -242,7 +243,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @return the events
 	 */
 	public List<EventMemento> getEvents() {
-		return events;
+		return this.events;
 	}
 
 	/**
@@ -251,7 +252,7 @@ public class WidgetMemento implements XMLSerializeableMemento {
 	 * @param events
 	 *            the new events
 	 */
-	public void setEvents(List<EventMemento> events) {
+	public void setEvents(final List<EventMemento> events) {
 		this.events = events;
 	}
 

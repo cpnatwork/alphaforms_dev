@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -40,10 +41,10 @@ import org.w3c.dom.NodeList;
 public class XMLDocumentSection {
 
 	/** The xml doc. */
-	private Document xmlDoc;
+	private final Document xmlDoc;
 
 	/** The parent node. */
-	private Node parentNode;
+	private final Node parentNode;
 
 	/** The attributes. */
 	private Map<String, String> attributes;
@@ -56,7 +57,7 @@ public class XMLDocumentSection {
 	 * @param xmlDoc
 	 *            the xml doc
 	 */
-	public XMLDocumentSection(Node node, Document xmlDoc) {
+	public XMLDocumentSection(final Node node, final Document xmlDoc) {
 		this.parentNode = node;
 		this.xmlDoc = xmlDoc;
 		System.out
@@ -70,10 +71,10 @@ public class XMLDocumentSection {
 	 * @return the attributes
 	 */
 	public Map<String, String> getAttributes() {
-		NamedNodeMap attrs = parentNode.getAttributes();
-		Map<String, String> ret = new HashMap<String, String>();
+		final NamedNodeMap attrs = this.parentNode.getAttributes();
+		final Map<String, String> ret = new HashMap<String, String>();
 		for (int i = 0; i < attrs.getLength(); i++) {
-			Node attr = attrs.item(i);
+			final Node attr = attrs.item(i);
 			ret.put(attr.getNodeName(), attr.getNodeValue());
 			System.out.println("Attribute(" + attr.getNodeName() + " -> "
 					+ attr.getNodeValue() + ")");
@@ -88,10 +89,11 @@ public class XMLDocumentSection {
 	 *            the name
 	 * @return the attribute
 	 */
-	public String getAttribute(String name) {
-		if (attributes == null)
-			attributes = getAttributes();
-		return attributes.get(name);
+	public String getAttribute(final String name) {
+		if (this.attributes == null) {
+			this.attributes = this.getAttributes();
+		}
+		return this.attributes.get(name);
 	}
 
 	/**
@@ -100,8 +102,8 @@ public class XMLDocumentSection {
 	 * @return the children
 	 */
 	public List<Node> getChildren() {
-		NodeList childNodes = parentNode.getChildNodes();
-		List<Node> ret = new ArrayList<Node>();
+		final NodeList childNodes = this.parentNode.getChildNodes();
+		final List<Node> ret = new ArrayList<Node>();
 		for (int i = 0; i < childNodes.getLength(); i++) {
 			ret.add(childNodes.item(i));
 		}
@@ -114,7 +116,7 @@ public class XMLDocumentSection {
 	 * @return the section name
 	 */
 	public String getSectionName() {
-		return parentNode.getNodeName();
+		return this.parentNode.getNodeName();
 	}
 
 	/**
@@ -124,16 +126,16 @@ public class XMLDocumentSection {
 	 *            the x path expression
 	 * @return the nodes
 	 */
-	public List<Node> getNodes(String xPathExpression) {
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		List<Node> ret = new ArrayList<Node>();
+	public List<Node> getNodes(final String xPathExpression) {
+		final XPath xpath = XPathFactory.newInstance().newXPath();
+		final List<Node> ret = new ArrayList<Node>();
 		try {
-			NodeList nodes = (NodeList) xpath.evaluate(xPathExpression,
-					parentNode, XPathConstants.NODESET);
+			final NodeList nodes = (NodeList) xpath.evaluate(xPathExpression,
+					this.parentNode, XPathConstants.NODESET);
 			for (int i = 0; i < nodes.getLength(); i++) {
 				ret.add(nodes.item(i));
 			}
-		} catch (XPathExpressionException e) {
+		} catch (final XPathExpressionException e) {
 			e.printStackTrace();
 		}
 		return ret;
@@ -147,13 +149,13 @@ public class XMLDocumentSection {
 	 *            the x path expression
 	 * @return the single node
 	 */
-	public Node getSingleNode(String xPathExpression) {
-		XPath xpath = XPathFactory.newInstance().newXPath();
+	public Node getSingleNode(final String xPathExpression) {
+		final XPath xpath = XPathFactory.newInstance().newXPath();
 		Node node = null;
 		try {
-			node = (Node) xpath.evaluate(xPathExpression, parentNode,
+			node = (Node) xpath.evaluate(xPathExpression, this.parentNode,
 					XPathConstants.NODE);
-		} catch (XPathExpressionException e) {
+		} catch (final XPathExpressionException e) {
 			e.printStackTrace();
 		}
 		return node;
@@ -166,13 +168,12 @@ public class XMLDocumentSection {
 	 *            the x path expression
 	 * @return the node value
 	 */
-	public String getNodeValue(String xPathExpression) {
-		Node node = getSingleNode(xPathExpression);
-		if (node != null) {
+	public String getNodeValue(final String xPathExpression) {
+		final Node node = this.getSingleNode(xPathExpression);
+		if (node != null)
 			return node.getTextContent();
-		} else {
+		else
 			return null;
-		}
 	}
 
 	/**
@@ -182,13 +183,12 @@ public class XMLDocumentSection {
 	 *            the x path expression
 	 * @return the single section
 	 */
-	public XMLDocumentSection getSingleSection(String xPathExpression) {
-		Node node = getSingleNode(xPathExpression);
-		if (node != null) {
-			return new XMLDocumentSection(node, xmlDoc);
-		} else {
+	public XMLDocumentSection getSingleSection(final String xPathExpression) {
+		final Node node = this.getSingleNode(xPathExpression);
+		if (node != null)
+			return new XMLDocumentSection(node, this.xmlDoc);
+		else
 			return null;
-		}
 	}
 
 	/**
@@ -198,11 +198,12 @@ public class XMLDocumentSection {
 	 *            the x path expression
 	 * @return the document sections
 	 */
-	public List<XMLDocumentSection> getDocumentSections(String xPathExpression) {
-		List<Node> nodes = getNodes(xPathExpression);
-		List<XMLDocumentSection> sectionList = new ArrayList<XMLDocumentSection>();
-		for (Node n : nodes) {
-			sectionList.add(new XMLDocumentSection(n, xmlDoc));
+	public List<XMLDocumentSection> getDocumentSections(
+			final String xPathExpression) {
+		final List<Node> nodes = this.getNodes(xPathExpression);
+		final List<XMLDocumentSection> sectionList = new ArrayList<XMLDocumentSection>();
+		for (final Node n : nodes) {
+			sectionList.add(new XMLDocumentSection(n, this.xmlDoc));
 		}
 		return sectionList;
 	}
@@ -213,7 +214,7 @@ public class XMLDocumentSection {
 	 * @return the text content
 	 */
 	public String getTextContent() {
-		return parentNode.getTextContent();
+		return this.parentNode.getTextContent();
 	}
 
 	/**
@@ -222,9 +223,9 @@ public class XMLDocumentSection {
 	 * @return the cDATA content
 	 */
 	public String getCDATAContent() {
-		for (Node n : this.getChildren()) {
+		for (final Node n : this.getChildren()) {
 			if (n.getNodeType() == Node.CDATA_SECTION_NODE) {
-				CDATASection cdata = (CDATASection) n;
+				final CDATASection cdata = (CDATASection) n;
 				return cdata.getData();
 			}
 		}

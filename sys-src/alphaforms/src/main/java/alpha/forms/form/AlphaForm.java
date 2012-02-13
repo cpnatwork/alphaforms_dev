@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -43,10 +44,10 @@ import alpha.forms.widget.model.FormWidget;
 public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 
 	/** The children. */
-	private Map<String, FormWidget> children = new HashMap<String, FormWidget>();
+	private final Map<String, FormWidget> children = new HashMap<String, FormWidget>();
 
 	/** The document states. */
-	private List<String> documentStates = new ArrayList<String>();
+	private final List<String> documentStates = new ArrayList<String>();
 
 	/** The active document state. */
 	private String activeDocumentState = null;
@@ -80,7 +81,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * Instantiates a new alpha form.
 	 */
 	public AlphaForm() {
-		title = "AlphaForm1";
+		this.title = "AlphaForm1";
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the title
 	 */
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param title
 	 *            the new title
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -108,7 +109,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the width
 	 */
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	/**
@@ -117,7 +118,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param width
 	 *            the new width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
@@ -127,7 +128,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the height
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -136,7 +137,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param height
 	 *            the new height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
@@ -146,7 +147,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the min width
 	 */
 	public int getMinWidth() {
-		return minWidth;
+		return this.minWidth;
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the min height
 	 */
 	public int getMinHeight() {
-		return minHeight;
+		return this.minHeight;
 	}
 
 	/**
@@ -164,7 +165,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the widgets
 	 */
 	public Collection<FormWidget> getWidgets() {
-		return children.values();
+		return this.children.values();
 	}
 
 	/**
@@ -173,12 +174,12 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param w
 	 *            the w
 	 */
-	public void addWidget(FormWidget w) {
-		if (isWidget(w.getName())) {
+	public void addWidget(final FormWidget w) {
+		if (this.isWidget(w.getName())) {
 
 		} else {
-			children.put(w.getName(), w);
-			recalculateDimensions(w);
+			this.children.put(w.getName(), w);
+			this.recalculateDimensions(w);
 		}
 	}
 
@@ -189,8 +190,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 *            the name
 	 * @return true, if is widget
 	 */
-	public boolean isWidget(String name) {
-		return (children.get(name) != null);
+	public boolean isWidget(final String name) {
+		return (this.children.get(name) != null);
 	}
 
 	/**
@@ -200,8 +201,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 *            the name
 	 * @return the widget
 	 */
-	public FormWidget getWidget(String name) {
-		return children.get(name);
+	public FormWidget getWidget(final String name) {
+		return this.children.get(name);
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the document states
 	 */
 	public List<String> getDocumentStates() {
-		return documentStates;
+		return this.documentStates;
 	}
 
 	/**
@@ -219,8 +220,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param states
 	 *            the states
 	 */
-	public void addDocumentStates(Collection<String> states) {
-		documentStates.addAll(states);
+	public void addDocumentStates(final Collection<String> states) {
+		this.documentStates.addAll(states);
 	}
 
 	/**
@@ -229,8 +230,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param state
 	 *            the state
 	 */
-	public void addDocumentState(String state) {
-		documentStates.add(state);
+	public void addDocumentState(final String state) {
+		this.documentStates.add(state);
 	}
 
 	/*
@@ -240,12 +241,12 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 */
 	@Override
 	public AlphaFormMemento createMemento() {
-		AlphaFormMemento m = new AlphaFormMemento();
-		m.setTitle(title);
-		m.setAttribute("height", height);
-		m.setAttribute("width", width);
-		m.setWidgets(new ArrayList<FormWidget>(children.values()));
-		m.setWidgetStates(widgetStates);
+		final AlphaFormMemento m = new AlphaFormMemento();
+		m.setTitle(this.title);
+		m.setAttribute("height", this.height);
+		m.setAttribute("width", this.width);
+		m.setWidgets(new ArrayList<FormWidget>(this.children.values()));
+		m.setWidgetStates(this.widgetStates);
 		return m;
 	}
 
@@ -257,14 +258,14 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * .memento.model.AlphaFormMemento)
 	 */
 	@Override
-	public void setMemento(AlphaFormMemento m) {
-		children.clear();
+	public void setMemento(final AlphaFormMemento m) {
+		this.children.clear();
 		if (m != null) {
-			title = m.getTitle();
-			width = Integer.parseInt(m.getAttribute("width").toString());
-			height = Integer.parseInt(m.getAttribute("height").toString());
-			for (FormWidget w : m.getWidgets()) {
-				children.put(w.getName(), w);
+			this.title = m.getTitle();
+			this.width = Integer.parseInt(m.getAttribute("width").toString());
+			this.height = Integer.parseInt(m.getAttribute("height").toString());
+			for (final FormWidget w : m.getWidgets()) {
+				this.children.put(w.getName(), w);
 			}
 		}
 	}
@@ -275,14 +276,14 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param name
 	 *            the name
 	 */
-	public void createState(String name) {
-		List<WidgetMemento> m = new ArrayList<WidgetMemento>();
-		for (FormWidget w : children.values()) {
+	public void createState(final String name) {
+		final List<WidgetMemento> m = new ArrayList<WidgetMemento>();
+		for (final FormWidget w : this.children.values()) {
 			if (w instanceof MementoOriginator) {
 				m.add(((MementoOriginator) w).createWidgetMemento());
 			}
 		}
-		widgetStates.put(name, m);
+		this.widgetStates.put(name, m);
 	}
 
 	/**
@@ -291,8 +292,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param name
 	 *            the name
 	 */
-	public void deleteState(String name) {
-		widgetStates.remove(name);
+	public void deleteState(final String name) {
+		this.widgetStates.remove(name);
 	}
 
 	/**
@@ -301,12 +302,12 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param name
 	 *            the name
 	 */
-	public void revertToState(String name) {
-		List<WidgetMemento> mList = widgetStates.get(name);
+	public void revertToState(final String name) {
+		final List<WidgetMemento> mList = this.widgetStates.get(name);
 		if (mList != null) {
-			for (WidgetMemento m : mList) {
-				FormWidget w = children.get(m.getName());
-				if (w != null && w instanceof MementoOriginator) {
+			for (final WidgetMemento m : mList) {
+				final FormWidget w = this.children.get(m.getName());
+				if ((w != null) && (w instanceof MementoOriginator)) {
 					((MementoOriginator) w).setWidgetMemento(m);
 				}
 			}
@@ -317,15 +318,15 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * Recalculate dimensions.
 	 */
 	public void recalculateDimensions() {
-		minWidth = 10;
-		minHeight = 10;
-		width = minWidth;
-		height = minHeight;
-		for (Entry<String, FormWidget> e : children.entrySet()) {
-			recalculateDimensions(e.getValue());
+		this.minWidth = 10;
+		this.minHeight = 10;
+		this.width = this.minWidth;
+		this.height = this.minHeight;
+		for (final Entry<String, FormWidget> e : this.children.entrySet()) {
+			this.recalculateDimensions(e.getValue());
 		}
-		width += 10;
-		height += 10;
+		this.width += 10;
+		this.height += 10;
 	}
 
 	/**
@@ -334,11 +335,11 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param w
 	 *            the w
 	 */
-	public void recalculateDimensions(FormWidget w) {
-		minWidth = Math.max(minWidth, w.getX() + w.getWidth());
-		minHeight = Math.max(minHeight, w.getY() + w.getHeight());
-		width = Math.max(width, minWidth);
-		height = Math.max(height, minHeight);
+	public void recalculateDimensions(final FormWidget w) {
+		this.minWidth = Math.max(this.minWidth, w.getX() + w.getWidth());
+		this.minHeight = Math.max(this.minHeight, w.getY() + w.getHeight());
+		this.width = Math.max(this.width, this.minWidth);
+		this.height = Math.max(this.height, this.minHeight);
 	}
 
 	/**
@@ -347,11 +348,11 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param w
 	 *            the w
 	 */
-	public void recalculateDimensions(DraggedWidget w) {
-		minWidth = Math.max(minWidth, w.getX() + w.getWidth());
-		minHeight = Math.max(minHeight, w.getY() + w.getHeight());
-		width = Math.max(width, minWidth);
-		height = Math.max(height, minHeight);
+	public void recalculateDimensions(final DraggedWidget w) {
+		this.minWidth = Math.max(this.minWidth, w.getX() + w.getWidth());
+		this.minHeight = Math.max(this.minHeight, w.getY() + w.getHeight());
+		this.width = Math.max(this.width, this.minWidth);
+		this.height = Math.max(this.height, this.minHeight);
 	}
 
 	/**
@@ -360,7 +361,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the active document state
 	 */
 	public String getActiveDocumentState() {
-		return activeDocumentState;
+		return this.activeDocumentState;
 	}
 
 	/**
@@ -369,8 +370,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param activeDocumentState
 	 *            the new active document state
 	 */
-	public void setActiveDocumentState(String activeDocumentState) {
-		if (documentStates.contains(activeDocumentState)) {
+	public void setActiveDocumentState(final String activeDocumentState) {
+		if (this.documentStates.contains(activeDocumentState)) {
 			this.activeDocumentState = activeDocumentState;
 		}
 	}
@@ -381,7 +382,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the validation level
 	 */
 	public ValidationLevel getValidationLevel() {
-		return validationLevel;
+		return this.validationLevel;
 	}
 
 	/**
@@ -390,7 +391,7 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @param validationLevel
 	 *            the new validation level
 	 */
-	public void setValidationLevel(ValidationLevel validationLevel) {
+	public void setValidationLevel(final ValidationLevel validationLevel) {
 		this.validationLevel = validationLevel;
 	}
 
@@ -400,8 +401,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * @return the list
 	 */
 	public List<ValidationFailure> validateForm() {
-		List<ValidationFailure> validationFailedList = new ArrayList<ValidationFailure>();
-		for (FormWidget w : children.values()) {
+		final List<ValidationFailure> validationFailedList = new ArrayList<ValidationFailure>();
+		for (final FormWidget w : this.children.values()) {
 			validationFailedList.addAll(w.validate());
 		}
 		return validationFailedList;
@@ -415,15 +416,15 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * alpha.forms.widget.model.FormWidget)
 	 */
 	@Override
-	public String checkName(String name, FormWidget w)
+	public String checkName(final String name, final FormWidget w)
 			throws WidgetNameExistsException {
-		if (checkNameExists(name))
+		if (this.checkNameExists(name))
 			throw new WidgetNameExistsException("Widget with name '" + name
 					+ "' already exists.");
-		String oldName = w.getName();
-		FormWidget storedWidget = children.get(oldName);
-		if (storedWidget == w && children.remove(oldName) != null) {
-			children.put(name, w);
+		final String oldName = w.getName();
+		final FormWidget storedWidget = this.children.get(oldName);
+		if ((storedWidget == w) && (this.children.remove(oldName) != null)) {
+			this.children.put(name, w);
 		}
 		return name;
 	}
@@ -436,8 +437,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * .String)
 	 */
 	@Override
-	public boolean checkNameExists(String name) {
-		return children.containsKey(name);
+	public boolean checkNameExists(final String name) {
+		return this.children.containsKey(name);
 	}
 
 	/*
@@ -447,8 +448,8 @@ public class AlphaForm implements FormMementoOriginator, WidgetNamingService {
 	 * alpha.forms.form.naming.WidgetNamingService#checkName(java.lang.String)
 	 */
 	@Override
-	public String checkName(String name) throws WidgetNameExistsException {
-		if (checkNameExists(name))
+	public String checkName(final String name) throws WidgetNameExistsException {
+		if (this.checkNameExists(name))
 			throw new WidgetNameExistsException("Widget with name '" + name
 					+ "' already exists.");
 		return name;

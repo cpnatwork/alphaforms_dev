@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -36,7 +37,7 @@ public class GroupUI extends FormWidgetUI {
 	private static final long serialVersionUID = 1L;
 
 	/** The model. */
-	private Group model;
+	private final Group model;
 
 	/**
 	 * Instantiates a new group ui.
@@ -44,10 +45,10 @@ public class GroupUI extends FormWidgetUI {
 	 * @param model
 	 *            the model
 	 */
-	public GroupUI(Group model) {
+	public GroupUI(final Group model) {
 		super(model);
 		this.model = model;
-		compose();
+		this.compose();
 	}
 
 	/*
@@ -58,12 +59,12 @@ public class GroupUI extends FormWidgetUI {
 	@Override
 	protected void compose() {
 		// super.compose();
-		setLayout(null);
-		removeAll();
-		for (FormWidget w : model.getChildren()) {
-			add(w.getUi());
+		this.setLayout(null);
+		this.removeAll();
+		for (final FormWidget w : this.model.getChildren()) {
+			this.add(w.getUi());
 		}
-		doLayout();
+		this.doLayout();
 	}
 
 	/*
@@ -74,22 +75,23 @@ public class GroupUI extends FormWidgetUI {
 	@Override
 	public void doLayout() {
 		super.doLayout();
-		switch (model.getBorder()) {
+		switch (this.model.getBorder()) {
 		case TITLED:
-			setBorder(BorderFactory.createTitledBorder(model.getTitle()));
+			this.setBorder(BorderFactory.createTitledBorder(this.model
+					.getTitle()));
 			break;
 		case UNTITLED:
-			setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+			this.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
 			break;
 		case NONE:
 		default:
-			setBorder(null);
+			this.setBorder(null);
 		}
-		for (FormWidget w : model.getChildren()) {
+		for (final FormWidget w : this.model.getChildren()) {
 			w.getUi().doLayout();
 		}
-		super.setSize(model.getSize());
-		this.setVisible(model.isVisible());
+		super.setSize(this.model.getSize());
+		this.setVisible(this.model.isVisible());
 	}
 
 	/**
@@ -99,12 +101,11 @@ public class GroupUI extends FormWidgetUI {
 	 *            the name
 	 * @return the form widget
 	 */
-	public FormWidget findComponent(String name) {
-		for (Component c : getComponents()) {
-			if (c instanceof FormWidgetUI
-					&& ((FormWidgetUI) c).model.getName().equals(name)) {
-				return (FormWidget) ((FormWidgetUI) c).model;
-			}
+	public FormWidget findComponent(final String name) {
+		for (final Component c : this.getComponents()) {
+			if ((c instanceof FormWidgetUI)
+					&& ((FormWidgetUI) c).model.getName().equals(name))
+				return ((FormWidgetUI) c).model;
 		}
 		return null;
 	}
@@ -115,10 +116,10 @@ public class GroupUI extends FormWidgetUI {
 	 * @param w
 	 *            the w
 	 */
-	public void add(FormWidget w) {
-		add(w.getUi());
-		validate();
-		doLayout();
+	public void add(final FormWidget w) {
+		this.add(w.getUi());
+		this.validate();
+		this.doLayout();
 	}
 
 	/**
@@ -127,10 +128,10 @@ public class GroupUI extends FormWidgetUI {
 	 * @param w
 	 *            the w
 	 */
-	public void remove(FormWidget w) {
-		remove(w.getUi());
-		validate();
-		doLayout();
+	public void remove(final FormWidget w) {
+		this.remove(w.getUi());
+		this.validate();
+		this.doLayout();
 	}
 
 	/*
@@ -139,9 +140,9 @@ public class GroupUI extends FormWidgetUI {
 	 * @see java.awt.Component#setSize(java.awt.Dimension)
 	 */
 	@Override
-	public void setSize(Dimension d) {
+	public void setSize(final Dimension d) {
 		super.setSize(d);
-		doLayout();
+		this.doLayout();
 	}
 
 }

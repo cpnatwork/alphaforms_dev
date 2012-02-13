@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -37,8 +38,12 @@ import alpha.forms.widget.util.OptionLayout;
  */
 public class OptionUI extends FormWidgetUI {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4014885959054275849L;
 	/** The model. */
-	private Option model;
+	private final Option model;
 
 	/**
 	 * Instantiates a new option ui.
@@ -46,10 +51,10 @@ public class OptionUI extends FormWidgetUI {
 	 * @param model
 	 *            the model
 	 */
-	public OptionUI(Option model) {
+	public OptionUI(final Option model) {
 		super(model);
 		this.model = model;
-		compose();
+		this.compose();
 	}
 
 	/*
@@ -60,11 +65,11 @@ public class OptionUI extends FormWidgetUI {
 	@Override
 	public void doLayout() {
 		super.doLayout();
-		Dimension d = model.getSize();
-		super.setBounds(model.getX(), model.getY(), model.getWidth(),
-				model.getHeight());
-		compose();
-		this.setVisible(model.isVisible());
+		final Dimension d = this.model.getSize();
+		super.setBounds(this.model.getX(), this.model.getY(),
+				this.model.getWidth(), this.model.getHeight());
+		this.compose();
+		this.setVisible(this.model.isVisible());
 	}
 
 	/*
@@ -83,7 +88,7 @@ public class OptionUI extends FormWidgetUI {
 	 * @see alpha.forms.widget.view.FormWidgetUI#isSubselectionResizable(int)
 	 */
 	@Override
-	public boolean isSubselectionResizable(int direction) {
+	public boolean isSubselectionResizable(final int direction) {
 		return false;
 	}
 
@@ -94,7 +99,7 @@ public class OptionUI extends FormWidgetUI {
 	 * int)
 	 */
 	@Override
-	public void updateSubselectionSize(int delta, int direction) {
+	public void updateSubselectionSize(final int delta, final int direction) {
 	}
 
 	/*
@@ -104,17 +109,17 @@ public class OptionUI extends FormWidgetUI {
 	 */
 	@Override
 	protected void compose() {
-		removeAll();
+		this.removeAll();
 		super.compose();
 		super.setOpaque(true);
-		super.setSize(model.getSize());
+		super.setSize(this.model.getSize());
 		this.setLayout(null);
 		int maxX = 0;
 		int maxY = 0;
-		ButtonGroup group = new ButtonGroup();
-		for (OptionItem option : model.getOptions()) {
+		final ButtonGroup group = new ButtonGroup();
+		for (final OptionItem option : this.model.getOptions()) {
 			AbstractButton comp;
-			if (model.isMultiselect()) {
+			if (this.model.isMultiselect()) {
 				comp = new JCheckBox(option.getName());
 				comp.setSelected(option.isValue());
 			} else {
@@ -125,32 +130,33 @@ public class OptionUI extends FormWidgetUI {
 			comp.setName(option.getName());
 			comp.addChangeListener(new ChangeListener() {
 				@Override
-				public void stateChanged(ChangeEvent ev) {
-					AbstractButton btn = (AbstractButton) ev.getSource();
-					OptionItem item = model.findOptionByName(btn.getName());
+				public void stateChanged(final ChangeEvent ev) {
+					final AbstractButton btn = (AbstractButton) ev.getSource();
+					final OptionItem item = OptionUI.this.model
+							.findOptionByName(btn.getName());
 					item.setValue(btn.isSelected());
-					model.getOnSelectionChanged().fire();
+					OptionUI.this.model.getOnSelectionChanged().fire();
 				}
 			});
 			comp.setSize(comp.getPreferredSize());
 			comp.doLayout();
-			int gap = model.getGap();
-			if (model.getLayout() == OptionLayout.HORIZONTAL) {
+			final int gap = this.model.getGap();
+			if (this.model.getLayout() == OptionLayout.HORIZONTAL) {
 				comp.setLocation(maxX + gap, 0);
 				maxX += comp.getWidth() + gap;
 				maxY = (comp.getHeight() > maxY) ? comp.getHeight() : maxY;
-			} else if (model.getLayout() == OptionLayout.VERTICAL) {
+			} else if (this.model.getLayout() == OptionLayout.VERTICAL) {
 				comp.setLocation(0, maxY + gap);
 				maxY += comp.getHeight() + gap;
 				maxX = (comp.getWidth() > maxX) ? comp.getWidth() : maxX;
 			}
-			add(comp);
+			this.add(comp);
 		}
-		minimumHeight = maxY;
-		minimumWidth = maxX;
+		this.minimumHeight = maxY;
+		this.minimumWidth = maxX;
 		super.setSize(maxX, maxY);
-		super.setBounds(model.getX(), model.getY(), model.getWidth(),
-				model.getHeight());
+		super.setBounds(this.model.getX(), this.model.getY(),
+				this.model.getWidth(), this.model.getHeight());
 	}
 
 	/*
@@ -159,9 +165,9 @@ public class OptionUI extends FormWidgetUI {
 	 * @see java.awt.Component#setSize(java.awt.Dimension)
 	 */
 	@Override
-	public void setSize(Dimension d) {
+	public void setSize(final Dimension d) {
 		super.setSize(d);
-		doLayout();
+		this.doLayout();
 	}
 
 }

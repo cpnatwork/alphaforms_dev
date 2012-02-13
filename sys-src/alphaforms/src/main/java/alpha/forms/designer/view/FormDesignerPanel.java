@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -57,7 +58,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	private static final long serialVersionUID = 1L;
 
 	/** The model. */
-	private AlphaForm model;
+	private final AlphaForm model;
 
 	/** The form title. */
 	final private JLabel formTitle = new JLabel();
@@ -66,10 +67,10 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	private JComboBox documentStates = new JComboBox();
 
 	/** The header. */
-	private JPanel header;
+	private final JPanel header;
 
 	/** The canvas. */
-	private FormCanvas canvas;
+	private final FormCanvas canvas;
 
 	/**
 	 * Instantiates a new form designer panel.
@@ -83,8 +84,8 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 		this.setMinimumSize(new Dimension(40, 40));
 		this.setLayout(new BorderLayout());
 
-		header = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		this.header = new JPanel(new GridBagLayout());
+		final GridBagConstraints c = new GridBagConstraints();
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
@@ -92,9 +93,9 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 		c.anchor = GridBagConstraints.LINE_START;
 		c.weightx = 0.2;
 
-		formTitle.setFont(formTitle.getFont().deriveFont(18.0f));
+		this.formTitle.setFont(this.formTitle.getFont().deriveFont(18.0f));
 
-		header.add(formTitle, c);
+		this.header.add(this.formTitle, c);
 
 		c.gridx = 1;
 		c.fill = GridBagConstraints.NONE;
@@ -103,37 +104,38 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 		c.weightx = 0.0;
 
 		if (model.getDocumentStates().isEmpty()) {
-			documentStates = new JComboBox(new String[] { "NONE" });
-			documentStates.setEditable(false);
-			documentStates.setEnabled(false);
+			this.documentStates = new JComboBox(new String[] { "NONE" });
+			this.documentStates.setEditable(false);
+			this.documentStates.setEnabled(false);
 		} else {
-			documentStates = new JComboBox(model.getDocumentStates().toArray());
-			documentStates.setEditable(false);
+			this.documentStates = new JComboBox(model.getDocumentStates()
+					.toArray());
+			this.documentStates.setEditable(false);
 		}
-		documentStates.addActionListener(new ActionListener() {
+		this.documentStates.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				if (documentStates.getSelectedItem() != null) {
-					model.setActiveDocumentState(documentStates
+			public void actionPerformed(final ActionEvent ev) {
+				if (FormDesignerPanel.this.documentStates.getSelectedItem() != null) {
+					model.setActiveDocumentState(FormDesignerPanel.this.documentStates
 							.getSelectedItem().toString());
 				}
 			}
 		});
 
-		header.add(documentStates, c);
+		this.header.add(this.documentStates, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+		final JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
 
-		header.add(separator, c);
+		this.header.add(separator, c);
 
-		this.add(header, BorderLayout.NORTH);
+		this.add(this.header, BorderLayout.NORTH);
 
-		canvas = new FormCanvas(this, model);
-		JScrollPane scroll = new JScrollPane(canvas);
+		this.canvas = new FormCanvas(this, model);
+		final JScrollPane scroll = new JScrollPane(this.canvas);
 		scroll.setBorder(null);
 		this.add(scroll, BorderLayout.CENTER);
 
@@ -150,7 +152,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * ComponentEvent)
 	 */
 	@Override
-	public void componentHidden(ComponentEvent ev) {
+	public void componentHidden(final ComponentEvent ev) {
 		// TODO Auto-generated method stub
 
 	}
@@ -163,7 +165,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * )
 	 */
 	@Override
-	public void componentMoved(ComponentEvent ev) {
+	public void componentMoved(final ComponentEvent ev) {
 		// TODO Auto-generated method stub
 
 	}
@@ -175,7 +177,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * ComponentEvent)
 	 */
 	@Override
-	public void componentResized(ComponentEvent ev) {
+	public void componentResized(final ComponentEvent ev) {
 
 	}
 
@@ -187,7 +189,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * )
 	 */
 	@Override
-	public void componentShown(ComponentEvent ev) {
+	public void componentShown(final ComponentEvent ev) {
 		// TODO Auto-generated method stub
 
 	}
@@ -200,25 +202,25 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * @param p
 	 *            the p
 	 */
-	public void addWidget(FormWidget w, Point p) {
-		FormWidget container = canvas.findWidget(p);
-		if (container != null && container instanceof ContainerWidget
+	public void addWidget(final FormWidget w, final Point p) {
+		final FormWidget container = this.canvas.findWidget(p);
+		if ((container != null) && (container instanceof ContainerWidget)
 				&& ((ContainerWidget) container).doesAcceptWidget(w)) {
-			Point gl = canvas.translatePoint(p);
+			final Point gl = this.canvas.translatePoint(p);
 			w.setX(gl.x - container.getX());
 			w.setY(gl.y - container.getY());
 			// w.setWidth(w.getMiniumWidth());
 			// w.setHeight(w.getMinimumHeight());
 			((ContainerWidget) container).addChild(w);
 			w.setParent(container);
-			canvas.stopContainerHighlight();
+			this.canvas.stopContainerHighlight();
 		} else {
-			Point gl = canvas.translatePoint(p);
+			final Point gl = this.canvas.translatePoint(p);
 			w.setX(gl.x);
 			w.setY(gl.y);
 			// w.setWidth(w.getMiniumWidth());
 			// w.setHeight(w.getMinimumHeight());
-			model.addWidget(w);
+			this.model.addWidget(w);
 		}
 	}
 
@@ -228,7 +230,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * @return the drop area
 	 */
 	public Rectangle getDropArea() {
-		return canvas.getBounds();
+		return this.canvas.getBounds();
 	}
 
 	/**
@@ -237,7 +239,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * @return the drop target component
 	 */
 	public Component getDropTargetComponent() {
-		return canvas;
+		return this.canvas;
 	}
 
 	/**
@@ -246,7 +248,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * @return the selected items
 	 */
 	public List<FormWidget> getSelectedItems() {
-		return canvas.getSelectedItems();
+		return this.canvas.getSelectedItems();
 	}
 
 	/*
@@ -257,7 +259,7 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 * .model.Signal)
 	 */
 	@Override
-	public void signalReceived(Signal s) {
+	public void signalReceived(final Signal s) {
 		if (s instanceof PropertyUpdatedSignal) {
 			this.updateUI();
 		}
@@ -270,16 +272,16 @@ public class FormDesignerPanel extends JPanel implements ComponentListener,
 	 */
 	@Override
 	public void updateUI() {
-		if (model != null) {
-			formTitle.setText(model.getTitle());
-			if (model.getDocumentStates().isEmpty()) {
-				documentStates = new JComboBox(new String[] { "NONE" });
-				documentStates.setEditable(false);
-				documentStates.setEnabled(false);
+		if (this.model != null) {
+			this.formTitle.setText(this.model.getTitle());
+			if (this.model.getDocumentStates().isEmpty()) {
+				this.documentStates = new JComboBox(new String[] { "NONE" });
+				this.documentStates.setEditable(false);
+				this.documentStates.setEnabled(false);
 			} else {
-				documentStates = new JComboBox(model.getDocumentStates()
-						.toArray());
-				documentStates.setEditable(false);
+				this.documentStates = new JComboBox(this.model
+						.getDocumentStates().toArray());
+				this.documentStates.setEditable(false);
 			}
 		}
 		super.updateUI();

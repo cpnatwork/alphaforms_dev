@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -50,7 +51,7 @@ public class WidgetTemplateSignal extends Signal {
 	 * @return the widget
 	 */
 	public FormWidget getWidget() {
-		return widget;
+		return this.widget;
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class WidgetTemplateSignal extends Signal {
 	 * @param widget
 	 *            the new widget
 	 */
-	public void setWidget(FormWidget widget) {
+	public void setWidget(final FormWidget widget) {
 		this.widget = widget;
 	}
 
@@ -69,7 +70,7 @@ public class WidgetTemplateSignal extends Signal {
 	 * @return the template
 	 */
 	public WidgetTemplate getTemplate() {
-		return template;
+		return this.template;
 	}
 
 	/**
@@ -78,7 +79,7 @@ public class WidgetTemplateSignal extends Signal {
 	 * @param template
 	 *            the new template
 	 */
-	public void setTemplate(WidgetTemplate template) {
+	public void setTemplate(final WidgetTemplate template) {
 		this.template = template;
 	}
 
@@ -88,7 +89,7 @@ public class WidgetTemplateSignal extends Signal {
 	 * @return the action
 	 */
 	public int getAction() {
-		return action;
+		return this.action;
 	}
 
 	/**
@@ -97,7 +98,7 @@ public class WidgetTemplateSignal extends Signal {
 	 * @param action
 	 *            the new action
 	 */
-	public void setAction(int action) {
+	public void setAction(final int action) {
 		this.action = action;
 	}
 

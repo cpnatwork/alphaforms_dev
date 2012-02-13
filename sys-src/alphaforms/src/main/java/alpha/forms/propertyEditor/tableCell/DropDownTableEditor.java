@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -27,12 +28,17 @@ import javax.swing.JComboBox;
 public class DropDownTableEditor extends DefaultCellEditor {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8137328851405723023L;
+
+	/**
 	 * Instantiates a new drop down table editor.
 	 * 
 	 * @param values
 	 *            the values
 	 */
-	public DropDownTableEditor(Object[] values) {
+	public DropDownTableEditor(final Object[] values) {
 		super(new JComboBox(values));
 	}
 }

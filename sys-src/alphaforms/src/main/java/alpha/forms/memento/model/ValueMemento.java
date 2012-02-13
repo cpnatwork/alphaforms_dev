@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -38,7 +39,7 @@ public class ValueMemento implements XMLSerializeableMemento {
 	 * @return the value
 	 */
 	public Object getValue() {
-		return value;
+		return this.value;
 	}
 
 	/**
@@ -47,7 +48,7 @@ public class ValueMemento implements XMLSerializeableMemento {
 	 * @param value
 	 *            the new value
 	 */
-	public void setValue(Object value) {
+	public void setValue(final Object value) {
 		this.value = value;
 	}
 
@@ -57,7 +58,7 @@ public class ValueMemento implements XMLSerializeableMemento {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class ValueMemento implements XMLSerializeableMemento {
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -77,8 +78,8 @@ public class ValueMemento implements XMLSerializeableMemento {
 	 */
 	@Override
 	public String getXML() {
-		return new XMLFragment(value).wrapIn("vmemento")
-				.withAttribute("for", name).toString();
+		return new XMLFragment(this.value).wrapIn("vmemento")
+				.withAttribute("for", this.name).toString();
 	}
 
 	/*
@@ -89,9 +90,9 @@ public class ValueMemento implements XMLSerializeableMemento {
 	 * .util.xml.XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
-		name = xml.getAttribute("for");
-		value = xml.getTextContent();
+	public void loadXML(final XMLDocumentSection xml) {
+		this.name = xml.getAttribute("for");
+		this.value = xml.getTextContent();
 	}
 
 }

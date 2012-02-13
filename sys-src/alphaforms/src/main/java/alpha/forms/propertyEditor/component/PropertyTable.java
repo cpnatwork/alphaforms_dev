@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -60,10 +61,10 @@ public class PropertyTable extends JTable {
 	 * @param tm
 	 *            the tm
 	 */
-	public PropertyTable(PropertyEditorPanel propertyEditorPanel,
-			PropertyEditorModel tm) {
+	public PropertyTable(final PropertyEditorPanel propertyEditorPanel,
+			final PropertyEditorModel tm) {
 		super(tm);
-		editorModel = tm;
+		this.editorModel = tm;
 		this.propertyEditorPanel = propertyEditorPanel;
 	}
 
@@ -73,24 +74,23 @@ public class PropertyTable extends JTable {
 	 * @see javax.swing.JTable#getCellEditor(int, int)
 	 */
 	@Override
-	public TableCellEditor getCellEditor(int row, int column) {
-		WidgetProperty p = editorModel.getWidgetPropertyForRow(row);
-		if (column > 0 && p.getType().isEnum()) {
+	public TableCellEditor getCellEditor(final int row, final int column) {
+		final WidgetProperty p = this.editorModel.getWidgetPropertyForRow(row);
+		if ((column > 0) && p.getType().isEnum())
 			return new DropDownTableEditor(p.getType().getEnumConstants());
-		} else if (column > 0 && p.getType().equals(boolean.class)) {
+		else if ((column > 0) && p.getType().equals(boolean.class))
 			return new CheckboxTableEditor();
-		} else if (column > 0 && p.getType().equals(List.class)) {
+		else if ((column > 0) && p.getType().equals(List.class))
 			return new ListTableEditor(this.editorModel,
 					(List<Object>) p.getValue(), p.getGenericType());
-		} else if (column > 0 && p.getType().equals(Event.class)) {
+		else if ((column > 0) && p.getType().equals(Event.class))
 			return new EventTableEditor(this.editorModel,
 					(DefaultEvent) p.getValue());
-		} else if (column > 0 && p.getType().equals(ValidatorGroup.class)) {
+		else if ((column > 0) && p.getType().equals(ValidatorGroup.class))
 			return new ValidationTableEditor(this.editorModel,
 					(ValidatorGroup) p.getValue());
-		} else {
+		else
 			return super.getCellEditor(row, column);
-		}
 	}
 
 	/*
@@ -99,24 +99,23 @@ public class PropertyTable extends JTable {
 	 * @see javax.swing.JTable#getCellRenderer(int, int)
 	 */
 	@Override
-	public TableCellRenderer getCellRenderer(int row, int column) {
-		WidgetProperty p = editorModel.getWidgetPropertyForRow(row);
-		if (column > 0 && p.getType().isEnum()) {
+	public TableCellRenderer getCellRenderer(final int row, final int column) {
+		final WidgetProperty p = this.editorModel.getWidgetPropertyForRow(row);
+		if ((column > 0) && p.getType().isEnum())
 			return new DropDownTableRenderer(p.getType().getEnumConstants());
-		} else if (column > 0 && p.getType().equals(boolean.class)) {
+		else if ((column > 0) && p.getType().equals(boolean.class))
 			return new CheckboxTableRenderer();
-		} else if (column > 0 && p.getType().equals(List.class)) {
+		else if ((column > 0) && p.getType().equals(List.class))
 			return new ListTableEditor(this.editorModel,
 					(List<Object>) p.getValue(), p.getGenericType());
-		} else if (column > 0 && p.getType().equals(Event.class)) {
+		else if ((column > 0) && p.getType().equals(Event.class))
 			return new EventTableEditor(this.editorModel,
 					(DefaultEvent) p.getValue());
-		} else if (column > 0 && p.getType().equals(ValidatorGroup.class)) {
+		else if ((column > 0) && p.getType().equals(ValidatorGroup.class))
 			return new ValidationTableEditor(this.editorModel,
 					(ValidatorGroup) p.getValue());
-		} else {
+		else
 			return super.getCellRenderer(row, column);
-		}
 	}
 
 }

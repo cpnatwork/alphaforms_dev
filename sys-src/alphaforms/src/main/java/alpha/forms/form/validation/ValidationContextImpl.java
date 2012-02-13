@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -27,10 +28,10 @@ import alpha.forms.widget.model.FormWidget;
 public class ValidationContextImpl implements ValidationContext {
 
 	/** The form. */
-	private AlphaForm form;
+	private final AlphaForm form;
 
 	/** The widget. */
-	private FormWidget widget;
+	private final FormWidget widget;
 
 	/**
 	 * Instantiates a new validation context impl.
@@ -40,7 +41,7 @@ public class ValidationContextImpl implements ValidationContext {
 	 * @param w
 	 *            the w
 	 */
-	public ValidationContextImpl(AlphaForm form, FormWidget w) {
+	public ValidationContextImpl(final AlphaForm form, final FormWidget w) {
 		this.form = form;
 		this.widget = w;
 	}
@@ -52,7 +53,7 @@ public class ValidationContextImpl implements ValidationContext {
 	 */
 	@Override
 	public AlphaForm getForm() {
-		return form;
+		return this.form;
 	}
 
 	/*
@@ -62,8 +63,8 @@ public class ValidationContextImpl implements ValidationContext {
 	 * alpha.forms.form.validation.ValidationContext#getWidget(java.lang.String)
 	 */
 	@Override
-	public FormWidget getWidget(String name) {
-		return (form == null) ? null : form.getWidget(name);
+	public FormWidget getWidget(final String name) {
+		return (this.form == null) ? null : this.form.getWidget(name);
 	}
 
 	/*
@@ -73,7 +74,7 @@ public class ValidationContextImpl implements ValidationContext {
 	 */
 	@Override
 	public String getFormState() {
-		return (form == null) ? null : form.getActiveDocumentState();
+		return (this.form == null) ? null : this.form.getActiveDocumentState();
 	}
 
 	/*
@@ -83,7 +84,7 @@ public class ValidationContextImpl implements ValidationContext {
 	 */
 	@Override
 	public FormWidget getWidget() {
-		return widget;
+		return this.widget;
 	}
 
 }

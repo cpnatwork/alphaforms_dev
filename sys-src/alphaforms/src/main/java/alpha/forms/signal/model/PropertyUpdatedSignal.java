@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -37,7 +38,7 @@ public class PropertyUpdatedSignal extends Signal {
 	 * @return the subject
 	 */
 	public FormWidget getSubject() {
-		return subject;
+		return this.subject;
 	}
 
 	/**
@@ -46,7 +47,7 @@ public class PropertyUpdatedSignal extends Signal {
 	 * @param subject
 	 *            the new subject
 	 */
-	public void setSubject(FormWidget subject) {
+	public void setSubject(final FormWidget subject) {
 		this.subject = subject;
 	}
 
@@ -56,7 +57,7 @@ public class PropertyUpdatedSignal extends Signal {
 	 * @return the property name
 	 */
 	public String getPropertyName() {
-		return propertyName;
+		return this.propertyName;
 	}
 
 	/**
@@ -65,7 +66,7 @@ public class PropertyUpdatedSignal extends Signal {
 	 * @param propertyName
 	 *            the new property name
 	 */
-	public void setPropertyName(String propertyName) {
+	public void setPropertyName(final String propertyName) {
 		this.propertyName = propertyName;
 	}
 

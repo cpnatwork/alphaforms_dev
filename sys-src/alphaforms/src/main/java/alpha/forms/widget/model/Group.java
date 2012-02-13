@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -56,12 +57,12 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * @param name
 	 *            the name
 	 */
-	public Group(String name) {
+	public Group(final String name) {
 		super(name);
-		title = name;
-		width = 150;
-		height = 60;
-		ui = new GroupUI(this);
+		this.title = name;
+		this.width = 150;
+		this.height = 60;
+		this.ui = new GroupUI(this);
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * @return the title
 	 */
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	/**
@@ -79,7 +80,7 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * @param title
 	 *            the new title
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -89,7 +90,7 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * @return the border
 	 */
 	public BorderType getBorder() {
-		return border;
+		return this.border;
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * @param border
 	 *            the new border
 	 */
-	public void setBorder(BorderType border) {
+	public void setBorder(final BorderType border) {
 		this.border = border;
 	}
 
@@ -139,19 +140,19 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 */
 	@Override
 	public WidgetMemento createWidgetMemento() {
-		WidgetMemento m = new GroupWidgetMemento();
-		m.setName(name);
+		final WidgetMemento m = new GroupWidgetMemento();
+		m.setName(this.name);
 		m.setType(this.getClass());
-		m.setValidators(validators.createMemento());
-		m.addAttribute("title", title);
-		m.addAttribute("border", border);
-		m.addAttribute("x", x);
-		m.addAttribute("y", y);
-		m.addAttribute("width", width);
-		m.addAttribute("height", height);
-		m.addAttribute("ui", ui.getClass().getName());
-		List<FormWidget> copyChildList = new ArrayList<FormWidget>();
-		for (FormWidget w : childWidgets) {
+		m.setValidators(this.validators.createMemento());
+		m.addAttribute("title", this.title);
+		m.addAttribute("border", this.border);
+		m.addAttribute("x", this.x);
+		m.addAttribute("y", this.y);
+		m.addAttribute("width", this.width);
+		m.addAttribute("height", this.height);
+		m.addAttribute("ui", this.ui.getClass().getName());
+		final List<FormWidget> copyChildList = new ArrayList<FormWidget>();
+		for (final FormWidget w : this.childWidgets) {
 			copyChildList.add(WidgetFactory.cloneWidget(w));
 		}
 		m.setValue(copyChildList);
@@ -166,28 +167,29 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * .memento.model.WidgetMemento)
 	 */
 	@Override
-	public void setWidgetMemento(WidgetMemento m) {
+	public void setWidgetMemento(final WidgetMemento m) {
 		if (m != null) {
-			Iterator<FormWidget> i = childWidgets.iterator();
+			final Iterator<FormWidget> i = this.childWidgets.iterator();
 			while (i.hasNext()) {
-				FormWidget w = i.next();
+				final FormWidget w = i.next();
 				i.remove();
-				removeChild(w);
+				this.removeChild(w);
 			}
-			name = m.getName();
-			for (FormWidget w : (List<FormWidget>) m.getValue()) {
-				addChild(WidgetFactory.cloneWidget(w));
+			this.name = m.getName();
+			for (final FormWidget w : (List<FormWidget>) m.getValue()) {
+				this.addChild(WidgetFactory.cloneWidget(w));
 			}
-			Map<String, Object> attributes = m.getAttributes();
-			title = attributes.get("title").toString();
-			border = BorderType.valueOf(attributes.get("border").toString());
-			x = Integer.parseInt(attributes.get("x").toString());
-			y = Integer.parseInt(attributes.get("y").toString());
-			width = Integer.parseInt(attributes.get("width").toString());
-			height = Integer.parseInt(attributes.get("height").toString());
-			setSize(width, height);
-			setX(x);
-			setY(y);
+			final Map<String, Object> attributes = m.getAttributes();
+			this.title = attributes.get("title").toString();
+			this.border = BorderType.valueOf(attributes.get("border")
+					.toString());
+			this.x = Integer.parseInt(attributes.get("x").toString());
+			this.y = Integer.parseInt(attributes.get("y").toString());
+			this.width = Integer.parseInt(attributes.get("width").toString());
+			this.height = Integer.parseInt(attributes.get("height").toString());
+			this.setSize(this.width, this.height);
+			this.setX(this.x);
+			this.setY(this.y);
 		}
 	}
 
@@ -199,9 +201,9 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * .forms.widget.model.FormWidget)
 	 */
 	@Override
-	public void addChild(FormWidget w) {
+	public void addChild(final FormWidget w) {
 		super.addChild(w);
-		((GroupUI) ui).add(w);
+		((GroupUI) this.ui).add(w);
 	}
 
 	/*
@@ -212,10 +214,10 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * (alpha.forms.widget.model.FormWidget)
 	 */
 	@Override
-	public void removeChild(FormWidget w) {
-		((GroupUI) ui).remove(w);
+	public void removeChild(final FormWidget w) {
+		((GroupUI) this.ui).remove(w);
 		super.removeChild(w);
-		ui.doLayout();
+		this.ui.doLayout();
 	}
 
 	/*
@@ -227,7 +229,7 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 */
 	@Override
 	public DynamicAttributeMemento createDynamicAttributeMemento(
-			WidgetMemento ref) {
+			final WidgetMemento ref) {
 		return null;
 	}
 
@@ -239,7 +241,7 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * .memento.model.DynamicAttributeMemento)
 	 */
 	@Override
-	public void setDynamicMemento(DynamicAttributeMemento m) {
+	public void setDynamicMemento(final DynamicAttributeMemento m) {
 		// TODO Auto-generated method stub
 
 	}
@@ -251,10 +253,10 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 */
 	@Override
 	public ValueMemento createValueMemento() {
-		ValueMemento m = new GroupValueMemento(this);
-		m.setName(name);
-		List<FormWidget> clonedWidgets = new ArrayList<FormWidget>();
-		for (FormWidget w : childWidgets) {
+		final ValueMemento m = new GroupValueMemento(this);
+		m.setName(this.name);
+		final List<FormWidget> clonedWidgets = new ArrayList<FormWidget>();
+		for (final FormWidget w : this.childWidgets) {
 			clonedWidgets.add(WidgetFactory.cloneWidget(w));
 		}
 		m.setValue(new ArrayList<FormWidget>(clonedWidgets));
@@ -269,7 +271,7 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 * .memento.model.ValueMemento)
 	 */
 	@Override
-	public void setValueMemento(ValueMemento m) {
+	public void setValueMemento(final ValueMemento m) {
 
 	}
 
@@ -280,8 +282,8 @@ public class Group extends AbstractContainerWidget implements MementoOriginator 
 	 */
 	@Override
 	public Set<ValidationFailure> validate() {
-		Set<ValidationFailure> failures = new HashSet<ValidationFailure>();
-		for (FormWidget w : childWidgets) {
+		final Set<ValidationFailure> failures = new HashSet<ValidationFailure>();
+		for (final FormWidget w : this.childWidgets) {
 			failures.addAll(w.validate());
 		}
 		return failures;

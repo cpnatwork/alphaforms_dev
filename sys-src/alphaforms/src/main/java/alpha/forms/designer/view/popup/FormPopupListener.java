@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -34,7 +35,7 @@ import java.awt.event.MouseEvent;
 public class FormPopupListener extends MouseAdapter {
 
 	/** The menu. */
-	private FormPopupMenu menu;
+	private final FormPopupMenu menu;
 
 	/**
 	 * Instantiates a new form popup listener.
@@ -42,7 +43,7 @@ public class FormPopupListener extends MouseAdapter {
 	 * @param menu
 	 *            the menu
 	 */
-	public FormPopupListener(FormPopupMenu menu) {
+	public FormPopupListener(final FormPopupMenu menu) {
 		this.menu = menu;
 	}
 
@@ -52,8 +53,8 @@ public class FormPopupListener extends MouseAdapter {
 	 * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mousePressed(MouseEvent ev) {
-		showMenu(ev);
+	public void mousePressed(final MouseEvent ev) {
+		this.showMenu(ev);
 	}
 
 	/*
@@ -62,8 +63,8 @@ public class FormPopupListener extends MouseAdapter {
 	 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseReleased(MouseEvent ev) {
-		showMenu(ev);
+	public void mouseReleased(final MouseEvent ev) {
+		this.showMenu(ev);
 	}
 
 	/**
@@ -72,9 +73,9 @@ public class FormPopupListener extends MouseAdapter {
 	 * @param ev
 	 *            the ev
 	 */
-	private void showMenu(MouseEvent ev) {
+	private void showMenu(final MouseEvent ev) {
 		if (ev.isPopupTrigger()) {
-			menu.show(ev.getComponent(), ev.getX(), ev.getY());
+			this.menu.show(ev.getComponent(), ev.getX(), ev.getY());
 		}
 	}
 }

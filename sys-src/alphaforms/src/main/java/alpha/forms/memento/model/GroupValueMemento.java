@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -37,7 +38,7 @@ public class GroupValueMemento extends ContainerValueMemento implements
 	 * @param parent
 	 *            the parent
 	 */
-	public GroupValueMemento(Group parent) {
+	public GroupValueMemento(final Group parent) {
 		this.parent = parent;
 	}
 
@@ -48,15 +49,15 @@ public class GroupValueMemento extends ContainerValueMemento implements
 	 */
 	@Override
 	public String getXML() {
-		List<FormWidget> childList = (List<FormWidget>) value;
-		StringBuilder sb = new StringBuilder();
-		for (FormWidget w : childList) {
-			ValueMemento m = ((MementoOriginator) w).createValueMemento();
+		final List<FormWidget> childList = (List<FormWidget>) this.value;
+		final StringBuilder sb = new StringBuilder();
+		for (final FormWidget w : childList) {
+			final ValueMemento m = ((MementoOriginator) w).createValueMemento();
 			sb.append(m.getXML());
 		}
 		return new XMLFragment(
 				new XMLFragment(sb.toString()).wrapIn("children"))
-				.wrapIn("vmemento").withAttribute("for", name).toString();
+				.wrapIn("vmemento").withAttribute("for", this.name).toString();
 	}
 
 	/*
@@ -66,16 +67,16 @@ public class GroupValueMemento extends ContainerValueMemento implements
 	 * XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
-		if (parent == null)
+	public void loadXML(final XMLDocumentSection xml) {
+		if (this.parent == null)
 			return;
-		List<XMLDocumentSection> valueSectionList = xml
+		final List<XMLDocumentSection> valueSectionList = xml
 				.getDocumentSections("children/vmemento");
-		for (XMLDocumentSection widgetSection : valueSectionList) {
-			String widgetName = widgetSection.getAttribute("for");
-			FormWidget w = parent.getWidgetByName(widgetName);
+		for (final XMLDocumentSection widgetSection : valueSectionList) {
+			final String widgetName = widgetSection.getAttribute("for");
+			final FormWidget w = this.parent.getWidgetByName(widgetName);
 
-			ValueMemento m = ((MementoOriginator) w).createValueMemento();
+			final ValueMemento m = ((MementoOriginator) w).createValueMemento();
 			m.loadXML(widgetSection);
 
 			((MementoOriginator) w).setValueMemento(m);

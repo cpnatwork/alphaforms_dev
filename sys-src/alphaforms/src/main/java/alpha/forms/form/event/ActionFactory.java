@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -41,9 +42,10 @@ public class ActionFactory {
 	 * @return single instance of ActionFactory
 	 */
 	public static ActionFactory getInstance() {
-		if (factory == null)
-			factory = new ActionFactory();
-		return factory;
+		if (ActionFactory.factory == null) {
+			ActionFactory.factory = new ActionFactory();
+		}
+		return ActionFactory.factory;
 	}
 
 	/**
@@ -58,7 +60,7 @@ public class ActionFactory {
 	 * @return the scripted action
 	 */
 	public ScriptedAction createScriptedAction() {
-		return new ScriptedAction(getScriptEngine());
+		return new ScriptedAction(this.getScriptEngine());
 	}
 
 	/**
@@ -67,9 +69,9 @@ public class ActionFactory {
 	 * @return the script engine
 	 */
 	public ScriptEngine getScriptEngine() {
-		if (engine == null) {
-			engine = sgm.getEngineByName("javascript");
+		if (this.engine == null) {
+			this.engine = ActionFactory.sgm.getEngineByName("javascript");
 		}
-		return engine;
+		return this.engine;
 	}
 }

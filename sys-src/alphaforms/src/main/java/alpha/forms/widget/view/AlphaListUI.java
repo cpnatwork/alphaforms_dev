@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -65,10 +66,10 @@ public class AlphaListUI extends FormWidgetUI {
 	 * @param model
 	 *            the model
 	 */
-	public AlphaListUI(AlphaList model) {
+	public AlphaListUI(final AlphaList model) {
 		super(model);
 		this.model = model;
-		compose();
+		this.compose();
 	}
 
 	/*
@@ -79,22 +80,22 @@ public class AlphaListUI extends FormWidgetUI {
 	@Override
 	public void doLayout() {
 		super.doLayout();
-		Dimension d = model.getSize();
+		final Dimension d = this.model.getSize();
 		super.setSize(d);
-		this.remove(list);
-		if (model.isMultipleSelection()) {
-			list = new JList(model.getItems().toArray());
-			JList jlist = (JList) list;
+		this.remove(this.list);
+		if (this.model.isMultipleSelection()) {
+			this.list = new JList(this.model.getItems().toArray());
+			final JList jlist = (JList) this.list;
 			jlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-			List<Integer> selectedItems = new ArrayList<Integer>();
-			for (int i = 0; i < model.getItems().size(); i++) {
-				if (model.getItems().get(i).isSelected()) {
+			final List<Integer> selectedItems = new ArrayList<Integer>();
+			for (int i = 0; i < this.model.getItems().size(); i++) {
+				if (this.model.getItems().get(i).isSelected()) {
 					selectedItems.add(i);
 				}
 			}
 
-			int[] selectedIndices = new int[selectedItems.size()];
+			final int[] selectedIndices = new int[selectedItems.size()];
 			for (int i = 0; i < selectedItems.size(); i++) {
 				selectedIndices[i] = selectedItems.get(i);
 			}
@@ -104,67 +105,74 @@ public class AlphaListUI extends FormWidgetUI {
 					new ListSelectionListener() {
 
 						@Override
-						public void valueChanged(ListSelectionEvent ev) {
-							for (ListItem i : model.getItems()) {
+						public void valueChanged(final ListSelectionEvent ev) {
+							for (final ListItem i : AlphaListUI.this.model
+									.getItems()) {
 								i.setSelected(false);
 							}
-							for (int i : ((JList) list).getSelectedIndices()) {
-								model.getItems().get(i).setSelected(true);
+							for (final int i : ((JList) AlphaListUI.this.list)
+									.getSelectedIndices()) {
+								AlphaListUI.this.model.getItems().get(i)
+										.setSelected(true);
 							}
-							model.getOnSelectionChanged().fire();
+							AlphaListUI.this.model.getOnSelectionChanged()
+									.fire();
 						}
 
 					});
 		} else {
-			list = new JComboBox(new DefaultComboBoxModel(model.getItems()
-					.toArray()));
-			if (model.isEditable()) {
-				((JComboBox) list).setEditable(true);
+			this.list = new JComboBox(new DefaultComboBoxModel(this.model
+					.getItems().toArray()));
+			if (this.model.isEditable()) {
+				((JComboBox) this.list).setEditable(true);
 			}
-			for (ListItem item : model.getItems()) {
+			for (final ListItem item : this.model.getItems()) {
 				if (item.isSelected()) {
-					((JComboBox) list).setSelectedItem(item);
+					((JComboBox) this.list).setSelectedItem(item);
 					break;
 				}
 			}
 
-			((JComboBox) list).addActionListener(new ActionListener() {
+			((JComboBox) this.list).addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent ev) {
-					int index = ((JComboBox) list).getSelectedIndex();
+				public void actionPerformed(final ActionEvent ev) {
+					final int index = ((JComboBox) AlphaListUI.this.list)
+							.getSelectedIndex();
 					int j = 0;
-					for (ListItem item : model.getItems()) {
+					for (final ListItem item : AlphaListUI.this.model
+							.getItems()) {
 						item.setSelected(j == index);
 						j++;
 					}
-					model.getOnSelectionChanged().fire();
+					AlphaListUI.this.model.getOnSelectionChanged().fire();
 				}
 			});
 		}
-		this.add(list);
-		if (label != null
-				&& this.model.getShowLabel() == WidgetLabelPosition.LEFT) {
-			label.setText(model.getLabel());
-			Dimension dl = label.getPreferredSize();
-			label.setSize(dl);
-			label.setLocation(0, d.height / 2 - dl.height / 2);
-			list.setLocation(dl.width + hgap, 0);
-			list.setSize(d.width - hgap - dl.width, d.height);
-		} else if (label != null
-				&& this.model.getShowLabel() == WidgetLabelPosition.RIGHT) {
-			label.setText(model.getLabel());
-			Dimension dl = label.getPreferredSize();
-			label.setSize(dl);
-			label.setLocation(d.width - dl.width, d.height / 2 - dl.height / 2);
-			list.setLocation(0, 0);
-			list.setSize(d.width - hgap - dl.width, d.height);
+		this.add(this.list);
+		if ((this.label != null)
+				&& (this.model.getShowLabel() == WidgetLabelPosition.LEFT)) {
+			this.label.setText(this.model.getLabel());
+			final Dimension dl = this.label.getPreferredSize();
+			this.label.setSize(dl);
+			this.label.setLocation(0, (d.height / 2) - (dl.height / 2));
+			this.list.setLocation(dl.width + this.hgap, 0);
+			this.list.setSize(d.width - this.hgap - dl.width, d.height);
+		} else if ((this.label != null)
+				&& (this.model.getShowLabel() == WidgetLabelPosition.RIGHT)) {
+			this.label.setText(this.model.getLabel());
+			final Dimension dl = this.label.getPreferredSize();
+			this.label.setSize(dl);
+			this.label.setLocation(d.width - dl.width, (d.height / 2)
+					- (dl.height / 2));
+			this.list.setLocation(0, 0);
+			this.list.setSize(d.width - this.hgap - dl.width, d.height);
 		} else {
-			list.setLocation(0, 0);
-			list.setSize(d.width, d.height);
-			label.setSize(0, 0);
+			this.list.setLocation(0, 0);
+			this.list.setSize(d.width, d.height);
+			this.label.setSize(0, 0);
 		}
-		list.doLayout();
-		this.setVisible(model.isVisible());
+		this.list.doLayout();
+		this.setVisible(this.model.isVisible());
 	}
 
 	/*
@@ -174,14 +182,13 @@ public class AlphaListUI extends FormWidgetUI {
 	 */
 	@Override
 	public Rectangle getSubselection() {
-		if (model.getShowLabel() == WidgetLabelPosition.LEFT
-				|| model.getShowLabel() == WidgetLabelPosition.RIGHT) {
-			Rectangle r = list.getBounds();
-			r.translate(getLocation().x, getLocation().y);
+		if ((this.model.getShowLabel() == WidgetLabelPosition.LEFT)
+				|| (this.model.getShowLabel() == WidgetLabelPosition.RIGHT)) {
+			final Rectangle r = this.list.getBounds();
+			r.translate(this.getLocation().x, this.getLocation().y);
 			return r;
-		} else {
+		} else
 			return null;
-		}
 	}
 
 	/*
@@ -190,9 +197,11 @@ public class AlphaListUI extends FormWidgetUI {
 	 * @see alpha.forms.widget.view.FormWidgetUI#isSubselectionResizable(int)
 	 */
 	@Override
-	public boolean isSubselectionResizable(int direction) {
-		return (direction == SelectionState.WEST && model.getShowLabel() == WidgetLabelPosition.LEFT)
-				|| (direction == SelectionState.EAST && model.getShowLabel() == WidgetLabelPosition.RIGHT);
+	public boolean isSubselectionResizable(final int direction) {
+		return ((direction == SelectionState.WEST) && (this.model
+				.getShowLabel() == WidgetLabelPosition.LEFT))
+				|| ((direction == SelectionState.EAST) && (this.model
+						.getShowLabel() == WidgetLabelPosition.RIGHT));
 	}
 
 	/*
@@ -202,23 +211,23 @@ public class AlphaListUI extends FormWidgetUI {
 	 * int)
 	 */
 	@Override
-	public void updateSubselectionSize(int delta, int direction) {
-		if (direction == SelectionState.WEST
-				&& model.getShowLabel() == WidgetLabelPosition.LEFT) {
-			int tmpgap = hgap - delta;
-			if (tmpgap >= 5
-					&& tmpgap + label.getWidth() < model.getSize().width) {
-				hgap = tmpgap;
+	public void updateSubselectionSize(final int delta, final int direction) {
+		if ((direction == SelectionState.WEST)
+				&& (this.model.getShowLabel() == WidgetLabelPosition.LEFT)) {
+			final int tmpgap = this.hgap - delta;
+			if ((tmpgap >= 5)
+					&& ((tmpgap + this.label.getWidth()) < this.model.getSize().width)) {
+				this.hgap = tmpgap;
 			}
-		} else if (direction == SelectionState.EAST
-				&& model.getShowLabel() == WidgetLabelPosition.RIGHT) {
-			int tmpgap = hgap - (delta - list.getWidth());
-			if (tmpgap >= 5
-					&& tmpgap + label.getWidth() < model.getSize().width) {
-				hgap = tmpgap;
+		} else if ((direction == SelectionState.EAST)
+				&& (this.model.getShowLabel() == WidgetLabelPosition.RIGHT)) {
+			final int tmpgap = this.hgap - (delta - this.list.getWidth());
+			if ((tmpgap >= 5)
+					&& ((tmpgap + this.label.getWidth()) < this.model.getSize().width)) {
+				this.hgap = tmpgap;
 			}
 		}
-		doLayout();
+		this.doLayout();
 	}
 
 	/*
@@ -229,21 +238,21 @@ public class AlphaListUI extends FormWidgetUI {
 	@Override
 	protected void compose() {
 		super.compose();
-		super.setSize(model.getSize());
+		super.setSize(this.model.getSize());
 		this.setLayout(null);
-		if (model.isMultipleSelection()) {
-			list = new JList(model.getItems().toArray());
-			JList jlist = (JList) list;
+		if (this.model.isMultipleSelection()) {
+			this.list = new JList(this.model.getItems().toArray());
+			final JList jlist = (JList) this.list;
 			jlist.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-			List<Integer> selectedItems = new ArrayList<Integer>();
-			for (int i = 0; i < model.getItems().size(); i++) {
-				if (model.getItems().get(i).isSelected()) {
+			final List<Integer> selectedItems = new ArrayList<Integer>();
+			for (int i = 0; i < this.model.getItems().size(); i++) {
+				if (this.model.getItems().get(i).isSelected()) {
 					selectedItems.add(i);
 				}
 			}
 
-			int[] selectedIndices = new int[selectedItems.size()];
+			final int[] selectedIndices = new int[selectedItems.size()];
 			for (int i = 0; i < selectedItems.size(); i++) {
 				selectedIndices[i] = selectedItems.get(i);
 			}
@@ -253,72 +262,80 @@ public class AlphaListUI extends FormWidgetUI {
 					new ListSelectionListener() {
 
 						@Override
-						public void valueChanged(ListSelectionEvent ev) {
-							for (ListItem i : model.getItems()) {
+						public void valueChanged(final ListSelectionEvent ev) {
+							for (final ListItem i : AlphaListUI.this.model
+									.getItems()) {
 								i.setSelected(false);
 							}
-							for (int i : ((JList) list).getSelectedIndices()) {
-								model.getItems().get(i).setSelected(true);
+							for (final int i : ((JList) AlphaListUI.this.list)
+									.getSelectedIndices()) {
+								AlphaListUI.this.model.getItems().get(i)
+										.setSelected(true);
 							}
-							model.getOnSelectionChanged().fire();
+							AlphaListUI.this.model.getOnSelectionChanged()
+									.fire();
 						}
 
 					});
 		} else {
-			list = new JComboBox(new DefaultComboBoxModel(model.getItems()
-					.toArray()));
-			if (model.isEditable()) {
-				((JComboBox) list).setEditable(true);
+			this.list = new JComboBox(new DefaultComboBoxModel(this.model
+					.getItems().toArray()));
+			if (this.model.isEditable()) {
+				((JComboBox) this.list).setEditable(true);
 			}
-			((JComboBox) list).addActionListener(new ActionListener() {
+			((JComboBox) this.list).addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent ev) {
-					int index = ((JComboBox) list).getSelectedIndex();
+				public void actionPerformed(final ActionEvent ev) {
+					final int index = ((JComboBox) AlphaListUI.this.list)
+							.getSelectedIndex();
 					int j = 0;
-					for (ListItem item : model.getItems()) {
+					for (final ListItem item : AlphaListUI.this.model
+							.getItems()) {
 						item.setSelected(j == index);
 						j++;
 					}
-					model.getOnSelectionChanged().fire();
+					AlphaListUI.this.model.getOnSelectionChanged().fire();
 				}
 			});
 		}
-		list.doLayout();
-		list.setOpaque(this.isOpaque());
-		if (model.getShowLabel() == WidgetLabelPosition.LEFT) {
-			label = new JLabel(model.getLabel());
-			Dimension d = label.getPreferredSize();
-			Dimension dt = list.getPreferredSize();
+		this.list.doLayout();
+		this.list.setOpaque(this.isOpaque());
+		if (this.model.getShowLabel() == WidgetLabelPosition.LEFT) {
+			this.label = new JLabel(this.model.getLabel());
+			final Dimension d = this.label.getPreferredSize();
+			final Dimension dt = this.list.getPreferredSize();
 			System.out.println(dt.width);
-			this.add(label);
-			this.add(list);
-			label.setSize(d.width, d.height);
-			label.setLocation(0, dt.height / 2 - d.height / 2);
-			list.setSize(model.getMiniumWidth() - d.width - hgap, dt.height);
-			list.setLocation(d.width + hgap, 0);
-
-			minimumHeight = dt.height;
-			minimumWidth = d.width + hgap + dt.width;
-		} else if (model.getShowLabel() == WidgetLabelPosition.RIGHT) {
-			label = new JLabel(model.getLabel());
-			Dimension d = label.getMinimumSize();
-			Dimension dt = list.getMinimumSize();
-			list.setBounds(0, 0, model.getMiniumWidth() - d.width - hgap,
+			this.add(this.label);
+			this.add(this.list);
+			this.label.setSize(d.width, d.height);
+			this.label.setLocation(0, (dt.height / 2) - (d.height / 2));
+			this.list.setSize(
+					this.model.getMiniumWidth() - d.width - this.hgap,
 					dt.height);
-			label.setBounds(model.getMiniumWidth() + hgap, dt.height / 2
-					- d.height / 2, d.width, d.height);
-			this.add(list);
-			this.add(label);
-			minimumHeight = dt.height;
-			minimumWidth = model.getMiniumWidth();
+			this.list.setLocation(d.width + this.hgap, 0);
+
+			this.minimumHeight = dt.height;
+			this.minimumWidth = d.width + this.hgap + dt.width;
+		} else if (this.model.getShowLabel() == WidgetLabelPosition.RIGHT) {
+			this.label = new JLabel(this.model.getLabel());
+			final Dimension d = this.label.getMinimumSize();
+			final Dimension dt = this.list.getMinimumSize();
+			this.list.setBounds(0, 0, this.model.getMiniumWidth() - d.width
+					- this.hgap, dt.height);
+			this.label.setBounds(this.model.getMiniumWidth() + this.hgap,
+					(dt.height / 2) - (d.height / 2), d.width, d.height);
+			this.add(this.list);
+			this.add(this.label);
+			this.minimumHeight = dt.height;
+			this.minimumWidth = this.model.getMiniumWidth();
 		} else {
-			Dimension dt = list.getMinimumSize();
-			list.setBounds(0, 0, model.getMiniumWidth(), dt.height);
-			this.add(list);
-			minimumHeight = dt.height;
-			minimumWidth = model.getMiniumWidth();
+			final Dimension dt = this.list.getMinimumSize();
+			this.list.setBounds(0, 0, this.model.getMiniumWidth(), dt.height);
+			this.add(this.list);
+			this.minimumHeight = dt.height;
+			this.minimumWidth = this.model.getMiniumWidth();
 		}
-		list.doLayout();
+		this.list.doLayout();
 	}
 
 	/*
@@ -327,9 +344,9 @@ public class AlphaListUI extends FormWidgetUI {
 	 * @see java.awt.Component#setSize(java.awt.Dimension)
 	 */
 	@Override
-	public void setSize(Dimension d) {
+	public void setSize(final Dimension d) {
 		super.setSize(d);
-		doLayout();
+		this.doLayout();
 	}
 
 }

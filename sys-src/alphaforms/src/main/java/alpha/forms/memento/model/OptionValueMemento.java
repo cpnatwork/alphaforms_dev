@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -37,13 +38,13 @@ public class OptionValueMemento extends ValueMemento {
 	 */
 	@Override
 	public String getXML() {
-		StringBuilder out = new StringBuilder();
-		for (OptionItem i : (List<OptionItem>) value) {
+		final StringBuilder out = new StringBuilder();
+		for (final OptionItem i : (List<OptionItem>) this.value) {
 			out.append(new XMLFragment(i.getName()).wrapIn("option")
 					.withAttribute("value", i.isValue()));
 		}
 		return new XMLFragment(new XMLFragment(out).wrapIn("options"))
-				.wrapIn("vmemento").withAttribute("for", name).toString();
+				.wrapIn("vmemento").withAttribute("for", this.name).toString();
 
 	}
 
@@ -54,19 +55,19 @@ public class OptionValueMemento extends ValueMemento {
 	 * XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
+	public void loadXML(final XMLDocumentSection xml) {
 		if (xml != null) {
-			List<OptionItem> optionList = new ArrayList<OptionItem>();
-			List<XMLDocumentSection> xmlOptionList = xml
+			final List<OptionItem> optionList = new ArrayList<OptionItem>();
+			final List<XMLDocumentSection> xmlOptionList = xml
 					.getDocumentSections("options/option");
-			for (XMLDocumentSection xmlOption : xmlOptionList) {
-				OptionItem option = new OptionItem();
+			for (final XMLDocumentSection xmlOption : xmlOptionList) {
+				final OptionItem option = new OptionItem();
 				option.setName(xmlOption.getTextContent());
 				option.setValue(Boolean.parseBoolean(xmlOption
 						.getAttribute("value")));
 				optionList.add(option);
 			}
-			value = optionList;
+			this.value = optionList;
 		}
 	}
 }

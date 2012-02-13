@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -31,11 +32,16 @@ import alpha.forms.form.AlphaForm;
  */
 public class ShrinkToFitAction extends AbstractAction {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7491685835386129998L;
+
 	/** The form. */
-	private AlphaForm form;
+	private final AlphaForm form;
 
 	/** The canvas. */
-	private FormCanvas canvas;
+	private final FormCanvas canvas;
 
 	/**
 	 * Instantiates a new shrink to fit action.
@@ -47,7 +53,8 @@ public class ShrinkToFitAction extends AbstractAction {
 	 * @param canvas
 	 *            the canvas
 	 */
-	public ShrinkToFitAction(String text, AlphaForm form, FormCanvas canvas) {
+	public ShrinkToFitAction(final String text, final AlphaForm form,
+			final FormCanvas canvas) {
 		super(text);
 		this.form = form;
 		this.canvas = canvas;
@@ -60,9 +67,10 @@ public class ShrinkToFitAction extends AbstractAction {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent ev) {
-		form.recalculateDimensions();
-		canvas.setSize(new Dimension(form.getWidth(), form.getHeight()));
+	public void actionPerformed(final ActionEvent ev) {
+		this.form.recalculateDimensions();
+		this.canvas.setSize(new Dimension(this.form.getWidth(), this.form
+				.getHeight()));
 	}
 
 }

@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -60,26 +61,26 @@ public class WidgetPalette extends JPanel {
 	public WidgetPalette() {
 		this.setBorder(BorderFactory.createTitledBorder("Widget Palette"));
 		this.setLayout(new BorderLayout());
-		list = new JList(new WidgetListModel());
-		list.setCellRenderer(new WidgetListCellRenderer());
+		this.list = new JList(new WidgetListModel());
+		this.list.setCellRenderer(new WidgetListCellRenderer());
 		// list.setFixedCellWidth(200);
-		final JScrollPane scroll = new JScrollPane(list);
+		final JScrollPane scroll = new JScrollPane(this.list);
 		this.add(scroll, BorderLayout.CENTER);
 		final InfoPanel info = new InfoPanel();
 		this.add(info, BorderLayout.SOUTH);
-		list.addListSelectionListener(new ListSelectionListener() {
+		this.list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
-			public void valueChanged(ListSelectionEvent ev) {
-				JList list = (JList) ev.getSource();
-				Object obj = list.getSelectedValue();
+			public void valueChanged(final ListSelectionEvent ev) {
+				final JList list = (JList) ev.getSource();
+				final Object obj = list.getSelectedValue();
 				if (obj instanceof FormWidget) {
 					info.updateWith((FormWidget) obj);
 				} else if (obj instanceof WidgetTemplate) {
 					info.updateWith(((WidgetTemplate) obj)
 							.createWidgetFromTemplate());
 				}
-				SelectionChangedSignal s = new SelectionChangedSignal();
+				final SelectionChangedSignal s = new SelectionChangedSignal();
 				s.setSource(this);
 				s.setSelection(null);
 				SignalManager.getInstance().sendSignal(s, "canvas");
@@ -94,28 +95,28 @@ public class WidgetPalette extends JPanel {
 	 * @param widget
 	 *            the widget
 	 */
-	public void registerWidgetClass(Class<? extends FormWidget> widget) {
+	public void registerWidgetClass(final Class<? extends FormWidget> widget) {
 		try {
-			Constructor<? extends FormWidget> c = widget
+			final Constructor<? extends FormWidget> c = widget
 					.getConstructor(String.class);
-			FormWidget fw = c.newInstance(widget.getSimpleName());
-			addWidget(fw);
-		} catch (SecurityException e) {
+			final FormWidget fw = c.newInstance(widget.getSimpleName());
+			this.addWidget(fw);
+		} catch (final SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -127,8 +128,8 @@ public class WidgetPalette extends JPanel {
 	 * @param fw
 	 *            the fw
 	 */
-	protected void addWidget(FormWidget fw) {
-		((WidgetListModel) list.getModel()).addWidget(fw);
+	protected void addWidget(final FormWidget fw) {
+		((WidgetListModel) this.list.getModel()).addWidget(fw);
 
 	}
 
@@ -138,7 +139,7 @@ public class WidgetPalette extends JPanel {
 	 * @return the drag source
 	 */
 	public Component getDragSource() {
-		return list;
+		return this.list;
 	}
 
 	/**
@@ -146,8 +147,12 @@ public class WidgetPalette extends JPanel {
 	 */
 	protected class WidgetListModel extends AbstractListModel {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1606264013267122494L;
 		/** The widgets. */
-		private Vector<FormWidget> widgets = new Vector<FormWidget>();
+		private final Vector<FormWidget> widgets = new Vector<FormWidget>();
 
 		/*
 		 * (non-Javadoc)
@@ -155,8 +160,8 @@ public class WidgetPalette extends JPanel {
 		 * @see javax.swing.ListModel#getElementAt(int)
 		 */
 		@Override
-		public Object getElementAt(int index) {
-			return widgets.get(index);
+		public Object getElementAt(final int index) {
+			return this.widgets.get(index);
 		}
 
 		/*
@@ -166,7 +171,7 @@ public class WidgetPalette extends JPanel {
 		 */
 		@Override
 		public int getSize() {
-			return widgets.size();
+			return this.widgets.size();
 		}
 
 		/**
@@ -175,9 +180,10 @@ public class WidgetPalette extends JPanel {
 		 * @param w
 		 *            the w
 		 */
-		public void addWidget(FormWidget w) {
-			widgets.add(w);
-			this.fireIntervalAdded(this, widgets.indexOf(w), widgets.indexOf(w));
+		public void addWidget(final FormWidget w) {
+			this.widgets.add(w);
+			this.fireIntervalAdded(this, this.widgets.indexOf(w),
+					this.widgets.indexOf(w));
 		}
 
 	}
@@ -198,11 +204,12 @@ public class WidgetPalette extends JPanel {
 		 * .JList, java.lang.Object, int, boolean, boolean)
 		 */
 		@Override
-		public Component getListCellRendererComponent(JList list,
-				Object object, int index, boolean isSelected, boolean hasFocus) {
+		public Component getListCellRendererComponent(final JList list,
+				final Object object, final int index, final boolean isSelected,
+				final boolean hasFocus) {
 
-			FormWidget w = (FormWidget) object;
-			JPanel comp = new JPanel();
+			final FormWidget w = (FormWidget) object;
+			final JPanel comp = new JPanel();
 			comp.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
 			if (isSelected) {
@@ -212,9 +219,10 @@ public class WidgetPalette extends JPanel {
 				comp.setOpaque(true);
 			}
 
-			Image im = w.getUi().getAsImage();
+			final Image im = w.getUi().getAsImage();
 
-			Image im_100w = im.getScaledInstance(150, -1, Image.SCALE_SMOOTH);
+			final Image im_100w = im.getScaledInstance(150, -1,
+					Image.SCALE_SMOOTH);
 			ImageIcon icon = null;
 			if (im_100w.getHeight(null) > 50) {
 				icon = new ImageIcon(im_100w.getScaledInstance(-1, 50,
@@ -222,7 +230,7 @@ public class WidgetPalette extends JPanel {
 			} else {
 				icon = new ImageIcon(im_100w);
 			}
-			JLabel img = new JLabel(icon);
+			final JLabel img = new JLabel(icon);
 			// img.setPreferredSize(new Dimension(icon.getIconWidth(),
 			// icon.getIconHeight()));
 
@@ -243,13 +251,13 @@ public class WidgetPalette extends JPanel {
 		private static final long serialVersionUID = 1L;
 
 		/** The img. */
-		private JLabel img = new JLabel();
+		private final JLabel img = new JLabel();
 
 		/** The title. */
-		private JLabel title = new JLabel();
+		private final JLabel title = new JLabel();
 
 		/** The description. */
-		private JLabel description = new JLabel();
+		private final JLabel description = new JLabel();
 
 		/**
 		 * Instantiates a new info panel.
@@ -257,10 +265,10 @@ public class WidgetPalette extends JPanel {
 		public InfoPanel() {
 			this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 			this.setLayout(new GridLayout(3, 1, 4, 4));
-			title.setFont(title.getFont().deriveFont(15.0f));
-			this.add(title);
-			this.add(img);
-			this.add(description);
+			this.title.setFont(this.title.getFont().deriveFont(15.0f));
+			this.add(this.title);
+			this.add(this.img);
+			this.add(this.description);
 		}
 
 		/**
@@ -269,11 +277,12 @@ public class WidgetPalette extends JPanel {
 		 * @param w
 		 *            the w
 		 */
-		public void updateWith(FormWidget w) {
-			title.setText(w.getName() + " widget");
+		public void updateWith(final FormWidget w) {
+			this.title.setText(w.getName() + " widget");
 
-			Image im = w.getUi().getAsImage();
-			Image im_100w = im.getScaledInstance(100, -1, Image.SCALE_SMOOTH);
+			final Image im = w.getUi().getAsImage();
+			final Image im_100w = im.getScaledInstance(100, -1,
+					Image.SCALE_SMOOTH);
 			ImageIcon icon = null;
 			if (im_100w.getHeight(null) > 50) {
 				icon = new ImageIcon(im_100w.getScaledInstance(-1, 50,
@@ -281,8 +290,8 @@ public class WidgetPalette extends JPanel {
 			} else {
 				icon = new ImageIcon(im_100w);
 			}
-			img.setIcon(icon);
-			description.setText(w.getDescription());
+			this.img.setIcon(icon);
+			this.description.setText(w.getDescription());
 			this.updateUI();
 		}
 

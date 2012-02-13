@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -43,14 +44,15 @@ public class WidgetTemplate {
 	 *            the xml
 	 * @return the widget template
 	 */
-	public static WidgetTemplate createFromXML(XMLDocumentSection xml) {
-		String name = xml.getAttribute("name");
-		XMLDocumentSection widgetSection = xml.getSingleSection("widget");
-		String widgetName = widgetSection.getAttribute("name");
-		String widgetClass = widgetSection.getAttribute("type");
-		FormWidget w = WidgetFactory.createWidget(widgetClass, widgetName);
+	public static WidgetTemplate createFromXML(final XMLDocumentSection xml) {
+		final String name = xml.getAttribute("name");
+		final XMLDocumentSection widgetSection = xml.getSingleSection("widget");
+		final String widgetName = widgetSection.getAttribute("name");
+		final String widgetClass = widgetSection.getAttribute("type");
+		final FormWidget w = WidgetFactory
+				.createWidget(widgetClass, widgetName);
 
-		WidgetMemento widgetPrototypeMemento = ((MementoOriginator) w)
+		final WidgetMemento widgetPrototypeMemento = ((MementoOriginator) w)
 				.createWidgetMemento();
 		widgetPrototypeMemento.loadXML(widgetSection);
 		((MementoOriginator) w).setWidgetMemento(widgetPrototypeMemento);
@@ -65,9 +67,10 @@ public class WidgetTemplate {
 	 * @param templateName
 	 *            the template name
 	 */
-	public WidgetTemplate(FormWidget w, String templateName) {
+	public WidgetTemplate(final FormWidget w, final String templateName) {
 		this.templateName = templateName;
-		widgetPrototypeMemento = ((MementoOriginator) w).createWidgetMemento();
+		this.widgetPrototypeMemento = ((MementoOriginator) w)
+				.createWidgetMemento();
 	}
 
 	/**
@@ -76,7 +79,7 @@ public class WidgetTemplate {
 	 * @return the form widget
 	 */
 	public FormWidget createWidgetFromTemplate() {
-		return createWidgetFromTemplate("temp");
+		return this.createWidgetFromTemplate("temp");
 	}
 
 	/**
@@ -86,10 +89,10 @@ public class WidgetTemplate {
 	 *            the name
 	 * @return the form widget
 	 */
-	public FormWidget createWidgetFromTemplate(String name) {
-		FormWidget w = WidgetFactory.createWidget(widgetPrototypeMemento
-				.getType().getName(), name);
-		((MementoOriginator) w).setWidgetMemento(widgetPrototypeMemento);
+	public FormWidget createWidgetFromTemplate(final String name) {
+		final FormWidget w = WidgetFactory.createWidget(
+				this.widgetPrototypeMemento.getType().getName(), name);
+		((MementoOriginator) w).setWidgetMemento(this.widgetPrototypeMemento);
 		return w;
 	}
 
@@ -99,7 +102,7 @@ public class WidgetTemplate {
 	 * @return the template name
 	 */
 	public String getTemplateName() {
-		return templateName;
+		return this.templateName;
 	}
 
 	/**
@@ -108,7 +111,7 @@ public class WidgetTemplate {
 	 * @param templateName
 	 *            the new template name
 	 */
-	public void setTemplateName(String templateName) {
+	public void setTemplateName(final String templateName) {
 		this.templateName = templateName;
 	}
 
@@ -118,14 +121,15 @@ public class WidgetTemplate {
 	 * @param xml
 	 *            the xml
 	 */
-	public void loadFromXML(XMLDocumentSection xml) {
-		templateName = xml.getAttribute("name");
-		XMLDocumentSection widgetSection = xml.getSingleSection("widget");
-		String widgetName = widgetSection.getAttribute("name");
-		String widgetClass = widgetSection.getAttribute("type");
-		FormWidget w = WidgetFactory.createWidget(widgetClass, widgetName);
+	public void loadFromXML(final XMLDocumentSection xml) {
+		this.templateName = xml.getAttribute("name");
+		final XMLDocumentSection widgetSection = xml.getSingleSection("widget");
+		final String widgetName = widgetSection.getAttribute("name");
+		final String widgetClass = widgetSection.getAttribute("type");
+		final FormWidget w = WidgetFactory
+				.createWidget(widgetClass, widgetName);
 
-		WidgetMemento widgetPrototypeMemento = ((MementoOriginator) w)
+		final WidgetMemento widgetPrototypeMemento = ((MementoOriginator) w)
 				.createWidgetMemento();
 		widgetPrototypeMemento.loadXML(widgetSection);
 
@@ -137,9 +141,9 @@ public class WidgetTemplate {
 	 * @return the string
 	 */
 	public String saveAsXML() {
-		return new XMLFragment(widgetPrototypeMemento.getXML())
-				.wrapIn("widgetTemplate").withAttribute("name", templateName)
-				.toString();
+		return new XMLFragment(this.widgetPrototypeMemento.getXML())
+				.wrapIn("widgetTemplate")
+				.withAttribute("name", this.templateName).toString();
 	}
 
 }

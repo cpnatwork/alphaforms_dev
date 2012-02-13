@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -61,7 +62,7 @@ public class WidgetProperty {
 	 * @return true, if is multiselect invalid
 	 */
 	public boolean isMultiselectInvalid() {
-		return isMultiselectInvalid;
+		return this.isMultiselectInvalid;
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class WidgetProperty {
 	 * @param isMultiselectInvalid
 	 *            the new multiselect invalid
 	 */
-	public void setMultiselectInvalid(boolean isMultiselectInvalid) {
+	public void setMultiselectInvalid(final boolean isMultiselectInvalid) {
 		this.isMultiselectInvalid = isMultiselectInvalid;
 	}
 
@@ -80,7 +81,7 @@ public class WidgetProperty {
 	 * @return the setter
 	 */
 	public Method getSetter() {
-		return setter;
+		return this.setter;
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class WidgetProperty {
 	 * @param setter
 	 *            the new setter
 	 */
-	public void setSetter(Method setter) {
+	public void setSetter(final Method setter) {
 		this.setter = setter;
 	}
 
@@ -99,7 +100,7 @@ public class WidgetProperty {
 	 * @return the getter
 	 */
 	public Method getGetter() {
-		return getter;
+		return this.getter;
 	}
 
 	/**
@@ -108,7 +109,7 @@ public class WidgetProperty {
 	 * @param getter
 	 *            the new getter
 	 */
-	public void setGetter(Method getter) {
+	public void setGetter(final Method getter) {
 		this.getter = getter;
 	}
 
@@ -118,7 +119,7 @@ public class WidgetProperty {
 	 * @return the type
 	 */
 	public Class getType() {
-		return type;
+		return this.type;
 	}
 
 	/**
@@ -127,7 +128,7 @@ public class WidgetProperty {
 	 * @param type
 	 *            the new type
 	 */
-	public void setType(Class type) {
+	public void setType(final Class type) {
 		this.type = type;
 	}
 
@@ -137,7 +138,7 @@ public class WidgetProperty {
 	 * @return true, if is readonly
 	 */
 	public boolean isReadonly() {
-		return readonly;
+		return this.readonly;
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class WidgetProperty {
 	 * @param readonly
 	 *            the new readonly
 	 */
-	public void setReadonly(boolean readonly) {
+	public void setReadonly(final boolean readonly) {
 		this.readonly = readonly;
 	}
 
@@ -156,7 +157,7 @@ public class WidgetProperty {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -165,7 +166,7 @@ public class WidgetProperty {
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -175,7 +176,7 @@ public class WidgetProperty {
 	 * @return the category
 	 */
 	public String getCategory() {
-		return category;
+		return this.category;
 	}
 
 	/**
@@ -184,7 +185,7 @@ public class WidgetProperty {
 	 * @param category
 	 *            the new category
 	 */
-	public void setCategory(String category) {
+	public void setCategory(final String category) {
 		this.category = category;
 	}
 
@@ -194,7 +195,7 @@ public class WidgetProperty {
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	/**
@@ -203,7 +204,7 @@ public class WidgetProperty {
 	 * @param description
 	 *            the new description
 	 */
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -213,7 +214,7 @@ public class WidgetProperty {
 	 * @return the value
 	 */
 	public Object getValue() {
-		return value;
+		return this.value;
 	}
 
 	/**
@@ -222,7 +223,7 @@ public class WidgetProperty {
 	 * @param value
 	 *            the new value
 	 */
-	public void setValue(Object value) {
+	public void setValue(final Object value) {
 		this.value = value;
 	}
 
@@ -232,7 +233,7 @@ public class WidgetProperty {
 	 * @return the generic type
 	 */
 	public Class getGenericType() {
-		return genericType;
+		return this.genericType;
 	}
 
 	/**
@@ -241,7 +242,7 @@ public class WidgetProperty {
 	 * @param genericType
 	 *            the new generic type
 	 */
-	public void setGenericType(Class genericType) {
+	public void setGenericType(final Class genericType) {
 		this.genericType = genericType;
 	}
 

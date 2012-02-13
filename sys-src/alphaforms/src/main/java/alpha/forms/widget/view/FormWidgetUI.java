@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -51,7 +52,7 @@ public abstract class FormWidgetUI extends JPanel {
 	 * @param model
 	 *            the model
 	 */
-	public FormWidgetUI(FormWidget model) {
+	public FormWidgetUI(final FormWidget model) {
 		this.model = model;
 	}
 
@@ -69,8 +70,8 @@ public abstract class FormWidgetUI extends JPanel {
 	 */
 	@Override
 	public Dimension getMinimumSize() {
-		doLayout();
-		return new Dimension(minimumHeight, minimumHeight);
+		this.doLayout();
+		return new Dimension(this.minimumHeight, this.minimumHeight);
 	}
 
 	/*
@@ -80,8 +81,8 @@ public abstract class FormWidgetUI extends JPanel {
 	 */
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(this.getX(), this.getY(), model.getWidth(),
-				model.getHeight());
+		return new Rectangle(this.getX(), this.getY(), this.model.getWidth(),
+				this.model.getHeight());
 	}
 
 	/*
@@ -91,7 +92,7 @@ public abstract class FormWidgetUI extends JPanel {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(model.getWidth(), model.getHeight());
+		return new Dimension(this.model.getWidth(), this.model.getHeight());
 	}
 
 	/**
@@ -100,10 +101,10 @@ public abstract class FormWidgetUI extends JPanel {
 	 * @return the as image
 	 */
 	public Image getAsImage() {
-		BufferedImage im = new BufferedImage(model.getWidth(),
-				model.getHeight(), BufferedImage.TYPE_INT_RGB);
-		Graphics g = im.createGraphics();
-		doLayout();
+		final BufferedImage im = new BufferedImage(this.model.getWidth(),
+				this.model.getHeight(), BufferedImage.TYPE_INT_RGB);
+		final Graphics g = im.createGraphics();
+		this.doLayout();
 		this.setOpaque(true);
 		this.addNotify();
 		this.validate();
@@ -121,7 +122,7 @@ public abstract class FormWidgetUI extends JPanel {
 	@Override
 	public void doLayout() {
 		super.doLayout();
-		this.setVisible(model.isVisible());
+		this.setVisible(this.model.isVisible());
 	}
 
 	/**
@@ -140,7 +141,7 @@ public abstract class FormWidgetUI extends JPanel {
 	 *            the direction
 	 * @return true, if is subselection resizable
 	 */
-	public boolean isSubselectionResizable(int direction) {
+	public boolean isSubselectionResizable(final int direction) {
 		return false;
 	}
 
@@ -152,7 +153,7 @@ public abstract class FormWidgetUI extends JPanel {
 	 * @param direction
 	 *            the direction
 	 */
-	public void updateSubselectionSize(int delta, int direction) {
+	public void updateSubselectionSize(final int delta, final int direction) {
 
 	}
 

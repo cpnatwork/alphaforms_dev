@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -31,12 +32,17 @@ public class DropDownTableRenderer extends JComboBox implements
 		TableCellRenderer {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8771911051240047952L;
+
+	/**
 	 * Instantiates a new drop down table renderer.
 	 * 
 	 * @param values
 	 *            the values
 	 */
-	public DropDownTableRenderer(Object[] values) {
+	public DropDownTableRenderer(final Object[] values) {
 		super(values);
 	}
 
@@ -48,17 +54,18 @@ public class DropDownTableRenderer extends JComboBox implements
 	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
 	 */
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int col) {
+	public Component getTableCellRendererComponent(final JTable table,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int col) {
 		if (isSelected) {
-			setBackground(table.getSelectionBackground());
-			//setForeground(table.getSelectionForeground());
+			this.setBackground(table.getSelectionBackground());
+			// setForeground(table.getSelectionForeground());
 		} else {
-			setBackground(table.getBackground());
-			setForeground(table.getForeground());
+			this.setBackground(table.getBackground());
+			this.setForeground(table.getForeground());
 		}
 		this.setOpaque(true);
-		setSelectedItem(value);
+		this.setSelectedItem(value);
 		return this;
 	}
 }

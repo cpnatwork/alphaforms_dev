@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -43,7 +44,7 @@ public class OptionWidgetMemento extends WidgetMemento {
 	 * @param m
 	 *            the m
 	 */
-	public OptionWidgetMemento(WidgetMemento m) {
+	public OptionWidgetMemento(final WidgetMemento m) {
 		this.name = m.name;
 		this.type = m.type;
 		this.value = m.value;
@@ -59,7 +60,7 @@ public class OptionWidgetMemento extends WidgetMemento {
 	@Override
 	protected String renderValue() {
 		String out = "";
-		for (OptionItem item : (List<OptionItem>) value) {
+		for (final OptionItem item : (List<OptionItem>) this.value) {
 			out += new XMLFragment(item.getName()).wrapIn("option")
 					.withAttribute("value", item.isValue()).toString();
 		}
@@ -74,19 +75,19 @@ public class OptionWidgetMemento extends WidgetMemento {
 	 * .XMLDocumentSection)
 	 */
 	@Override
-	protected void loadValue(XMLDocumentSection xml) {
+	protected void loadValue(final XMLDocumentSection xml) {
 		if (xml != null) {
-			List<OptionItem> optionList = new ArrayList<OptionItem>();
-			List<XMLDocumentSection> xmlOptionList = xml
+			final List<OptionItem> optionList = new ArrayList<OptionItem>();
+			final List<XMLDocumentSection> xmlOptionList = xml
 					.getDocumentSections("options/option");
-			for (XMLDocumentSection xmlOption : xmlOptionList) {
-				OptionItem option = new OptionItem();
+			for (final XMLDocumentSection xmlOption : xmlOptionList) {
+				final OptionItem option = new OptionItem();
 				option.setName(xmlOption.getTextContent());
 				option.setValue(Boolean.parseBoolean(xmlOption
 						.getAttribute("value")));
 				optionList.add(option);
 			}
-			value = optionList;
+			this.value = optionList;
 		}
 	}
 

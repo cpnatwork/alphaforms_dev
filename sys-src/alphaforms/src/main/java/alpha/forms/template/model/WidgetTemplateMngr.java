@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -43,8 +44,13 @@ import alpha.forms.widget.util.WidgetFactory;
 public class WidgetTemplateMngr extends DefaultListModel implements
 		WidgetTemplateManager {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1262254853690049777L;
+
 	/** The widgets. */
-	private Vector<WidgetTemplate> widgets = new Vector<WidgetTemplate>();
+	private final Vector<WidgetTemplate> widgets = new Vector<WidgetTemplate>();
 
 	/** The instance. */
 	private static WidgetTemplateMngr instance = null;
@@ -55,10 +61,10 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 * @return single instance of WidgetTemplateMngr
 	 */
 	public static synchronized WidgetTemplateMngr getInstance() {
-		if (instance == null) {
-			instance = new WidgetTemplateMngr();
+		if (WidgetTemplateMngr.instance == null) {
+			WidgetTemplateMngr.instance = new WidgetTemplateMngr();
 		}
-		return instance;
+		return WidgetTemplateMngr.instance;
 	}
 
 	/**
@@ -75,8 +81,8 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 * @see javax.swing.DefaultListModel#getElementAt(int)
 	 */
 	@Override
-	public Object getElementAt(int index) {
-		return widgets.get(index);
+	public Object getElementAt(final int index) {
+		return this.widgets.get(index);
 	}
 
 	/*
@@ -86,7 +92,7 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 */
 	@Override
 	public int getSize() {
-		return widgets.size();
+		return this.widgets.size();
 	}
 
 	/**
@@ -96,11 +102,10 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 *            the name
 	 * @return the widget template
 	 */
-	public WidgetTemplate get(String name) {
-		for (WidgetTemplate t : widgets) {
-			if (t.getTemplateName().equals(name)) {
+	public WidgetTemplate get(final String name) {
+		for (final WidgetTemplate t : this.widgets) {
+			if (t.getTemplateName().equals(name))
 				return t;
-			}
 		}
 		return null;
 	}
@@ -111,9 +116,10 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 * @param w
 	 *            the w
 	 */
-	public void addTemplate(WidgetTemplate w) {
-		widgets.add(w);
-		this.fireIntervalAdded(this, widgets.indexOf(w), widgets.indexOf(w));
+	public void addTemplate(final WidgetTemplate w) {
+		this.widgets.add(w);
+		this.fireIntervalAdded(this, this.widgets.indexOf(w),
+				this.widgets.indexOf(w));
 	}
 
 	/*
@@ -124,18 +130,18 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 * .widget.model.FormWidget, java.lang.String, boolean)
 	 */
 	@Override
-	public void saveAsTemplate(FormWidget widget, String templateName,
-			boolean forceOverwrite) throws TemplateWithNameExistsException {
-		FormWidget clone = WidgetFactory.cloneWidget(widget);
+	public void saveAsTemplate(final FormWidget widget,
+			final String templateName, final boolean forceOverwrite)
+			throws TemplateWithNameExistsException {
+		final FormWidget clone = WidgetFactory.cloneWidget(widget);
 		if (clone != null) {
-			WidgetTemplate wt = new WidgetTemplate(clone, templateName);
+			final WidgetTemplate wt = new WidgetTemplate(clone, templateName);
 			wt.setTemplateName(templateName);
-			if (forceOverwrite == false && get(templateName) != null) {
+			if ((forceOverwrite == false) && (this.get(templateName) != null))
 				throw new TemplateWithNameExistsException(
 						"A template with the name " + templateName
 								+ " already exists.");
-			}
-			addTemplate(wt);
+			this.addTemplate(wt);
 		}
 	}
 
@@ -147,8 +153,8 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 * .lang.String)
 	 */
 	@Override
-	public FormWidget getWidgetFromTemplate(String templateName) {
-		WidgetTemplate wt = get(templateName);
+	public FormWidget getWidgetFromTemplate(final String templateName) {
+		final WidgetTemplate wt = this.get(templateName);
 		return wt.createWidgetFromTemplate();
 	}
 
@@ -158,20 +164,21 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 * @see alpha.forms.template.WidgetTemplateManager#storeTemplates(java.io.
 	 * OutputStream)
 	 */
-	public void storeTemplates(OutputStream out) {
-		BufferedOutputStream bout = new BufferedOutputStream(out);
+	@Override
+	public void storeTemplates(final OutputStream out) {
+		final BufferedOutputStream bout = new BufferedOutputStream(out);
 		String templateOut = "";
-		for (WidgetTemplate wt : widgets) {
+		for (final WidgetTemplate wt : this.widgets) {
 			templateOut += wt.saveAsXML();
 		}
-		String data = new XMLFragment(templateOut).wrapIn("alphaFormTemplates")
-				.toString();
+		final String data = new XMLFragment(templateOut).wrapIn(
+				"alphaFormTemplates").toString();
 		try {
 			bout.write(data.getBytes("UTF-8"));
 			bout.close();
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -183,19 +190,20 @@ public class WidgetTemplateMngr extends DefaultListModel implements
 	 * alpha.forms.template.WidgetTemplateManager#loadTemplates(java.io.InputStream
 	 * )
 	 */
-	public void loadTemplates(InputStream in) {
+	@Override
+	public void loadTemplates(final InputStream in) {
 		try {
-			Document xmlDoc = DocumentBuilderFactory.newInstance()
+			final Document xmlDoc = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder().parse(in);
 			xmlDoc.getDocumentElement().normalize();
 
-			XMLDocumentSection templateContainer = new XMLDocumentSection(
+			final XMLDocumentSection templateContainer = new XMLDocumentSection(
 					xmlDoc.getDocumentElement(), xmlDoc);
-			for (XMLDocumentSection sec : templateContainer
+			for (final XMLDocumentSection sec : templateContainer
 					.getDocumentSections("widgetTemplate")) {
-				addTemplate(WidgetTemplate.createFromXML(sec));
+				this.addTemplate(WidgetTemplate.createFromXML(sec));
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}

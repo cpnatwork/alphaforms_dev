@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -30,7 +31,7 @@ public class SignalManager {
 	private static SignalManager instance;
 
 	/** The sink map. */
-	private Map<String, SignalSink> sinkMap = new HashMap<String, SignalSink>();
+	private final Map<String, SignalSink> sinkMap = new HashMap<String, SignalSink>();
 
 	/**
 	 * Instantiates a new signal manager.
@@ -45,10 +46,10 @@ public class SignalManager {
 	 * @return single instance of SignalManager
 	 */
 	public static SignalManager getInstance() {
-		if (instance == null) {
-			instance = new SignalManager();
+		if (SignalManager.instance == null) {
+			SignalManager.instance = new SignalManager();
 		}
-		return instance;
+		return SignalManager.instance;
 	}
 
 	/**
@@ -59,11 +60,11 @@ public class SignalManager {
 	 * @param sinkName
 	 *            the sink name
 	 */
-	public void subscribeSink(Subscriber s, String sinkName) {
-		SignalSink q = sinkMap.get(sinkName);
+	public void subscribeSink(final Subscriber s, final String sinkName) {
+		SignalSink q = this.sinkMap.get(sinkName);
 		if (q == null) {
 			q = new SignalSink(sinkName);
-			sinkMap.put(sinkName, q);
+			this.sinkMap.put(sinkName, q);
 		}
 		q.subscribe(s);
 	}
@@ -76,11 +77,11 @@ public class SignalManager {
 	 * @param sinkName
 	 *            the sink name
 	 */
-	public void sendSignal(Signal signal, String sinkName) {
-		SignalSink q = sinkMap.get(sinkName);
+	public void sendSignal(final Signal signal, final String sinkName) {
+		SignalSink q = this.sinkMap.get(sinkName);
 		if (q == null) {
 			q = new SignalSink(sinkName);
-			sinkMap.put(sinkName, q);
+			this.sinkMap.put(sinkName, q);
 		}
 		q.send(signal);
 	}
@@ -93,8 +94,8 @@ public class SignalManager {
 	 * @param sinkName
 	 *            the sink name
 	 */
-	public void unsubscribeSink(Subscriber s, String sinkName) {
-		SignalSink q = sinkMap.get(sinkName);
+	public void unsubscribeSink(final Subscriber s, final String sinkName) {
+		final SignalSink q = this.sinkMap.get(sinkName);
 		if (q != null) {
 			q.unsubscribe(s);
 		}

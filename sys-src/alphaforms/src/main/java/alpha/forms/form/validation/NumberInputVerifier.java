@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -33,15 +34,15 @@ public class NumberInputVerifier extends InputVerifier {
 	 * @see javax.swing.InputVerifier#verify(javax.swing.JComponent)
 	 */
 	@Override
-	public boolean verify(JComponent comp) {
+	public boolean verify(final JComponent comp) {
 		if (comp instanceof JTextField) {
-			String text = ((JTextField) comp).getText();
+			final String text = ((JTextField) comp).getText();
 			try {
 				Integer.parseInt(text);
-			} catch (NumberFormatException e1) {
+			} catch (final NumberFormatException e1) {
 				try {
 					Double.parseDouble(text);
-				} catch (NumberFormatException e2) {
+				} catch (final NumberFormatException e2) {
 					return false;
 				}
 			}

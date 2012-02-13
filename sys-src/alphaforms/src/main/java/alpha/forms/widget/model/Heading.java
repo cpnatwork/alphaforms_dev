@@ -1,3 +1,22 @@
+/**************************************************************************
+ * alpha-Forms
+ * ==============================================
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
+ **************************************************************************
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ **************************************************************************
+ * $Id$
+ *************************************************************************/
 package alpha.forms.widget.model;
 
 import java.util.ArrayList;
@@ -12,47 +31,68 @@ import alpha.forms.memento.model.WidgetMemento;
 import alpha.forms.propertyEditor.model.annotation.WidgetProperty;
 import alpha.forms.widget.view.HeadingUI;
 
+/**
+ * The Class Heading.
+ */
 public class Heading extends FormWidget implements MementoOriginator {
 
+	/** The text. */
 	@WidgetProperty(description = "This text will show as headline.")
 	protected String text;
-	
-	public Heading(String name) {
+
+	/**
+	 * Instantiates a new heading.
+	 * 
+	 * @param name
+	 *            the name
+	 */
+	public Heading(final String name) {
 		super(name);
-		width = 130;
-		height = 30;
-		text = name;
-		ui = new HeadingUI(this);	}
-
-
-	
-	public String getText() {
-		return text;
+		this.width = 130;
+		this.height = 30;
+		this.text = name;
+		this.ui = new HeadingUI(this);
 	}
 
+	/**
+	 * Gets the text.
+	 * 
+	 * @return the text
+	 */
+	public String getText() {
+		return this.text;
+	}
 
-
-	public void setText(String text) {
+	/**
+	 * Sets the text.
+	 * 
+	 * @param text
+	 *            the new text
+	 */
+	public void setText(final String text) {
 		this.text = text;
 	}
 
-
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see alpha.forms.memento.model.MementoOriginator#createWidgetMemento()
+	 */
 	@Override
 	public WidgetMemento createWidgetMemento() {
-		WidgetMemento m = new WidgetMemento();
+		final WidgetMemento m = new WidgetMemento();
 		m.setName(this.name);
 		m.setType(this.getClass());
 		m.setValue("");
-		m.addAttribute("text", text);
-		m.addAttribute("x", x);
-		m.addAttribute("y", y);
-		m.addAttribute("width", width);
-		m.addAttribute("height", height);
-		m.addAttribute("visible", visible);
-		m.addAttribute("ui", ui.getClass().getName());
-		m.setValidators(validators.createMemento());
-		List<EventMemento> events = new ArrayList<EventMemento>();
+		m.addAttribute("text", this.text);
+		m.addAttribute("x", this.x);
+		m.addAttribute("y", this.y);
+		m.addAttribute("width", this.width);
+		m.addAttribute("height", this.height);
+		m.addAttribute("visible", this.visible);
+		m.addAttribute("ui", this.ui.getClass().getName());
+		m.setValidators(this.validators.createMemento());
+		final List<EventMemento> events = new ArrayList<EventMemento>();
 		m.setEvents(events);
 		return m;
 	}
@@ -65,22 +105,22 @@ public class Heading extends FormWidget implements MementoOriginator {
 	 * .memento.model.WidgetMemento)
 	 */
 	@Override
-	public void setWidgetMemento(WidgetMemento m) {
+	public void setWidgetMemento(final WidgetMemento m) {
 		if (m != null) {
-			name = m.getName();
-			Map<String, Object> attributes = m.getAttributes();
-			text = attributes.get("text").toString();
-			x = Integer.parseInt(attributes.get("x").toString());
-			y = Integer.parseInt(attributes.get("y").toString());
-			width = Integer.parseInt(attributes.get("width").toString());
-			height = Integer.parseInt(attributes.get("height").toString());
-			visible = Boolean
-					.parseBoolean(attributes.get("visible").toString());
-			setSize(width, height);
-			setX(x);
-			setY(y);
-			validators.setMemento(m.getValidators());
-			for (EventMemento em : m.getEvents()) {
+			this.name = m.getName();
+			final Map<String, Object> attributes = m.getAttributes();
+			this.text = attributes.get("text").toString();
+			this.x = Integer.parseInt(attributes.get("x").toString());
+			this.y = Integer.parseInt(attributes.get("y").toString());
+			this.width = Integer.parseInt(attributes.get("width").toString());
+			this.height = Integer.parseInt(attributes.get("height").toString());
+			this.visible = Boolean.parseBoolean(attributes.get("visible")
+					.toString());
+			this.setSize(this.width, this.height);
+			this.setX(this.x);
+			this.setY(this.y);
+			this.validators.setMemento(m.getValidators());
+			for (final EventMemento em : m.getEvents()) {
 			}
 		}
 	}
@@ -94,7 +134,7 @@ public class Heading extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public DynamicAttributeMemento createDynamicAttributeMemento(
-			WidgetMemento ref) {
+			final WidgetMemento ref) {
 		return null;
 	}
 
@@ -106,7 +146,7 @@ public class Heading extends FormWidget implements MementoOriginator {
 	 * .memento.model.DynamicAttributeMemento)
 	 */
 	@Override
-	public void setDynamicMemento(DynamicAttributeMemento m) {
+	public void setDynamicMemento(final DynamicAttributeMemento m) {
 	}
 
 	/*
@@ -127,7 +167,7 @@ public class Heading extends FormWidget implements MementoOriginator {
 	 * .memento.model.ValueMemento)
 	 */
 	@Override
-	public void setValueMemento(ValueMemento m) {
-	}	
-	
+	public void setValueMemento(final ValueMemento m) {
+	}
+
 }

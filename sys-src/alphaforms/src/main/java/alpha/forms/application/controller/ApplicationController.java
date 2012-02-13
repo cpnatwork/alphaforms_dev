@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -65,11 +66,11 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 */
 	@Override
 	public AlphaFormsView start() {
-		parent = new AlphaFormsView();
+		this.parent = new AlphaFormsView();
 		ValidatorFactory.setup();
-		form = new AlphaForm();
-		start(parent, form, false);
-		return parent;
+		this.form = new AlphaForm();
+		this.start(this.parent, this.form, false);
+		return this.parent;
 	}
 
 	/*
@@ -78,16 +79,16 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * @see alpha.forms.AlphaFormsFacade#start(java.io.InputStream)
 	 */
 	@Override
-	public AlphaFormsView start(InputStream forminput) {
+	public AlphaFormsView start(final InputStream forminput) {
 		if (forminput == null)
 			return null;
-		parent = new AlphaFormsView();
+		this.parent = new AlphaFormsView();
 		ValidatorFactory.setup();
-		PersistenceController p = new PersistenceController(this);
-		AlphaForm alphaForm = p.loadForm(forminput);
+		final PersistenceController p = new PersistenceController(this);
+		final AlphaForm alphaForm = p.loadForm(forminput);
 		this.form = alphaForm;
-		start(parent, alphaForm, form.getWidgets().size() > 0);
-		return parent;
+		this.start(this.parent, alphaForm, this.form.getWidgets().size() > 0);
+		return this.parent;
 	}
 
 	/**
@@ -100,18 +101,18 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * @param showClipboard
 	 *            the show clipboard
 	 */
-	protected void start(AlphaFormsView parent, AlphaForm form,
-			boolean showClipboard) {
+	protected void start(final AlphaFormsView parent, final AlphaForm form,
+			final boolean showClipboard) {
 		this.parent = parent;
 
 		AlphaFormProvider.setForm(form);
 
 		if (showClipboard) {
-			currentView = new ClipboardView(form, this);
+			this.currentView = new ClipboardView(form, this);
 		} else {
-			currentView = new DesignerView(form, this);
+			this.currentView = new DesignerView(form, this);
 		}
-		currentView.show(parent);
+		this.currentView.show(parent);
 
 		SignalManager.getInstance().subscribeSink(this, "designer");
 		SignalManager.getInstance().subscribeSink(this, "clipboard");
@@ -125,8 +126,8 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * FormSaveListener)
 	 */
 	@Override
-	public void registerSaveListener(FormSaveListener l) {
-		saveListeners.add(l);
+	public void registerSaveListener(final FormSaveListener l) {
+		this.saveListeners.add(l);
 	}
 
 	/*
@@ -137,21 +138,21 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * .model.Signal)
 	 */
 	@Override
-	public void signalReceived(Signal s) {
+	public void signalReceived(final Signal s) {
 		if (s instanceof SwitchViewSignal) {
-			SwitchViewSignal v = (SwitchViewSignal) s;
+			final SwitchViewSignal v = (SwitchViewSignal) s;
 			if (v.getToView() == SwitchViewSignal.VIEWER) {
-				currentView.pauseView();
-				previousView = currentView;
-				currentView = new ClipboardView(form, this);
-				currentView.show(parent);
+				this.currentView.pauseView();
+				this.previousView = this.currentView;
+				this.currentView = new ClipboardView(this.form, this);
+				this.currentView.show(this.parent);
 			} else if (v.getToView() == SwitchViewSignal.DESIGNER) {
-				currentView.pauseView();
-				form.revertToState("clipboardStart");
-				currentView = new DesignerView(form, this);
-				currentView.show(parent);
+				this.currentView.pauseView();
+				this.form.revertToState("clipboardStart");
+				this.currentView = new DesignerView(this.form, this);
+				this.currentView.show(this.parent);
 			}
-			parent.updateUI();
+			this.parent.updateUI();
 		}
 	}
 
@@ -159,7 +160,7 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * Persist form.
 	 */
 	public void persistForm() {
-		persistForm(null);
+		this.persistForm(null);
 	}
 
 	/**
@@ -168,9 +169,9 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * @param state
 	 *            the state
 	 */
-	public void persistForm(String state) {
-		PersistenceController p = new PersistenceController(this);
-		p.storeForm(form, state);
+	public void persistForm(final String state) {
+		final PersistenceController p = new PersistenceController(this);
+		p.storeForm(this.form, state);
 	}
 
 	/**
@@ -179,8 +180,8 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * @param data
 	 *            the data
 	 */
-	public void fireSaveEvent(ByteArrayOutputStream data) {
-		for (FormSaveListener l : saveListeners) {
+	public void fireSaveEvent(final ByteArrayOutputStream data) {
+		for (final FormSaveListener l : this.saveListeners) {
 			l.save(data);
 		}
 	}
@@ -191,9 +192,9 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * @see alpha.forms.AlphaFormsFacade#setDocumentStates(java.util.Collection)
 	 */
 	@Override
-	public void setDocumentStates(Collection<String> states) {
-		if (form != null) {
-			form.addDocumentStates(states);
+	public void setDocumentStates(final Collection<String> states) {
+		if (this.form != null) {
+			this.form.addDocumentStates(states);
 		}
 	}
 
@@ -203,9 +204,9 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 * @see alpha.forms.AlphaFormsFacade#addDocumentState(java.lang.String)
 	 */
 	@Override
-	public void addDocumentState(String state) {
-		if (form != null) {
-			form.addDocumentState(state);
+	public void addDocumentState(final String state) {
+		if (this.form != null) {
+			this.form.addDocumentState(state);
 		}
 	}
 
@@ -216,7 +217,7 @@ public class ApplicationController implements AlphaFormsFacade, Subscriber {
 	 */
 	@Override
 	public AlphaFormsView getView() {
-		return parent;
+		return this.parent;
 	}
 
 }

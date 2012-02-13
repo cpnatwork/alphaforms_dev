@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -30,7 +31,7 @@ public class SignalSink {
 	private String id;
 
 	/** The subscribers. */
-	private List<Subscriber> subscribers = new ArrayList<Subscriber>();
+	private final List<Subscriber> subscribers = new ArrayList<Subscriber>();
 
 	/**
 	 * Instantiates a new signal sink.
@@ -38,7 +39,7 @@ public class SignalSink {
 	 * @param id
 	 *            the id
 	 */
-	public SignalSink(String id) {
+	public SignalSink(final String id) {
 		this.id = id;
 	}
 
@@ -48,8 +49,8 @@ public class SignalSink {
 	 * @param s
 	 *            the s
 	 */
-	public void subscribe(Subscriber s) {
-		subscribers.add(s);
+	public void subscribe(final Subscriber s) {
+		this.subscribers.add(s);
 	}
 
 	/**
@@ -58,8 +59,8 @@ public class SignalSink {
 	 * @param s
 	 *            the s
 	 */
-	public void unsubscribe(Subscriber s) {
-		subscribers.remove(s);
+	public void unsubscribe(final Subscriber s) {
+		this.subscribers.remove(s);
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class SignalSink {
 	 * @return the id
 	 */
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class SignalSink {
 	 * @param id
 	 *            the new id
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -87,9 +88,9 @@ public class SignalSink {
 	 * @param sig
 	 *            the sig
 	 */
-	public void send(Signal sig) {
+	public void send(final Signal sig) {
 		sig.setSink(this);
-		for (Subscriber s : subscribers) {
+		for (final Subscriber s : this.subscribers) {
 			s.signalReceived(sig);
 		}
 	}

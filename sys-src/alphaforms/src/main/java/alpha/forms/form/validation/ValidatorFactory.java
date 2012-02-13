@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -33,8 +34,8 @@ public class ValidatorFactory {
 	 * Setup.
 	 */
 	public static void setup() {
-		validatorList.add(new NotNullValidator());
-		validatorList.add(new NumberValidator());
+		ValidatorFactory.validatorList.add(new NotNullValidator());
+		ValidatorFactory.validatorList.add(new NumberValidator());
 	}
 
 	/**
@@ -43,8 +44,8 @@ public class ValidatorFactory {
 	 * @return the available validators
 	 */
 	public static List<Validator> getAvailableValidators() {
-		List<Validator> vs = new ArrayList<Validator>();
-		for (Validator v : validatorList) {
+		final List<Validator> vs = new ArrayList<Validator>();
+		for (final Validator v : ValidatorFactory.validatorList) {
 			vs.add(v.clone());
 		}
 		return vs;
@@ -57,11 +58,10 @@ public class ValidatorFactory {
 	 *            the handle
 	 * @return the validator
 	 */
-	public static Validator findValidator(String handle) {
-		for (Validator v : validatorList) {
-			if (v.getHandle().equals(handle)) {
+	public static Validator findValidator(final String handle) {
+		for (final Validator v : ValidatorFactory.validatorList) {
+			if (v.getHandle().equals(handle))
 				return v.clone();
-			}
 		}
 		return null;
 	}

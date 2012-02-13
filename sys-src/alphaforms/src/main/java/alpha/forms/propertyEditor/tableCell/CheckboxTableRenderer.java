@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -31,6 +32,11 @@ public class CheckboxTableRenderer extends JCheckBox implements
 		TableCellRenderer {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7701049988556868062L;
+
+	/**
 	 * Instantiates a new checkbox table renderer.
 	 */
 	public CheckboxTableRenderer() {
@@ -45,17 +51,18 @@ public class CheckboxTableRenderer extends JCheckBox implements
 	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
 	 */
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int col) {
+	public Component getTableCellRendererComponent(final JTable table,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int col) {
 		if (isSelected) {
-			setBackground(table.getSelectionBackground());
-			setForeground(table.getSelectionForeground());
+			this.setBackground(table.getSelectionBackground());
+			this.setForeground(table.getSelectionForeground());
 		} else {
-			setBackground(table.getBackground());
-			setForeground(table.getForeground());
+			this.setBackground(table.getBackground());
+			this.setForeground(table.getForeground());
 		}
 		this.setOpaque(false);
-		setSelected((Boolean) value);
+		this.setSelected((Boolean) value);
 		return this;
 	}
 }

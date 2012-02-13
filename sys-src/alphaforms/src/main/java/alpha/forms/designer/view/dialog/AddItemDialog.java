@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -50,17 +51,22 @@ import alpha.forms.form.validation.NumberInputVerifier;
  */
 public class AddItemDialog extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7078965132120782432L;
+
 	/** The items. */
-	private List<Item> items = new ArrayList<Item>();
+	private final List<Item> items = new ArrayList<Item>();
 
 	/** The panel. */
-	private JPanel panel;
+	private final JPanel panel;
 
 	/** The save. */
-	private JButton save;
+	private final JButton save;
 
 	/** The cancel. */
-	private JButton cancel;
+	private final JButton cancel;
 
 	/** The was cancled. */
 	private boolean wasCancled;
@@ -77,24 +83,24 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 *            the instance
 	 * @return the adds the item dialog
 	 */
-	public static AddItemDialog create(Class type, Object instance) {
-		AddItemDialog dialog = new AddItemDialog();
+	public static AddItemDialog create(final Class type, final Object instance) {
+		final AddItemDialog dialog = new AddItemDialog();
 
-		for (Method m : type.getMethods()) {
+		for (final Method m : type.getMethods()) {
 			if (m.getName().startsWith("set")
-					&& m.getParameterTypes().length == 1) {
-				String name = m.getName().substring(3);
+					&& (m.getParameterTypes().length == 1)) {
+				final String name = m.getName().substring(3);
 
 				Method g = null;
 
 				try {
 					g = type.getMethod("get" + name);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 				}
 				if (g == null) {
 					try {
 						g = type.getMethod("is" + name);
-					} catch (Exception e) {
+					} catch (final Exception e) {
 					}
 				}
 				if (g == null) {
@@ -104,7 +110,7 @@ public class AddItemDialog extends JDialog implements ActionListener {
 				Object value = null;
 				try {
 					value = g.invoke(instance);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -121,27 +127,27 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 */
 	public AddItemDialog() {
 		super((Frame) null, "Add item:", true);
-		setLocationRelativeTo(null);
-		setLayout(new BorderLayout());
-		setResizable(false);
-		panel = new JPanel(new GridBagLayout());
-		panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		this.setResizable(false);
+		this.panel = new JPanel(new GridBagLayout());
+		this.panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		JPanel buttonPanel = new JPanel(new FlowLayout());
+		final JPanel buttonPanel = new JPanel(new FlowLayout());
 
-		save = new JButton("Save");
-		save.addActionListener(this);
-		save.setActionCommand("save");
-		cancel = new JButton("Cancel");
-		cancel.addActionListener(this);
-		cancel.setActionCommand("cancel");
+		this.save = new JButton("Save");
+		this.save.addActionListener(this);
+		this.save.setActionCommand("save");
+		this.cancel = new JButton("Cancel");
+		this.cancel.addActionListener(this);
+		this.cancel.setActionCommand("cancel");
 
-		buttonPanel.add(save);
-		buttonPanel.add(cancel);
+		buttonPanel.add(this.save);
+		buttonPanel.add(this.cancel);
 
-		add(panel, BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
-		getRootPane().setDefaultButton(save);
+		this.add(this.panel, BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.SOUTH);
+		this.getRootPane().setDefaultButton(this.save);
 	}
 
 	/**
@@ -152,11 +158,11 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 * @param value
 	 *            the value
 	 */
-	public void addItem(String name, Object value) {
-		Item i = new Item();
+	public void addItem(final String name, final Object value) {
+		final Item i = new Item();
 		i.name = name;
 		i.value = value;
-		items.add(i);
+		this.items.add(i);
 	}
 
 	/**
@@ -165,8 +171,8 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 * @param name
 	 *            the name
 	 */
-	public void addItem(String name) {
-		addItem(name, null);
+	public void addItem(final String name) {
+		this.addItem(name, null);
 	}
 
 	/*
@@ -174,15 +180,16 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 * 
 	 * @see java.awt.Dialog#setVisible(boolean)
 	 */
-	public void setVisible(boolean flag) {
+	@Override
+	public void setVisible(final boolean flag) {
 		if (flag == true) {
-			panel.removeAll();
-			for (Item i : items) {
-				i.createUI(panel);
+			this.panel.removeAll();
+			for (final Item i : this.items) {
+				i.createUI(this.panel);
 			}
-			pack();
-			wasCancled = false;
-			wasSaved = false;
+			this.pack();
+			this.wasCancled = false;
+			this.wasSaved = false;
 		}
 		super.setVisible(flag);
 	}
@@ -193,7 +200,7 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 * @return true, if successful
 	 */
 	public boolean wasCancled() {
-		return wasCancled;
+		return this.wasCancled;
 	}
 
 	/**
@@ -202,7 +209,7 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 * @return true, if successful
 	 */
 	public boolean wasSaved() {
-		return wasSaved;
+		return this.wasSaved;
 	}
 
 	/**
@@ -211,8 +218,8 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 * @return the value map
 	 */
 	public Map<String, Object> getValueMap() {
-		Map<String, Object> out = new HashMap<String, Object>();
-		for (Item i : items) {
+		final Map<String, Object> out = new HashMap<String, Object>();
+		for (final Item i : this.items) {
 			out.put(i.name, i.getValue());
 		}
 		return out;
@@ -238,29 +245,30 @@ public class AddItemDialog extends JDialog implements ActionListener {
 		 * @param parent
 		 *            the parent
 		 */
-		public void createUI(JPanel parent) {
-			GridBagConstraints c = new GridBagConstraints();
-			JLabel label = new JLabel(name);
+		public void createUI(final JPanel parent) {
+			final GridBagConstraints c = new GridBagConstraints();
+			final JLabel label = new JLabel(this.name);
 
-			if (value != null
-					&& (value.getClass().equals(boolean.class) || value
+			if ((this.value != null)
+					&& (this.value.getClass().equals(boolean.class) || this.value
 							.getClass().equals(Boolean.class))) {
-				JCheckBox checkBox = new JCheckBox();
-				checkBox.setSelected((Boolean) value);
-				component = checkBox;
-			} else if (value != null && value.getClass().isEnum()) {
-				component = new JComboBox(value.getClass().getEnumConstants());
+				final JCheckBox checkBox = new JCheckBox();
+				checkBox.setSelected((Boolean) this.value);
+				this.component = checkBox;
+			} else if ((this.value != null) && this.value.getClass().isEnum()) {
+				this.component = new JComboBox(this.value.getClass()
+						.getEnumConstants());
 			} else {
-				JTextField textField = new JTextField();
+				final JTextField textField = new JTextField();
 				textField.setPreferredSize(new Dimension(200, 22));
-				textField.setText(value.toString());
-				if (value != null
-						&& (value.getClass().equals(Integer.class)
-								|| value.getClass().equals(Double.class) || value
+				textField.setText(this.value.toString());
+				if ((this.value != null)
+						&& (this.value.getClass().equals(Integer.class)
+								|| this.value.getClass().equals(Double.class) || this.value
 								.getClass().equals(Float.class))) {
 					textField.setInputVerifier(new NumberInputVerifier());
 				}
-				component = textField;
+				this.component = textField;
 			}
 
 			c.gridx = 0;
@@ -276,7 +284,7 @@ public class AddItemDialog extends JDialog implements ActionListener {
 			c.weightx = 0.2;
 			c.insets = new Insets(4, 4, 4, 4);
 
-			parent.add(component, c);
+			parent.add(this.component, c);
 		}
 
 		/**
@@ -285,23 +293,26 @@ public class AddItemDialog extends JDialog implements ActionListener {
 		 * @return the value
 		 */
 		public Object getValue() {
-			if (component != null && component instanceof JTextField) {
-				String val = ((JTextField) component).getText();
-				if (value != null && value.getClass().equals(Integer.class)) {
+			if ((this.component != null)
+					&& (this.component instanceof JTextField)) {
+				final String val = ((JTextField) this.component).getText();
+				if ((this.value != null)
+						&& this.value.getClass().equals(Integer.class))
 					return Integer.parseInt(val);
-				} else if (value != null
-						&& value.getClass().equals(Double.class)) {
+				else if ((this.value != null)
+						&& this.value.getClass().equals(Double.class)) {
 					Double.parseDouble(val);
-				} else if (value != null
-						&& value.getClass().equals(Float.class)) {
+				} else if ((this.value != null)
+						&& this.value.getClass().equals(Float.class)) {
 					Float.parseFloat(val);
 				}
 				return val;
-			} else if (component != null && component instanceof JCheckBox) {
-				return ((JCheckBox) component).isSelected();
-			} else if (component != null && component instanceof JComboBox) {
-				return ((JComboBox) component).getSelectedItem();
-			}
+			} else if ((this.component != null)
+					&& (this.component instanceof JCheckBox))
+				return ((JCheckBox) this.component).isSelected();
+			else if ((this.component != null)
+					&& (this.component instanceof JComboBox))
+				return ((JComboBox) this.component).getSelectedItem();
 			return new String();
 		}
 	}
@@ -313,13 +324,13 @@ public class AddItemDialog extends JDialog implements ActionListener {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals("save")) {
-			setVisible(false);
-			wasSaved = true;
+			this.setVisible(false);
+			this.wasSaved = true;
 		} else if (e.getActionCommand().equals("cancel")) {
-			setVisible(false);
-			wasCancled = true;
+			this.setVisible(false);
+			this.wasCancled = true;
 		}
 
 	}

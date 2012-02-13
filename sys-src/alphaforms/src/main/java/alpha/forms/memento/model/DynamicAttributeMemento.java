@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -44,8 +45,8 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	 * @param value
 	 *            the value
 	 */
-	public void addAttribute(String name, Object value) {
-		attributes.put(name, value);
+	public void addAttribute(final String name, final Object value) {
+		this.attributes.put(name, value);
 	}
 
 	/**
@@ -55,8 +56,8 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	 *            the name
 	 * @return the attribute
 	 */
-	public Object getAttribute(String name) {
-		return attributes.get(name);
+	public Object getAttribute(final String name) {
+		return this.attributes.get(name);
 	}
 
 	/**
@@ -66,8 +67,8 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	 *            the name
 	 * @return true, if is stored
 	 */
-	public boolean isStored(String name) {
-		return (attributes.get(name) != null);
+	public boolean isStored(final String name) {
+		return (this.attributes.get(name) != null);
 	}
 
 	/**
@@ -76,7 +77,7 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	 * @return the attributes
 	 */
 	public Map<String, Object> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -94,7 +95,7 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -106,13 +107,13 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	@Override
 	public String getXML() {
 		String out = "";
-		for (Entry<String, Object> e : attributes.entrySet()) {
+		for (final Entry<String, Object> e : this.attributes.entrySet()) {
 			out += new XMLFragment(e.getValue()).wrapIn("attribute")
 					.withAttribute("name", e.getKey());
 
 		}
 		return new XMLFragment(out).wrapIn("smemento")
-				.withAttribute("for", name).toString();
+				.withAttribute("for", this.name).toString();
 	}
 
 	/*
@@ -123,7 +124,7 @@ public class DynamicAttributeMemento implements XMLSerializeableMemento {
 	 * .util.xml.XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
+	public void loadXML(final XMLDocumentSection xml) {
 		// TODO Auto-generated method stub
 
 	}

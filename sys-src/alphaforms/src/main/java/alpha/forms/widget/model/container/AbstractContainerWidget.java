@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -42,7 +43,7 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 * @param name
 	 *            the name
 	 */
-	public AbstractContainerWidget(String name) {
+	public AbstractContainerWidget(final String name) {
 		super(name);
 	}
 
@@ -54,7 +55,7 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 * .forms.widget.model.FormWidget)
 	 */
 	@Override
-	public boolean doesAcceptWidget(FormWidget w) {
+	public boolean doesAcceptWidget(final FormWidget w) {
 		return !(w instanceof ContainerWidget);
 	}
 
@@ -65,7 +66,7 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 */
 	@Override
 	public List<FormWidget> getChildren() {
-		return childWidgets;
+		return this.childWidgets;
 	}
 
 	/*
@@ -76,8 +77,8 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 * .List)
 	 */
 	@Override
-	public void setChildren(List<FormWidget> widget) {
-		childWidgets = widget;
+	public void setChildren(final List<FormWidget> widget) {
+		this.childWidgets = widget;
 	}
 
 	/*
@@ -88,11 +89,12 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 * .widget.model.FormWidget)
 	 */
 	@Override
-	public void addChild(FormWidget w) {
-		childWidgets.add(w);
+	public void addChild(final FormWidget w) {
+		this.childWidgets.add(w);
 		w.setParent(this);
-		if (ui != null)
-			ui.doLayout();
+		if (this.ui != null) {
+			this.ui.doLayout();
+		}
 	}
 
 	/*
@@ -103,11 +105,12 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 * forms.widget.model.FormWidget)
 	 */
 	@Override
-	public void removeChild(FormWidget w) {
-		childWidgets.remove(w);
+	public void removeChild(final FormWidget w) {
+		this.childWidgets.remove(w);
 		w.setParent(null);
-		if (ui != null)
-			ui.doLayout();
+		if (this.ui != null) {
+			this.ui.doLayout();
+		}
 	}
 
 	/*
@@ -118,12 +121,11 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 * (java.awt.Point)
 	 */
 	@Override
-	public FormWidget getWidgetByLocation(Point p) {
-		p.translate(-x, -y);
-		for (FormWidget w : childWidgets) {
-			if (w.getBounds().contains(p)) {
+	public FormWidget getWidgetByLocation(final Point p) {
+		p.translate(-this.x, -this.y);
+		for (final FormWidget w : this.childWidgets) {
+			if (w.getBounds().contains(p))
 				return w;
-			}
 		}
 		return null;
 	}
@@ -135,11 +137,10 @@ public abstract class AbstractContainerWidget extends FormWidget implements
 	 *            the name
 	 * @return the widget by name
 	 */
-	public FormWidget getWidgetByName(String name) {
-		for (FormWidget w : childWidgets) {
-			if (w.getName().equals(name)) {
+	public FormWidget getWidgetByName(final String name) {
+		for (final FormWidget w : this.childWidgets) {
+			if (w.getName().equals(name))
 				return w;
-			}
 		}
 		return null;
 	}

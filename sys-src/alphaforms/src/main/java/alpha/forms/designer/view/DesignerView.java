@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -73,16 +74,16 @@ public class DesignerView extends FormView implements Subscriber {
 	private static final long serialVersionUID = 1L;
 
 	/** The model. */
-	private AlphaForm model;
+	private final AlphaForm model;
 
 	/** The status label. */
-	private JLabel statusLabel;
+	private final JLabel statusLabel;
 
 	/** The template palette. */
-	private TemplatePalette templatePalette;
+	private final TemplatePalette templatePalette;
 
 	/** The form panel. */
-	private FormDesignerPanel formPanel;
+	private final FormDesignerPanel formPanel;
 
 	/**
 	 * Instantiates a new designer view.
@@ -92,35 +93,36 @@ public class DesignerView extends FormView implements Subscriber {
 	 * @param controller
 	 *            the controller
 	 */
-	public DesignerView(AlphaForm form, final ApplicationController controller) {
+	public DesignerView(final AlphaForm form,
+			final ApplicationController controller) {
 		super(controller);
-		model = form;
+		this.model = form;
 
 		this.setLayout(new BorderLayout());
 
-		JSplitPane jsp1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		JSplitPane jsp2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		final JSplitPane jsp1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		final JSplitPane jsp2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		jsp1.setBorder(null);
 		jsp2.setBorder(null);
 
 		final Component parentComponent = this;
-		JToolBar toolbar = new JToolBar();
+		final JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		JButton button1 = new JButton("Save");
+		final JButton button1 = new JButton("Save");
 
 		button1.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(final ActionEvent arg0) {
 				controller.persistForm();
 			}
 
 		});
-		JButton button2 = new JButton("Go to Fill-in mode");
+		final JButton button2 = new JButton("Go to Fill-in mode");
 		button2.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				SwitchViewSignal s = new SwitchViewSignal();
+			public void actionPerformed(final ActionEvent ev) {
+				final SwitchViewSignal s = new SwitchViewSignal();
 				s.setFromView(SwitchViewSignal.DESIGNER);
 				s.setToView(SwitchViewSignal.VIEWER);
 				SignalManager.getInstance().sendSignal(s, "designer");
@@ -130,32 +132,32 @@ public class DesignerView extends FormView implements Subscriber {
 		toolbar.add(button2);
 		toolbar.addSeparator();
 
-		JButton btnStoreTemplates = new JButton("Export Templates");
+		final JButton btnStoreTemplates = new JButton("Export Templates");
 		btnStoreTemplates.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				JFileChooser fc = new JFileChooser();
+			public void actionPerformed(final ActionEvent ev) {
+				final JFileChooser fc = new JFileChooser();
 				fc.setMultiSelectionEnabled(false);
 				fc.setFileFilter(new TemplateFileFilter());
-				int ret = fc.showSaveDialog(parentComponent);
+				final int ret = fc.showSaveDialog(parentComponent);
 				if (ret == JFileChooser.APPROVE_OPTION) {
-					File f = fc.getSelectedFile();
+					final File f = fc.getSelectedFile();
 					try {
-						FileOutputStream fout = new FileOutputStream(f);
+						final FileOutputStream fout = new FileOutputStream(f);
 						WidgetTemplateMngr.getInstance().storeTemplates(fout);
 						fout.close();
-					} catch (FileNotFoundException e) {
+					} catch (final FileNotFoundException e) {
 						e.printStackTrace();
-					} catch (IOException e) {
+					} catch (final IOException e) {
 						e.printStackTrace();
 					}
 				}
 			}
 		});
-		JButton btnLoadTemplates = new JButton("Import Templates");
+		final JButton btnLoadTemplates = new JButton("Import Templates");
 		btnLoadTemplates.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
+			public void actionPerformed(final ActionEvent ev) {
 				int ret = JOptionPane
 						.showConfirmDialog(
 								parentComponent,
@@ -164,19 +166,19 @@ public class DesignerView extends FormView implements Subscriber {
 								JOptionPane.YES_NO_OPTION,
 								JOptionPane.QUESTION_MESSAGE);
 				if (ret == JOptionPane.YES_OPTION) {
-					JFileChooser fc = new JFileChooser();
+					final JFileChooser fc = new JFileChooser();
 					fc.setMultiSelectionEnabled(false);
 					fc.setFileFilter(new TemplateFileFilter());
 					ret = fc.showOpenDialog(parentComponent);
 					if (ret == JFileChooser.APPROVE_OPTION) {
-						File f = fc.getSelectedFile();
+						final File f = fc.getSelectedFile();
 						try {
-							FileInputStream fin = new FileInputStream(f);
+							final FileInputStream fin = new FileInputStream(f);
 							WidgetTemplateMngr.getInstance().loadTemplates(fin);
 							fin.close();
-						} catch (FileNotFoundException e) {
+						} catch (final FileNotFoundException e) {
 							e.printStackTrace();
-						} catch (IOException e) {
+						} catch (final IOException e) {
 							e.printStackTrace();
 						}
 					}
@@ -187,13 +189,13 @@ public class DesignerView extends FormView implements Subscriber {
 		toolbar.add(btnStoreTemplates);
 		toolbar.add(btnLoadTemplates);
 
-		JToolBar status = new JToolBar();
+		final JToolBar status = new JToolBar();
 		status.setFloatable(false);
-		statusLabel = new JLabel("Selected: None.");
+		this.statusLabel = new JLabel("Selected: None.");
 		status.addSeparator();
-		status.add(statusLabel);
+		status.add(this.statusLabel);
 
-		WidgetPalette widgetPalette = new WidgetPalette();
+		final WidgetPalette widgetPalette = new WidgetPalette();
 		widgetPalette.setMinimumSize(new Dimension(220, 300));
 		widgetPalette.registerWidgetClass(TextField.class);
 		widgetPalette.registerWidgetClass(AlphaList.class);
@@ -202,22 +204,23 @@ public class DesignerView extends FormView implements Subscriber {
 		widgetPalette.registerWidgetClass(Button.class);
 		widgetPalette.registerWidgetClass(Heading.class);
 
-		templatePalette = new TemplatePalette();
-		templatePalette.setMinimumSize(new Dimension(220, 300));
+		this.templatePalette = new TemplatePalette();
+		this.templatePalette.setMinimumSize(new Dimension(220, 300));
 
-		JTabbedPane tabPane = new JTabbedPane();
+		final JTabbedPane tabPane = new JTabbedPane();
 		tabPane.addTab("Widgets", widgetPalette);
-		tabPane.addTab("Widget Templates", templatePalette);
+		tabPane.addTab("Widget Templates", this.templatePalette);
 
-		PropertyEditorPanel propertyPanel = new PropertyEditorPanel(model);
+		final PropertyEditorPanel propertyPanel = new PropertyEditorPanel(
+				this.model);
 		propertyPanel.setMinimumSize(new Dimension(220, 300));
 
-		formPanel = new FormDesignerPanel(model);
+		this.formPanel = new FormDesignerPanel(this.model);
 
 		// jsp1.setLeftComponent(widgetPalette);
 		jsp1.setLeftComponent(tabPane);
 		jsp1.setRightComponent(jsp2);
-		jsp2.setLeftComponent(formPanel);
+		jsp2.setLeftComponent(this.formPanel);
 		jsp2.setRightComponent(propertyPanel);
 
 		this.add(toolbar, BorderLayout.NORTH);
@@ -226,23 +229,23 @@ public class DesignerView extends FormView implements Subscriber {
 
 		SignalManager.getInstance().subscribeSink(this, "formCanvas");
 
-		ComponentDragDrop dndListener = new ComponentDragDrop();
+		final ComponentDragDrop dndListener = new ComponentDragDrop();
 		// TemplateDragDrop dndTemplate = new TemplateDragDrop();
-		DragSource dragSource1 = new DragSource();
-		DragSource dragSource2 = new DragSource();
-		DropTarget dropTarget1 = new DropTarget(
-				formPanel.getDropTargetComponent(), DnDConstants.ACTION_COPY,
-				dndListener);
+		final DragSource dragSource1 = new DragSource();
+		final DragSource dragSource2 = new DragSource();
+		final DropTarget dropTarget1 = new DropTarget(
+				this.formPanel.getDropTargetComponent(),
+				DnDConstants.ACTION_COPY, dndListener);
 		// DropTarget dropTarget2 = new
 		// DropTarget(formPanel.getDropTargetComponent(),
 		// DnDConstants.ACTION_COPY, dndTemplate);
-		DragGestureRecognizer dndrec1 = dragSource1
+		final DragGestureRecognizer dndrec1 = dragSource1
 				.createDefaultDragGestureRecognizer(
 						widgetPalette.getDragSource(),
 						DnDConstants.ACTION_COPY, dndListener);
-		DragGestureRecognizer dndrec2 = dragSource2
+		final DragGestureRecognizer dndrec2 = dragSource2
 				.createDefaultDragGestureRecognizer(
-						templatePalette.getDragSource(),
+						this.templatePalette.getDragSource(),
 						DnDConstants.ACTION_COPY, dndListener);
 
 	}
@@ -253,8 +256,8 @@ public class DesignerView extends FormView implements Subscriber {
 	 * @param status
 	 *            the new status
 	 */
-	public void setStatus(String status) {
-		statusLabel.setText(status);
+	public void setStatus(final String status) {
+		this.statusLabel.setText(status);
 	}
 
 	/**
@@ -271,12 +274,13 @@ public class DesignerView extends FormView implements Subscriber {
 	 * .model.Signal)
 	 */
 	@Override
-	public void signalReceived(Signal s) {
+	public void signalReceived(final Signal s) {
 		if (s instanceof UpdateStatusSignal) {
-			setStatus(((UpdateStatusSignal) s).getStatus());
+			this.setStatus(((UpdateStatusSignal) s).getStatus());
 		} else if (s instanceof SelectionChangedSignal) {
 			String status = "Selected: ";
-			List<FormWidget> sl = ((SelectionChangedSignal) s).getSelection();
+			final List<FormWidget> sl = ((SelectionChangedSignal) s)
+					.getSelection();
 			if (sl == null) {
 				status += "None";
 			} else if (sl.size() == 1) {
@@ -284,7 +288,7 @@ public class DesignerView extends FormView implements Subscriber {
 			} else {
 				status += sl.size() + " items";
 			}
-			setStatus(status);
+			this.setStatus(status);
 		}
 	}
 

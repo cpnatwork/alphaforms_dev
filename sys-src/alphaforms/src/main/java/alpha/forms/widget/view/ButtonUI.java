@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -30,6 +31,11 @@ import alpha.forms.widget.model.Button;
  */
 public class ButtonUI extends FormWidgetUI {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5762456869414030415L;
+
 	/** The model. */
 	Button model;
 
@@ -42,10 +48,10 @@ public class ButtonUI extends FormWidgetUI {
 	 * @param model
 	 *            the model
 	 */
-	public ButtonUI(Button model) {
+	public ButtonUI(final Button model) {
 		super(model);
 		this.model = model;
-		compose();
+		this.compose();
 	}
 
 	/*
@@ -55,16 +61,16 @@ public class ButtonUI extends FormWidgetUI {
 	 */
 	@Override
 	protected void compose() {
-		button = new JButton(model.getLabel());
-		doLayout();
+		this.button = new JButton(this.model.getLabel());
+		this.doLayout();
 
-		button.addActionListener(new ActionListener() {
+		this.button.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				model.getOnClick().fire();
+			public void actionPerformed(final ActionEvent ev) {
+				ButtonUI.this.model.getOnClick().fire();
 			}
 		});
-		this.add(button);
+		this.add(this.button);
 	}
 
 	/*
@@ -74,13 +80,13 @@ public class ButtonUI extends FormWidgetUI {
 	 */
 	@Override
 	public void doLayout() {
-		super.setBounds(model.getX(), model.getY(), model.getWidth(),
-				model.getHeight());
+		super.setBounds(this.model.getX(), this.model.getY(),
+				this.model.getWidth(), this.model.getHeight());
 		super.doLayout();
 
-		button.setSize(model.getSize());
-		button.setLocation(0, 0);
-		button.setText(model.getLabel());
+		this.button.setSize(this.model.getSize());
+		this.button.setLocation(0, 0);
+		this.button.setText(this.model.getLabel());
 	}
 
 }

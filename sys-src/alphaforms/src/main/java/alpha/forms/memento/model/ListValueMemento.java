@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -37,14 +38,14 @@ public class ListValueMemento extends ValueMemento {
 	 */
 	@Override
 	public String getXML() {
-		StringBuilder out = new StringBuilder();
-		for (ListItem i : (List<ListItem>) value) {
+		final StringBuilder out = new StringBuilder();
+		for (final ListItem i : (List<ListItem>) this.value) {
 			out.append(new XMLFragment(i.getLabel()).wrapIn("item")
 					.withAttribute("selected", i.isSelected())
 					.withAttribute("id", i.getId()));
 		}
 		return new XMLFragment(new XMLFragment(out).wrapIn("items"))
-				.wrapIn("vmemento").withAttribute("for", name).toString();
+				.wrapIn("vmemento").withAttribute("for", this.name).toString();
 
 	}
 
@@ -55,20 +56,20 @@ public class ListValueMemento extends ValueMemento {
 	 * XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
+	public void loadXML(final XMLDocumentSection xml) {
 		if (xml != null) {
-			List<ListItem> itemList = new ArrayList<ListItem>();
-			List<XMLDocumentSection> xmlItemList = xml
+			final List<ListItem> itemList = new ArrayList<ListItem>();
+			final List<XMLDocumentSection> xmlItemList = xml
 					.getDocumentSections("items/item");
-			for (XMLDocumentSection xmlItem : xmlItemList) {
-				ListItem item = new ListItem();
+			for (final XMLDocumentSection xmlItem : xmlItemList) {
+				final ListItem item = new ListItem();
 				item.setLabel(xmlItem.getTextContent());
 				item.setSelected(Boolean.parseBoolean(xmlItem
 						.getAttribute("selected")));
 				item.setId(xmlItem.getAttribute("id"));
 				itemList.add(item);
 			}
-			value = itemList;
+			this.value = itemList;
 		}
 	}
 

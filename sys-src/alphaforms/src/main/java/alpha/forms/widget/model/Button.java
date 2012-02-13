@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -51,13 +52,13 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * @param name
 	 *            the name
 	 */
-	public Button(String name) {
+	public Button(final String name) {
 		super(name);
-		width = 130;
-		height = 30;
-		label = name;
-		onClick = EventFactory.getInstance().createDefaultEvent(this);
-		ui = new ButtonUI(this);
+		this.width = 130;
+		this.height = 30;
+		this.label = name;
+		this.onClick = EventFactory.getInstance().createDefaultEvent(this);
+		this.ui = new ButtonUI(this);
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * @return the label
 	 */
 	public String getLabel() {
-		return label;
+		return this.label;
 	}
 
 	/**
@@ -75,9 +76,9 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * @param label
 	 *            the new label
 	 */
-	public void setLabel(String label) {
+	public void setLabel(final String label) {
 		this.label = label;
-		ui.doLayout();
+		this.ui.doLayout();
 	}
 
 	/**
@@ -86,7 +87,7 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * @return the on click
 	 */
 	public Event getOnClick() {
-		return onClick;
+		return this.onClick;
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * @param onClick
 	 *            the new on click
 	 */
-	public void setOnClick(Event onClick) {
+	public void setOnClick(final Event onClick) {
 		this.onClick = onClick;
 	}
 
@@ -106,20 +107,20 @@ public class Button extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public WidgetMemento createWidgetMemento() {
-		WidgetMemento m = new WidgetMemento();
+		final WidgetMemento m = new WidgetMemento();
 		m.setName(this.name);
 		m.setType(this.getClass());
 		m.setValue("");
-		m.addAttribute("label", label);
-		m.addAttribute("x", x);
-		m.addAttribute("y", y);
-		m.addAttribute("width", width);
-		m.addAttribute("height", height);
-		m.addAttribute("visible", visible);
-		m.addAttribute("ui", ui.getClass().getName());
-		m.setValidators(validators.createMemento());
-		List<EventMemento> events = new ArrayList<EventMemento>();
-		EventMemento ev = onClick.createMemento();
+		m.addAttribute("label", this.label);
+		m.addAttribute("x", this.x);
+		m.addAttribute("y", this.y);
+		m.addAttribute("width", this.width);
+		m.addAttribute("height", this.height);
+		m.addAttribute("visible", this.visible);
+		m.addAttribute("ui", this.ui.getClass().getName());
+		m.setValidators(this.validators.createMemento());
+		final List<EventMemento> events = new ArrayList<EventMemento>();
+		final EventMemento ev = this.onClick.createMemento();
 		ev.setEventName("onClick");
 		events.add(ev);
 		m.setEvents(events);
@@ -134,24 +135,24 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * .memento.model.WidgetMemento)
 	 */
 	@Override
-	public void setWidgetMemento(WidgetMemento m) {
+	public void setWidgetMemento(final WidgetMemento m) {
 		if (m != null) {
-			name = m.getName();
-			Map<String, Object> attributes = m.getAttributes();
-			label = attributes.get("label").toString();
-			x = Integer.parseInt(attributes.get("x").toString());
-			y = Integer.parseInt(attributes.get("y").toString());
-			width = Integer.parseInt(attributes.get("width").toString());
-			height = Integer.parseInt(attributes.get("height").toString());
-			visible = Boolean
-					.parseBoolean(attributes.get("visible").toString());
-			setSize(width, height);
-			setX(x);
-			setY(y);
-			validators.setMemento(m.getValidators());
-			for (EventMemento em : m.getEvents()) {
+			this.name = m.getName();
+			final Map<String, Object> attributes = m.getAttributes();
+			this.label = attributes.get("label").toString();
+			this.x = Integer.parseInt(attributes.get("x").toString());
+			this.y = Integer.parseInt(attributes.get("y").toString());
+			this.width = Integer.parseInt(attributes.get("width").toString());
+			this.height = Integer.parseInt(attributes.get("height").toString());
+			this.visible = Boolean.parseBoolean(attributes.get("visible")
+					.toString());
+			this.setSize(this.width, this.height);
+			this.setX(this.x);
+			this.setY(this.y);
+			this.validators.setMemento(m.getValidators());
+			for (final EventMemento em : m.getEvents()) {
 				if (em.getEventName().equals("onClick")) {
-					onClick.setMemento(em);
+					this.onClick.setMemento(em);
 				}
 			}
 		}
@@ -166,7 +167,7 @@ public class Button extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public DynamicAttributeMemento createDynamicAttributeMemento(
-			WidgetMemento ref) {
+			final WidgetMemento ref) {
 		return null;
 	}
 
@@ -178,7 +179,7 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * .memento.model.DynamicAttributeMemento)
 	 */
 	@Override
-	public void setDynamicMemento(DynamicAttributeMemento m) {
+	public void setDynamicMemento(final DynamicAttributeMemento m) {
 	}
 
 	/*
@@ -199,7 +200,7 @@ public class Button extends FormWidget implements MementoOriginator {
 	 * .memento.model.ValueMemento)
 	 */
 	@Override
-	public void setValueMemento(ValueMemento m) {
+	public void setValueMemento(final ValueMemento m) {
 	}
 
 }

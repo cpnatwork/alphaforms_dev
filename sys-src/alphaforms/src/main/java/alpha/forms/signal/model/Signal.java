@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -41,7 +42,7 @@ public abstract class Signal {
 	 * @return the id
 	 */
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -50,7 +51,7 @@ public abstract class Signal {
 	 * @param id
 	 *            the new id
 	 */
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
@@ -60,7 +61,7 @@ public abstract class Signal {
 	 * @return the payload
 	 */
 	public Object getPayload() {
-		return payload;
+		return this.payload;
 	}
 
 	/**
@@ -69,7 +70,7 @@ public abstract class Signal {
 	 * @param payload
 	 *            the new payload
 	 */
-	public void setPayload(Object payload) {
+	public void setPayload(final Object payload) {
 		this.payload = payload;
 	}
 
@@ -79,7 +80,7 @@ public abstract class Signal {
 	 * @return the sink
 	 */
 	public SignalSink getSink() {
-		return sink;
+		return this.sink;
 	}
 
 	/**
@@ -88,7 +89,7 @@ public abstract class Signal {
 	 * @param sink
 	 *            the new sink
 	 */
-	public void setSink(SignalSink sink) {
+	public void setSink(final SignalSink sink) {
 		this.sink = sink;
 	}
 
@@ -98,7 +99,7 @@ public abstract class Signal {
 	 * @return the source
 	 */
 	public Object getSource() {
-		return source;
+		return this.source;
 	}
 
 	/**
@@ -107,7 +108,7 @@ public abstract class Signal {
 	 * @param source
 	 *            the new source
 	 */
-	public void setSource(Object source) {
+	public void setSource(final Object source) {
 		this.source = source;
 	}
 }

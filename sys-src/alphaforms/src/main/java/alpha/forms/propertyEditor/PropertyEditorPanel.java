@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -47,19 +48,19 @@ public class PropertyEditorPanel extends JPanel implements Subscriber {
 	private static final long serialVersionUID = 1L;
 
 	/** The model. */
-	private AlphaForm model;
+	private final AlphaForm model;
 
 	/** The selected components. */
 	private List<FormWidget> selectedComponents = null;
 
 	/** The info. */
-	private InfoPanel info;
+	private final InfoPanel info;
 
 	/** The table. */
-	private PropertyTable table;
+	private final PropertyTable table;
 
 	/** The editor model. */
-	private PropertyEditorModel editorModel;
+	private final PropertyEditorModel editorModel;
 
 	/**
 	 * Instantiates a new property editor panel.
@@ -67,49 +68,50 @@ public class PropertyEditorPanel extends JPanel implements Subscriber {
 	 * @param model
 	 *            the model
 	 */
-	public PropertyEditorPanel(AlphaForm model) {
+	public PropertyEditorPanel(final AlphaForm model) {
 		this.model = model;
 
 		this.setBorder(BorderFactory.createTitledBorder("Property Editor"));
 		this.setLayout(new BorderLayout());
 
-		editorModel = new PropertyEditorModel(model, this);
+		this.editorModel = new PropertyEditorModel(model, this);
 
-		editorModel.updateDataModel(null);
+		this.editorModel.updateDataModel(null);
 
-		table = new PropertyTable(this, editorModel);
-		info = new InfoPanel();
+		this.table = new PropertyTable(this, this.editorModel);
+		this.info = new InfoPanel();
 
-		table.setRowHeight(23);
-		table.addMouseListener(new MouseListener() {
+		this.table.setRowHeight(23);
+		this.table.addMouseListener(new MouseListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent ev) {
-				WidgetProperty p = editorModel.getWidgetPropertyForRow(table
-						.getSelectedRow());
-				info.updateWith(p);
+			public void mouseClicked(final MouseEvent ev) {
+				final WidgetProperty p = PropertyEditorPanel.this.editorModel
+						.getWidgetPropertyForRow(PropertyEditorPanel.this.table
+								.getSelectedRow());
+				PropertyEditorPanel.this.info.updateWith(p);
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
+			public void mouseEntered(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseExited(MouseEvent arg0) {
+			public void mouseExited(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mousePressed(MouseEvent arg0) {
+			public void mousePressed(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseReleased(MouseEvent arg0) {
+			public void mouseReleased(final MouseEvent arg0) {
 			}
 
 		});
 
-		this.add(new JScrollPane(table), BorderLayout.CENTER);
-		this.add(info, BorderLayout.SOUTH);
+		this.add(new JScrollPane(this.table), BorderLayout.CENTER);
+		this.add(this.info, BorderLayout.SOUTH);
 
 		SignalManager.getInstance().subscribeSink(this, "formCanvas");
 	}
@@ -122,10 +124,11 @@ public class PropertyEditorPanel extends JPanel implements Subscriber {
 	 * .model.Signal)
 	 */
 	@Override
-	public void signalReceived(Signal s) {
+	public void signalReceived(final Signal s) {
 		if (s instanceof SelectionChangedSignal) {
-			selectedComponents = ((SelectionChangedSignal) s).getSelection();
-			editorModel.updateDataModel(selectedComponents);
+			this.selectedComponents = ((SelectionChangedSignal) s)
+					.getSelection();
+			this.editorModel.updateDataModel(this.selectedComponents);
 		}
 	}
 
@@ -133,8 +136,8 @@ public class PropertyEditorPanel extends JPanel implements Subscriber {
 	 * Stop table editing.
 	 */
 	public void stopTableEditing() {
-		if (table != null && table.isEditing()) {
-			table.getCellEditor().cancelCellEditing();
+		if ((this.table != null) && this.table.isEditing()) {
+			this.table.getCellEditor().cancelCellEditing();
 		}
 	}
 

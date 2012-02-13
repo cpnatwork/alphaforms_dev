@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -34,7 +35,7 @@ public class ValidatorMemento implements XMLSerializeableMemento {
 	private String handle;
 
 	/** The attributes. */
-	private Map<String, Object> attributes = new HashMap<String, Object>();
+	private final Map<String, Object> attributes = new HashMap<String, Object>();
 
 	/**
 	 * Gets the handle.
@@ -42,7 +43,7 @@ public class ValidatorMemento implements XMLSerializeableMemento {
 	 * @return the handle
 	 */
 	public String getHandle() {
-		return handle;
+		return this.handle;
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class ValidatorMemento implements XMLSerializeableMemento {
 	 * @param handle
 	 *            the new handle
 	 */
-	public void setHandle(String handle) {
+	public void setHandle(final String handle) {
 		this.handle = handle;
 	}
 
@@ -61,7 +62,7 @@ public class ValidatorMemento implements XMLSerializeableMemento {
 	 * @return the attributes
 	 */
 	public Map<String, Object> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	/**
@@ -72,8 +73,8 @@ public class ValidatorMemento implements XMLSerializeableMemento {
 	 * @param value
 	 *            the value
 	 */
-	public void addAttribute(String key, Object value) {
-		attributes.put(key, value);
+	public void addAttribute(final String key, final Object value) {
+		this.attributes.put(key, value);
 	}
 
 	/*
@@ -84,8 +85,8 @@ public class ValidatorMemento implements XMLSerializeableMemento {
 	@Override
 	public String getXML() {
 		return new XMLFragment().wrapIn("validator")
-				.withAttribute("name", handle).withAttributes(attributes)
-				.toString();
+				.withAttribute("name", this.handle)
+				.withAttributes(this.attributes).toString();
 	}
 
 	/*
@@ -96,10 +97,10 @@ public class ValidatorMemento implements XMLSerializeableMemento {
 	 * .util.xml.XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
-		handle = xml.getAttribute("name");
-		for (Entry<String, String> e : xml.getAttributes().entrySet()) {
-			attributes.put(e.getKey(), e.getValue());
+	public void loadXML(final XMLDocumentSection xml) {
+		this.handle = xml.getAttribute("name");
+		for (final Entry<String, String> e : xml.getAttributes().entrySet()) {
+			this.attributes.put(e.getKey(), e.getValue());
 		}
 	}
 

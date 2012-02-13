@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -28,16 +29,16 @@ import java.util.Map.Entry;
 public class SimpleMapSerializer {
 
 	/** The start token. */
-	private String startToken;
+	private final String startToken;
 
 	/** The end token. */
-	private String endToken;
+	private final String endToken;
 
 	/** The separator. */
-	private String separator;
+	private final String separator;
 
 	/** The kv separator. */
-	private String kvSeparator;
+	private final String kvSeparator;
 
 	/**
 	 * Instantiates a new simple map serializer.
@@ -51,8 +52,8 @@ public class SimpleMapSerializer {
 	 * @param kvSeparator
 	 *            the kv separator
 	 */
-	public SimpleMapSerializer(String start, String end, String separator,
-			String kvSeparator) {
+	public SimpleMapSerializer(final String start, final String end,
+			final String separator, final String kvSeparator) {
 		this.startToken = start;
 		this.endToken = end;
 		this.separator = separator;
@@ -65,7 +66,7 @@ public class SimpleMapSerializer {
 	 * @param separator
 	 *            the separator
 	 */
-	public SimpleMapSerializer(String separator) {
+	public SimpleMapSerializer(final String separator) {
 		this("{", "}", separator, "=");
 	}
 
@@ -83,27 +84,27 @@ public class SimpleMapSerializer {
 	 *            the map
 	 * @return the string
 	 */
-	public String serialize(Map<String, ?> map) {
-		StringBuilder sb = new StringBuilder();
+	public String serialize(final Map<String, ?> map) {
+		final StringBuilder sb = new StringBuilder();
 		boolean start = true;
-		sb.append(startToken);
-		for (Entry<String, ?> e : map.entrySet()) {
+		sb.append(this.startToken);
+		for (final Entry<String, ?> e : map.entrySet()) {
 			if (!start) {
-				sb.append(separator);
+				sb.append(this.separator);
 			}
 			start = false;
 			sb.append(e.getKey());
-			sb.append(kvSeparator);
+			sb.append(this.kvSeparator);
 			if (e.getValue() instanceof Collection) {
-				SimpleListSerializer sl = new SimpleListSerializer();
+				final SimpleListSerializer sl = new SimpleListSerializer();
 				sb.append(sl.serialize((Collection<?>) e.getValue()));
 			} else if (e.getValue() instanceof Map) {
-				sb.append(serialize((Map<String, ?>) e.getValue()));
+				sb.append(this.serialize((Map<String, ?>) e.getValue()));
 			} else {
 				sb.append(e.getValue().toString());
 			}
 		}
-		sb.append(endToken);
+		sb.append(this.endToken);
 		return sb.toString();
 	}
 }

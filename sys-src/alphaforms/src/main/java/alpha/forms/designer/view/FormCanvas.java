@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -69,10 +70,10 @@ public class FormCanvas extends JPanel implements MouseListener,
 	private static final long serialVersionUID = 1L;
 
 	/** The parent. */
-	private FormDesignerPanel parent;
+	private final FormDesignerPanel parent;
 
 	/** The model. */
-	private AlphaForm model;
+	private final AlphaForm model;
 
 	/** The show grid. */
 	private boolean showGrid = true;
@@ -106,7 +107,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @param model
 	 *            the model
 	 */
-	public FormCanvas(FormDesignerPanel parent, final AlphaForm model) {
+	public FormCanvas(final FormDesignerPanel parent, final AlphaForm model) {
 		this.parent = parent;
 		this.model = model;
 		this.setLayout(null);
@@ -121,21 +122,26 @@ public class FormCanvas extends JPanel implements MouseListener,
 				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "deleteWidget");
 		this.getActionMap().put("deleteWidget", new AbstractAction() {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6432735423738603274L;
+
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				if (selection != null) {
-					FormWidget widget = selection.subject;
+			public void actionPerformed(final ActionEvent ev) {
+				if (FormCanvas.this.selection != null) {
+					final FormWidget widget = FormCanvas.this.selection.subject;
 					if (widget.getParent() != null) {
-						FormWidget parent = widget.getParent();
+						final FormWidget parent = widget.getParent();
 						((ContainerWidget) parent).removeChild(widget);
 						parent.getUi().revalidate();
 						parent.getUi().updateUI();
 					} else {
 						model.getWidgets().remove(widget);
 					}
-					selection = null;
-					activeArea.updateUI();
-					repaint();
+					FormCanvas.this.selection = null;
+					FormCanvas.this.activeArea.updateUI();
+					FormCanvas.this.repaint();
 				}
 
 			}
@@ -143,8 +149,9 @@ public class FormCanvas extends JPanel implements MouseListener,
 		});
 		this.activeArea = new FocusArea(model, null, this);
 
-		FormPopupMenu formPopup = new FormPopupMenu(model, this);
-		FormPopupListener formPopupListener = new FormPopupListener(formPopup);
+		final FormPopupMenu formPopup = new FormPopupMenu(model, this);
+		final FormPopupListener formPopupListener = new FormPopupListener(
+				formPopup);
 		this.addMouseListener(formPopupListener);
 
 		SignalManager.getInstance().subscribeSink(this, "propertyEditor");
@@ -157,7 +164,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @return the parent panel
 	 */
 	public FormDesignerPanel getParentPanel() {
-		return parent;
+		return this.parent;
 	}
 
 	/**
@@ -166,9 +173,9 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @return the selected items
 	 */
 	public List<FormWidget> getSelectedItems() {
-		List<FormWidget> selList = new ArrayList<FormWidget>();
-		if (selection != null) {
-			selList.add(selection.subject);
+		final List<FormWidget> selList = new ArrayList<FormWidget>();
+		if (this.selection != null) {
+			selList.add(this.selection.subject);
 		}
 		return selList;
 	}
@@ -180,10 +187,12 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 *            the pin
 	 * @return the point
 	 */
-	public Point translatePoint(Point pin) {
-		if (showGrid) {
-			int x = ((pin.x + gridSize / 2) / gridSize) * gridSize;
-			int y = ((pin.y + gridSize / 2) / gridSize) * gridSize;
+	public Point translatePoint(final Point pin) {
+		if (this.showGrid) {
+			final int x = ((pin.x + (this.gridSize / 2)) / this.gridSize)
+					* this.gridSize;
+			final int y = ((pin.y + (this.gridSize / 2)) / this.gridSize)
+					* this.gridSize;
 			return new Point(x, y);
 		} else
 			return new Point(pin);
@@ -195,36 +204,37 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
 	 */
 	@Override
-	protected void paintChildren(Graphics g) {
-		for (FormWidget w : model.getWidgets()) {
-			FormWidgetUI ui = w.getUi();
-			Rectangle clipBounds = g.getClipBounds();
-			Rectangle cr = w.getBounds();
+	protected void paintChildren(final Graphics g) {
+		for (final FormWidget w : this.model.getWidgets()) {
+			final FormWidgetUI ui = w.getUi();
+			final Rectangle clipBounds = g.getClipBounds();
+			final Rectangle cr = w.getBounds();
 			SwingUtilities.computeIntersection(clipBounds.x, clipBounds.y,
 					clipBounds.width, clipBounds.height, cr);
-			Graphics gComp = g.create(cr.x, cr.y, cr.width, cr.height);
-			gComp.setFont(getFont());
-			gComp.setColor(getForeground());
+			final Graphics gComp = g.create(cr.x, cr.y, cr.width, cr.height);
+			gComp.setFont(this.getFont());
+			gComp.setColor(this.getForeground());
 			ui.doLayout();
 			ui.addNotify();
 			ui.validate();
 			ui.printAll(gComp);
 			gComp.dispose();
 		}
-		if (activeContainer != null) {
-			Graphics2D g2d = (Graphics2D) g;
+		if (this.activeContainer != null) {
+			final Graphics2D g2d = (Graphics2D) g;
 			g2d.setComposite(AlphaComposite.getInstance(
 					AlphaComposite.SRC_OVER, 1.0f));
-			Color c = SystemColor.textHighlight;
-			Color o = new Color(c.getRed(), c.getGreen(), c.getBlue(), 120);
+			final Color c = SystemColor.textHighlight;
+			final Color o = new Color(c.getRed(), c.getGreen(), c.getBlue(),
+					120);
 			g2d.setPaint(o);
-			g2d.fill(((FormWidget) activeContainer).getBounds());
+			g2d.fill(((FormWidget) this.activeContainer).getBounds());
 		}
-		if (selection != null) {
-			selection.drawSelection((Graphics2D) g, activeArea);
+		if (this.selection != null) {
+			this.selection.drawSelection((Graphics2D) g, this.activeArea);
 		}
-		if (draggedWidget != null) {
-			draggedWidget.render((Graphics2D) g);
+		if (this.draggedWidget != null) {
+			this.draggedWidget.render((Graphics2D) g);
 		}
 	}
 
@@ -234,21 +244,21 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
 	@Override
-	protected void paintComponent(Graphics g) {
+	protected void paintComponent(final Graphics g) {
 		// super.paintComponent(g);
-		Dimension d = this.getSize();
+		final Dimension d = this.getSize();
 		g.setColor(SystemColor.control);
 		g.fillRect(0, 0, d.width, d.height);
-		if (showGrid) {
-			g.setColor(getForeground());
-			for (int x = 0; x <= d.width; x += gridSize) {
-				for (int y = 0; y <= d.height; y += gridSize) {
+		if (this.showGrid) {
+			g.setColor(this.getForeground());
+			for (int x = 0; x <= d.width; x += this.gridSize) {
+				for (int y = 0; y <= d.height; y += this.gridSize) {
 					g.fillRect(x, y, 1, 1);
 				}
 			}
 		}
-		if (selection == null) {
-			g.setColor(getForeground());
+		if (this.selection == null) {
+			g.setColor(this.getForeground());
 			g.drawLine(0, d.height - 1, d.width - 1, d.height - 1);
 			g.drawLine(d.width - 1, 0, d.width - 1, d.height - 1);
 			g.fillRect(d.width - 4, d.height - 4, 4, 4);
@@ -262,8 +272,8 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 *            the p
 	 * @return the form widget
 	 */
-	public FormWidget findWidget(Point p) {
-		return findWidget(p, 0);
+	public FormWidget findWidget(final Point p) {
+		return this.findWidget(p, 0);
 	}
 
 	/**
@@ -275,16 +285,15 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 *            the d
 	 * @return the form widget
 	 */
-	public FormWidget findWidget(Point p, int d) {
-		for (FormWidget w : model.getWidgets()) {
-			Rectangle b = w.getBounds();
+	public FormWidget findWidget(final Point p, final int d) {
+		for (final FormWidget w : this.model.getWidgets()) {
+			final Rectangle b = w.getBounds();
 			b.height += 2 * d;
 			b.width += 2 * d;
 			b.x -= d;
 			b.y -= d;
-			if (b.contains(p)) {
+			if (b.contains(p))
 				return w;
-			}
 		}
 		return null;
 	}
@@ -296,10 +305,10 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 *            the p
 	 * @return the form widget
 	 */
-	public FormWidget findWidgetDeep(Point p) {
-		FormWidget w = findWidget(p);
-		if (w != null && w instanceof ContainerWidget) {
-			FormWidget cw = ((ContainerWidget) w).getWidgetByLocation(p);
+	public FormWidget findWidgetDeep(final Point p) {
+		final FormWidget w = this.findWidget(p);
+		if ((w != null) && (w instanceof ContainerWidget)) {
+			final FormWidget cw = ((ContainerWidget) w).getWidgetByLocation(p);
 			if (cw != null)
 				return cw;
 		}
@@ -312,14 +321,14 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseClicked(MouseEvent ev) {
+	public void mouseClicked(final MouseEvent ev) {
 		if (ev.getClickCount() == 2) {
 			System.out.println("Double click");
-			FormWidget fw = findWidgetDeep(ev.getPoint());
-			if (selection != null && selection.subject == fw
-					&& fw.getUi().getSubselection() != null) {
-				selection.subselect = fw.getUi().getSubselection();
-				updateUI();
+			final FormWidget fw = this.findWidgetDeep(ev.getPoint());
+			if ((this.selection != null) && (this.selection.subject == fw)
+					&& (fw.getUi().getSubselection() != null)) {
+				this.selection.subselect = fw.getUi().getSubselection();
+				this.updateUI();
 			}
 		}
 	}
@@ -330,7 +339,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @return the active area
 	 */
 	public FocusArea getActiveArea() {
-		return activeArea;
+		return this.activeArea;
 	}
 
 	/**
@@ -341,24 +350,24 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @param w
 	 *            the w
 	 */
-	public void dragOverEvent(Point p, FormWidget w) {
-		FormWidget container = findWidget(p);
+	public void dragOverEvent(final Point p, final FormWidget w) {
+		final FormWidget container = this.findWidget(p);
 		if (w.getParent() == container)
 			return;
-		if (container != null && container instanceof ContainerWidget
+		if ((container != null) && (container instanceof ContainerWidget)
 				&& ((ContainerWidget) container).doesAcceptWidget(w)) {
-			activeContainer = (ContainerWidget) container;
+			this.activeContainer = (ContainerWidget) container;
 		} else {
-			activeContainer = null;
+			this.activeContainer = null;
 		}
-		updateUI();
+		this.updateUI();
 	}
 
 	/**
 	 * Stop container highlight.
 	 */
 	public void stopContainerHighlight() {
-		activeContainer = null;
+		this.activeContainer = null;
 	}
 
 	/*
@@ -367,7 +376,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseEntered(MouseEvent ev) {
+	public void mouseEntered(final MouseEvent ev) {
 	}
 
 	/*
@@ -376,7 +385,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseExited(MouseEvent ev) {
+	public void mouseExited(final MouseEvent ev) {
 	}
 
 	/*
@@ -385,28 +394,29 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mousePressed(MouseEvent ev) {
-		selectedElement = findWidget(ev.getPoint(), 3);
+	public void mousePressed(final MouseEvent ev) {
+		this.selectedElement = this.findWidget(ev.getPoint(), 3);
 		AbstractContainerWidget container = null;
-		if (selectedElement != null) {
-			if (selectedElement instanceof ContainerWidget) {
-				FormWidget cw = ((ContainerWidget) selectedElement)
+		if (this.selectedElement != null) {
+			if (this.selectedElement instanceof ContainerWidget) {
+				final FormWidget cw = ((ContainerWidget) this.selectedElement)
 						.getWidgetByLocation(ev.getPoint());
 				if (cw != null) {
-					container = (AbstractContainerWidget) selectedElement;
-					selectedElement = cw;
+					container = (AbstractContainerWidget) this.selectedElement;
+					this.selectedElement = cw;
 				}
 			}
-			if (selection != null && selection.subject == selectedElement)
+			if ((this.selection != null)
+					&& (this.selection.subject == this.selectedElement))
 				return;
-			activeArea = new FocusArea(model, container, this);
-			setSelection(Arrays.asList(selectedElement));			
+			this.activeArea = new FocusArea(this.model, container, this);
+			this.setSelection(Arrays.asList(this.selectedElement));
 		} else {
-			setSelection(null);
-			activeContainer = null;
-			activeArea = new FocusArea(model, null, this);
+			this.setSelection(null);
+			this.activeContainer = null;
+			this.activeArea = new FocusArea(this.model, null, this);
 		}
-		updateUI();
+		this.updateUI();
 	}
 
 	/*
@@ -416,36 +426,39 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseReleased(MouseEvent ev) {
-		isResizeForm = false;
-		if (selection != null) {
-			FormWidget w = selection.subject;
-			if (draggedWidget != null) {
+	public void mouseReleased(final MouseEvent ev) {
+		this.isResizeForm = false;
+		if (this.selection != null) {
+			final FormWidget w = this.selection.subject;
+			if (this.draggedWidget != null) {
 				Point p = ev.getPoint();
-				p.translate(-selection.mouseOffset.x, -selection.mouseOffset.y);
-				p = translatePoint(p);
-				FormWidget container = findWidget(ev.getPoint());
-				if (container != null && container instanceof ContainerWidget
-						&& container != w) {
-					draggedWidget.finalize(p.x, p.y,
+				p.translate(-this.selection.mouseOffset.x,
+						-this.selection.mouseOffset.y);
+				p = this.translatePoint(p);
+				final FormWidget container = this.findWidget(ev.getPoint());
+				if ((container != null)
+						&& (container instanceof ContainerWidget)
+						&& (container != w)) {
+					this.draggedWidget.finalize(p.x, p.y,
 							(ContainerWidget) container);
-					activeArea = new FocusArea(model,
+					this.activeArea = new FocusArea(this.model,
 							(AbstractContainerWidget) container, this);
 				} else {
-					draggedWidget.finalize(p.x, p.y, null);
-					activeArea = new FocusArea(model, null, this);
+					this.draggedWidget.finalize(p.x, p.y, null);
+					this.activeArea = new FocusArea(this.model, null, this);
 				}
-				draggedWidget = null;
+				this.draggedWidget = null;
 			}
-			if (activeContainer != null && activeContainer != w.getParent()) {
-				stopContainerHighlight();
+			if ((this.activeContainer != null)
+					&& (this.activeContainer != w.getParent())) {
+				this.stopContainerHighlight();
 			}
-			selection.isMoving = false;
-			selection.isResizing = false;
-			selection.resizeDirection = -1;
-			activeContainer = null;
+			this.selection.isMoving = false;
+			this.selection.isResizing = false;
+			this.selection.resizeDirection = -1;
+			this.activeContainer = null;
 			this.setCursor(Cursor.getDefaultCursor());
-			updateUI();
+			this.updateUI();
 		}
 
 	}
@@ -458,110 +471,119 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * )
 	 */
 	@Override
-	public void mouseDragged(MouseEvent ev) {
+	public void mouseDragged(final MouseEvent ev) {
 		System.out.println("mouseDragged: " + ev.getPoint());
-		if (model.getWidth() - ev.getPoint().x <= 5
-				&& model.getHeight() - ev.getPoint().y <= 5) {
-			isResizeForm = true;
-		} else if (selection != null && !selection.isMoving
-				&& !selection.isResizing) {
-			Point p = ev.getPoint();
-			int dir = selection.getResizingDirection(p);
+		if (((this.model.getWidth() - ev.getPoint().x) <= 5)
+				&& ((this.model.getHeight() - ev.getPoint().y) <= 5)) {
+			this.isResizeForm = true;
+		} else if ((this.selection != null) && !this.selection.isMoving
+				&& !this.selection.isResizing) {
+			final Point p = ev.getPoint();
+			final int dir = this.selection.getResizingDirection(p);
 			if (dir >= 0) {
-				selection.isResizing = true;
-				selection.resizeDirection = dir;
+				this.selection.isResizing = true;
+				this.selection.resizeDirection = dir;
 			} else {
-				selection.isMoving = true;
-				Point mouse = activeArea.translatePoint(ev.getPoint());
-				draggedWidget = new DraggedWidget(selection.subject, model);
-				selection.mouseOffset = new Point(mouse.x
-						- selection.subject.getX(), mouse.y
-						- selection.subject.getY());
+				this.selection.isMoving = true;
+				final Point mouse = this.activeArea.translatePoint(ev
+						.getPoint());
+				this.draggedWidget = new DraggedWidget(this.selection.subject,
+						this.model);
+				this.selection.mouseOffset = new Point(mouse.x
+						- this.selection.subject.getX(), mouse.y
+						- this.selection.subject.getY());
 			}
 		}
-		if (isResizeForm) {
-			Point p = translatePoint(ev.getPoint());
-			if (model.getMinWidth() < p.x && model.getMinHeight() < p.y) {
-				model.setWidth(p.x);
-				model.setHeight(p.y);
+		if (this.isResizeForm) {
+			final Point p = this.translatePoint(ev.getPoint());
+			if ((this.model.getMinWidth() < p.x)
+					&& (this.model.getMinHeight() < p.y)) {
+				this.model.setWidth(p.x);
+				this.model.setHeight(p.y);
 			} else {
-				model.setWidth(model.getMinWidth() + 10);
-				model.setHeight(model.getMinHeight() + 10);
+				this.model.setWidth(this.model.getMinWidth() + 10);
+				this.model.setHeight(this.model.getMinHeight() + 10);
 			}
-			revalidate();
+			this.revalidate();
 		}
-		if (selection != null && selection.isMoving) {
-			Point mouse = ev.getPoint();
-			Point np = new Point(mouse.x - selection.mouseOffset.x, mouse.y
-					- selection.mouseOffset.y);
-			Point p = translatePoint(np);
-			if (p.x >= 0
-					&& p.x <= this.getWidth() - selection.subject.getWidth()
-							+ 40) {
-				draggedWidget.setX(p.x);
+		if ((this.selection != null) && this.selection.isMoving) {
+			final Point mouse = ev.getPoint();
+			final Point np = new Point(mouse.x - this.selection.mouseOffset.x,
+					mouse.y - this.selection.mouseOffset.y);
+			final Point p = this.translatePoint(np);
+			if ((p.x >= 0)
+					&& (p.x <= ((this.getWidth() - this.selection.subject
+							.getWidth()) + 40))) {
+				this.draggedWidget.setX(p.x);
 			}
-			if (p.y >= 0
-					&& p.y <= this.getHeight() - selection.subject.getHeight()
-							+ 40) {
-				draggedWidget.setY(p.y);
+			if ((p.y >= 0)
+					&& (p.y <= ((this.getHeight() - this.selection.subject
+							.getHeight()) + 40))) {
+				this.draggedWidget.setY(p.y);
 			}
-			model.recalculateDimensions(draggedWidget);
-			dragOverEvent(mouse, selection.subject);
-			updateUI();
+			this.model.recalculateDimensions(this.draggedWidget);
+			this.dragOverEvent(mouse, this.selection.subject);
+			this.updateUI();
 		}
-		if (selection != null && selection.isResizing) {
-			Point mouse = activeArea.translatePoint(translatePoint(ev
-					.getPoint()));
-			if (selection.subselect != null) {
-				Rectangle r = activeArea.translateRect(selection.subject
-						.getUi().getSubselection());
-				if (selection.resizeDirection == SelectionState.NORTH) {
-					int delta = r.y - mouse.y;
-					selection.subject.getUi().updateSubselectionSize(delta,
-							selection.resizeDirection);
-				} else if (selection.resizeDirection == SelectionState.EAST) {
-					int delta = mouse.x - r.x;
-					selection.subject.getUi().updateSubselectionSize(delta,
-							selection.resizeDirection);
-				} else if (selection.resizeDirection == SelectionState.SOUTH) {
-					int delta = mouse.y - r.y;
-					selection.subject.getUi().updateSubselectionSize(delta,
-							selection.resizeDirection);
-				} else if (selection.resizeDirection == SelectionState.WEST) {
-					int delta = r.x - mouse.x;
-					selection.subject.getUi().updateSubselectionSize(delta,
-							selection.resizeDirection);
+		if ((this.selection != null) && this.selection.isResizing) {
+			final Point mouse = this.activeArea.translatePoint(this
+					.translatePoint(ev.getPoint()));
+			if (this.selection.subselect != null) {
+				final Rectangle r = this.activeArea
+						.translateRect(this.selection.subject.getUi()
+								.getSubselection());
+				if (this.selection.resizeDirection == SelectionState.NORTH) {
+					final int delta = r.y - mouse.y;
+					this.selection.subject.getUi().updateSubselectionSize(
+							delta, this.selection.resizeDirection);
+				} else if (this.selection.resizeDirection == SelectionState.EAST) {
+					final int delta = mouse.x - r.x;
+					this.selection.subject.getUi().updateSubselectionSize(
+							delta, this.selection.resizeDirection);
+				} else if (this.selection.resizeDirection == SelectionState.SOUTH) {
+					final int delta = mouse.y - r.y;
+					this.selection.subject.getUi().updateSubselectionSize(
+							delta, this.selection.resizeDirection);
+				} else if (this.selection.resizeDirection == SelectionState.WEST) {
+					final int delta = r.x - mouse.x;
+					this.selection.subject.getUi().updateSubselectionSize(
+							delta, this.selection.resizeDirection);
 				}
-			} else if (selection.resizeDirection == SelectionState.NORTH) {
-				int delta = selection.subject.getY() - mouse.y;
-				int height = selection.subject.getHeight() + delta;
-				if (height > 0 && selection.subject.getY() - delta >= 0) {
-					selection.subject.setY(selection.subject.getY() - delta);
-					selection.subject.setHeight(height);
+			} else if (this.selection.resizeDirection == SelectionState.NORTH) {
+				final int delta = this.selection.subject.getY() - mouse.y;
+				final int height = this.selection.subject.getHeight() + delta;
+				if ((height > 0)
+						&& ((this.selection.subject.getY() - delta) >= 0)) {
+					this.selection.subject.setY(this.selection.subject.getY()
+							- delta);
+					this.selection.subject.setHeight(height);
 				}
-			} else if (selection.resizeDirection == SelectionState.EAST) {
-				int width = mouse.x - selection.subject.getX();
-				if (width > 0
-						&& selection.subject.getX() + width <= this.getWidth()) {
-					selection.subject.setWidth(width);
+			} else if (this.selection.resizeDirection == SelectionState.EAST) {
+				final int width = mouse.x - this.selection.subject.getX();
+				if ((width > 0)
+						&& ((this.selection.subject.getX() + width) <= this
+								.getWidth())) {
+					this.selection.subject.setWidth(width);
 				}
-			} else if (selection.resizeDirection == SelectionState.SOUTH) {
-				int height = mouse.y - selection.subject.getY();
-				if (height > 0
-						&& selection.subject.getY() + height <= this
-								.getHeight()) {
-					selection.subject.setHeight(height);
+			} else if (this.selection.resizeDirection == SelectionState.SOUTH) {
+				final int height = mouse.y - this.selection.subject.getY();
+				if ((height > 0)
+						&& ((this.selection.subject.getY() + height) <= this
+								.getHeight())) {
+					this.selection.subject.setHeight(height);
 				}
-			} else if (selection.resizeDirection == SelectionState.WEST) {
-				int delta = selection.subject.getX() - mouse.x;
-				int width = selection.subject.getWidth() + delta;
-				if (width > 0 && selection.subject.getX() - delta >= 0) {
-					selection.subject.setX(selection.subject.getX() - delta);
-					selection.subject.setWidth(width);
+			} else if (this.selection.resizeDirection == SelectionState.WEST) {
+				final int delta = this.selection.subject.getX() - mouse.x;
+				final int width = this.selection.subject.getWidth() + delta;
+				if ((width > 0)
+						&& ((this.selection.subject.getX() - delta) >= 0)) {
+					this.selection.subject.setX(this.selection.subject.getX()
+							- delta);
+					this.selection.subject.setWidth(width);
 				}
 			}
-			model.recalculateDimensions(selection.subject);
-			updateUI();
+			this.model.recalculateDimensions(this.selection.subject);
+			this.updateUI();
 		}
 	}
 
@@ -572,10 +594,10 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseMoved(MouseEvent ev) {
+	public void mouseMoved(final MouseEvent ev) {
 
-		if (selection != null) {
-			int rdir = selection.getResizingDirection(ev.getPoint());
+		if (this.selection != null) {
+			final int rdir = this.selection.getResizingDirection(ev.getPoint());
 			if (rdir >= 0) {
 				if (rdir == SelectionState.NORTH) {
 					this.setCursor(Cursor
@@ -590,7 +612,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 					this.setCursor(Cursor
 							.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
 				}
-			} else if (selection.subject == findWidget(ev.getPoint())) {
+			} else if (this.selection.subject == this.findWidget(ev.getPoint())) {
 				this.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			} else {
 				this.setCursor(Cursor.getDefaultCursor());
@@ -609,14 +631,14 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * .model.Signal)
 	 */
 	@Override
-	public void signalReceived(Signal s) {
+	public void signalReceived(final Signal s) {
 		if (s instanceof PropertyUpdatedSignal) {
-			updateUI();
+			this.updateUI();
 		} else if (s instanceof WidgetTemplateSignal) {
 
-		} else if(s instanceof SelectionChangedSignal) {
-			setSelection(((SelectionChangedSignal) s).getSelection());
-			updateUI();
+		} else if (s instanceof SelectionChangedSignal) {
+			this.setSelection(((SelectionChangedSignal) s).getSelection());
+			this.updateUI();
 		}
 	}
 
@@ -627,7 +649,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(model.getWidth(), model.getHeight());
+		return new Dimension(this.model.getWidth(), this.model.getHeight());
 	}
 
 	/*
@@ -637,7 +659,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 */
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
-		return getPreferredSize();
+		return this.getPreferredSize();
 	}
 
 	/*
@@ -648,13 +670,12 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * int, int)
 	 */
 	@Override
-	public int getScrollableBlockIncrement(Rectangle view, int orientation,
-			int direction) {
-		if (orientation == SwingConstants.HORIZONTAL) {
+	public int getScrollableBlockIncrement(final Rectangle view,
+			final int orientation, final int direction) {
+		if (orientation == SwingConstants.HORIZONTAL)
 			return view.width - 20;
-		} else {
+		else
 			return view.height - 20;
-		}
 	}
 
 	/*
@@ -685,7 +706,8 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * int, int)
 	 */
 	@Override
-	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
+	public int getScrollableUnitIncrement(final Rectangle arg0, final int arg1,
+			final int arg2) {
 		return 10;
 	}
 
@@ -695,7 +717,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @return true, if is show grid
 	 */
 	public boolean isShowGrid() {
-		return showGrid;
+		return this.showGrid;
 	}
 
 	/**
@@ -704,7 +726,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @param showGrid
 	 *            the new show grid
 	 */
-	public void setShowGrid(boolean showGrid) {
+	public void setShowGrid(final boolean showGrid) {
 		this.showGrid = showGrid;
 	}
 
@@ -714,7 +736,7 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @return the grid size
 	 */
 	public int getGridSize() {
-		return gridSize;
+		return this.gridSize;
 	}
 
 	/**
@@ -723,29 +745,30 @@ public class FormCanvas extends JPanel implements MouseListener,
 	 * @param gridSize
 	 *            the new grid size
 	 */
-	public void setGridSize(int gridSize) {
+	public void setGridSize(final int gridSize) {
 		this.gridSize = gridSize;
 	}
-	
+
 	/**
 	 * Set a new selection
 	 * 
-	 * @param newSelection the elements going to be selected
+	 * @param newSelection
+	 *            the elements going to be selected
 	 */
-	protected void setSelection(List<FormWidget> newSelection) {
-		SelectionChangedSignal s = new SelectionChangedSignal();
-		if(newSelection == null || newSelection.size() == 0) {
-			selection = null;
+	protected void setSelection(final List<FormWidget> newSelection) {
+		final SelectionChangedSignal s = new SelectionChangedSignal();
+		if ((newSelection == null) || (newSelection.size() == 0)) {
+			this.selection = null;
 			s.setSelection(null);
 		} else {
-			selection = new SelectionState(this);
-			selection.subject = newSelection.get(0);
-			
+			this.selection = new SelectionState(this);
+			this.selection.subject = newSelection.get(0);
+
 			s.setSelection(new ArrayList<FormWidget>());
-			s.getSelection().add(selection.subject);
+			s.getSelection().add(this.selection.subject);
 		}
 		s.setSource(this);
-		SignalManager.getInstance().sendSignal(s, "formCanvas");		
+		SignalManager.getInstance().sendSignal(s, "formCanvas");
 	}
 
 }

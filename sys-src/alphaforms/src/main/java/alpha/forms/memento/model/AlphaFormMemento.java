@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -53,14 +54,14 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 */
 	@Override
 	public String getXML() {
-		List<WidgetMemento> widgetMementoList = new ArrayList<WidgetMemento>();
-		for (FormWidget w : widgets) {
+		final List<WidgetMemento> widgetMementoList = new ArrayList<WidgetMemento>();
+		for (final FormWidget w : this.widgets) {
 			if (w instanceof MementoOriginator) {
-				MementoOriginator o = (MementoOriginator) w;
+				final MementoOriginator o = (MementoOriginator) w;
 				widgetMementoList.add(o.createWidgetMemento());
 			}
 		}
-		return compileXML(widgetMementoList, null, null);
+		return this.compileXML(widgetMementoList, null, null);
 	}
 
 	/**
@@ -70,17 +71,20 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 *            the state
 	 * @return the xML
 	 */
-	public String getXML(String state) {
-		List<WidgetMemento> widgetMementoList = widgetStates.get(state);
-		List<DynamicAttributeMemento> deltaList = getAttributeDelta(state);
-		List<ValueMemento> valueList = new ArrayList<ValueMemento>();
-		for (FormWidget w : widgets) {
-			MementoOriginator o = (MementoOriginator) w;
-			ValueMemento vm = o.createValueMemento();
-			if (vm != null)
+	public String getXML(final String state) {
+		final List<WidgetMemento> widgetMementoList = this.widgetStates
+				.get(state);
+		final List<DynamicAttributeMemento> deltaList = this
+				.getAttributeDelta(state);
+		final List<ValueMemento> valueList = new ArrayList<ValueMemento>();
+		for (final FormWidget w : this.widgets) {
+			final MementoOriginator o = (MementoOriginator) w;
+			final ValueMemento vm = o.createValueMemento();
+			if (vm != null) {
 				valueList.add(vm);
+			}
 		}
-		return compileXML(widgetMementoList, deltaList, valueList);
+		return this.compileXML(widgetMementoList, deltaList, valueList);
 	}
 
 	/**
@@ -94,21 +98,21 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 *            the value list
 	 * @return the string
 	 */
-	protected String compileXML(List<WidgetMemento> widgetList,
-			List<DynamicAttributeMemento> deltaList,
-			List<ValueMemento> valueList) {
-		StringBuilder out = new StringBuilder();
-		out.append(new XMLFragment(new XMLFragment(title).wrapIn("title"))
+	protected String compileXML(final List<WidgetMemento> widgetList,
+			final List<DynamicAttributeMemento> deltaList,
+			final List<ValueMemento> valueList) {
+		final StringBuilder out = new StringBuilder();
+		out.append(new XMLFragment(new XMLFragment(this.title).wrapIn("title"))
 				.wrapIn("meta"));
 		String pbox = "";
-		for (WidgetMemento wm : widgetList) {
+		for (final WidgetMemento wm : widgetList) {
 			pbox += wm.getXML();
 		}
 		out.append(new XMLFragment(pbox).wrapIn("pbox"));
 
 		if (deltaList != null) {
 			String sbox = "";
-			for (DynamicAttributeMemento dam : deltaList) {
+			for (final DynamicAttributeMemento dam : deltaList) {
 				sbox += dam.getXML();
 			}
 			out.append(new XMLFragment(sbox).wrapIn("sbox"));
@@ -116,7 +120,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 
 		if (valueList != null) {
 			String vbox = "";
-			for (ValueMemento vm : valueList) {
+			for (final ValueMemento vm : valueList) {
 				vbox += vm.getXML();
 			}
 			out.append(new XMLFragment(vbox).wrapIn("vbox"));
@@ -124,7 +128,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 
 		return "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
 				+ new XMLFragment(out.toString()).wrapIn("alphaForm")
-						.withAttributes(attributes);
+						.withAttributes(this.attributes);
 	}
 
 	/*
@@ -135,53 +139,55 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * .util.xml.XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
+	public void loadXML(final XMLDocumentSection xml) {
 		if (xml.getSectionName().equals("alphaForm")) {
-			XMLDocumentSection metaSection = xml.getSingleSection("meta[1]");
+			final XMLDocumentSection metaSection = xml
+					.getSingleSection("meta[1]");
 			if (metaSection != null) {
-				title = metaSection.getNodeValue("title");
+				this.title = metaSection.getNodeValue("title");
 			}
-			for (Entry<String, String> e : xml.getAttributes().entrySet()) {
-				attributes.put(e.getKey(), e.getValue());
+			for (final Entry<String, String> e : xml.getAttributes().entrySet()) {
+				this.attributes.put(e.getKey(), e.getValue());
 			}
-			List<XMLDocumentSection> widgetSectionList = xml
+			final List<XMLDocumentSection> widgetSectionList = xml
 					.getDocumentSections("pbox/widget");
-			for (XMLDocumentSection widgetSection : widgetSectionList) {
-				String widgetName = widgetSection.getAttribute("name");
-				String widgetClass = widgetSection.getAttribute("type");
-				FormWidget w = WidgetFactory.createWidget(widgetClass,
+			for (final XMLDocumentSection widgetSection : widgetSectionList) {
+				final String widgetName = widgetSection.getAttribute("name");
+				final String widgetClass = widgetSection.getAttribute("type");
+				final FormWidget w = WidgetFactory.createWidget(widgetClass,
 						widgetName);
 
-				WidgetMemento m = ((MementoOriginator) w).createWidgetMemento();
+				final WidgetMemento m = ((MementoOriginator) w)
+						.createWidgetMemento();
 				m.loadXML(widgetSection);
 
 				((MementoOriginator) w).setWidgetMemento(m);
-				widgets.add(w);
+				this.widgets.add(w);
 			}
-			XMLDocumentSection xmlSBox = xml.getSingleSection("sbox");
+			final XMLDocumentSection xmlSBox = xml.getSingleSection("sbox");
 			if (xmlSBox != null) {
-				List<XMLDocumentSection> sboxList = xmlSBox
+				final List<XMLDocumentSection> sboxList = xmlSBox
 						.getDocumentSections("smemento");
-				for (XMLDocumentSection smem : sboxList) {
-					String wname = smem.getAttribute("for");
-					FormWidget w = getWidgetByName(wname);
+				for (final XMLDocumentSection smem : sboxList) {
+					final String wname = smem.getAttribute("for");
+					final FormWidget w = this.getWidgetByName(wname);
 					if (w != null) {
-						DynamicAttributeMemento m = new DynamicAttributeMemento();
+						final DynamicAttributeMemento m = new DynamicAttributeMemento();
 						m.loadXML(smem);
 						((MementoOriginator) w).setDynamicMemento(m);
 					}
 				}
 
 			}
-			XMLDocumentSection xmlVBox = xml.getSingleSection("vbox");
+			final XMLDocumentSection xmlVBox = xml.getSingleSection("vbox");
 			if (xmlVBox != null) {
-				List<XMLDocumentSection> vboxList = xmlVBox
+				final List<XMLDocumentSection> vboxList = xmlVBox
 						.getDocumentSections("vmemento");
-				for (XMLDocumentSection vmem : vboxList) {
-					String wname = vmem.getAttribute("for");
-					FormWidget w = getWidgetByName(wname);
+				for (final XMLDocumentSection vmem : vboxList) {
+					final String wname = vmem.getAttribute("for");
+					final FormWidget w = this.getWidgetByName(wname);
 					if (w != null) {
-						ValueMemento m = ((MementoOriginator) w)
+						final ValueMemento m = ((MementoOriginator) w)
 								.createValueMemento();
 						m.loadXML(vmem);
 						((MementoOriginator) w).setValueMemento(m);
@@ -198,7 +204,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @return the title
 	 */
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	/**
@@ -207,7 +213,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @param title
 	 *            the new title
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -219,8 +225,8 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @param value
 	 *            the value
 	 */
-	public void setAttribute(String key, Object value) {
-		attributes.put(key, value);
+	public void setAttribute(final String key, final Object value) {
+		this.attributes.put(key, value);
 	}
 
 	/**
@@ -230,8 +236,8 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 *            the key
 	 * @return the attribute
 	 */
-	public Object getAttribute(String key) {
-		return attributes.get(key);
+	public Object getAttribute(final String key) {
+		return this.attributes.get(key);
 	}
 
 	/**
@@ -240,7 +246,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @return the attributes
 	 */
 	public Map<String, Object> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	/**
@@ -249,7 +255,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @return the widgets
 	 */
 	public List<FormWidget> getWidgets() {
-		return widgets;
+		return this.widgets;
 	}
 
 	/**
@@ -258,7 +264,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @param widgets
 	 *            the new widgets
 	 */
-	public void setWidgets(List<FormWidget> widgets) {
+	public void setWidgets(final List<FormWidget> widgets) {
 		this.widgets = widgets;
 	}
 
@@ -269,11 +275,10 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 *            the name
 	 * @return the widget by name
 	 */
-	protected FormWidget getWidgetByName(String name) {
-		for (FormWidget w : widgets) {
-			if (w.getName().equals(name)) {
+	protected FormWidget getWidgetByName(final String name) {
+		for (final FormWidget w : this.widgets) {
+			if (w.getName().equals(name))
 				return w;
-			}
 		}
 		return null;
 	}
@@ -284,7 +289,7 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @return the widget states
 	 */
 	public Map<String, List<WidgetMemento>> getWidgetStates() {
-		return widgetStates;
+		return this.widgetStates;
 	}
 
 	/**
@@ -293,7 +298,8 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 * @param widgetStates
 	 *            the widget states
 	 */
-	public void setWidgetStates(Map<String, List<WidgetMemento>> widgetStates) {
+	public void setWidgetStates(
+			final Map<String, List<WidgetMemento>> widgetStates) {
 		this.widgetStates = widgetStates;
 	}
 
@@ -305,18 +311,20 @@ public class AlphaFormMemento implements XMLSerializeableMemento {
 	 *            identifier for the state against which the delta is calculated
 	 * @return list of DynamicAttributeMemento objects
 	 */
-	public List<DynamicAttributeMemento> getAttributeDelta(String name) {
-		List<WidgetMemento> oldList = widgetStates.get(name);
-		List<DynamicAttributeMemento> deltaList = new ArrayList<DynamicAttributeMemento>();
-		for (FormWidget w : widgets) {
-			WidgetMemento mCur = ((MementoOriginator) w).createWidgetMemento();
-			for (WidgetMemento mOld : oldList) {
+	public List<DynamicAttributeMemento> getAttributeDelta(final String name) {
+		final List<WidgetMemento> oldList = this.widgetStates.get(name);
+		final List<DynamicAttributeMemento> deltaList = new ArrayList<DynamicAttributeMemento>();
+		for (final FormWidget w : this.widgets) {
+			final WidgetMemento mCur = ((MementoOriginator) w)
+					.createWidgetMemento();
+			for (final WidgetMemento mOld : oldList) {
 				if (mCur.getName().equals(mOld.getName())) {
-					DynamicAttributeMemento delta = new DynamicAttributeMemento();
+					final DynamicAttributeMemento delta = new DynamicAttributeMemento();
 					delta.setName(mCur.getName());
-					Map<String, Object> mCurAttributes = mCur.getAttributes();
-					for (Entry<String, Object> eOld : mOld.getAttributes()
-							.entrySet()) {
+					final Map<String, Object> mCurAttributes = mCur
+							.getAttributes();
+					for (final Entry<String, Object> eOld : mOld
+							.getAttributes().entrySet()) {
 						if (!eOld.getValue().equals(
 								mCurAttributes.get(eOld.getKey()))) {
 							delta.addAttribute(eOld.getKey(),

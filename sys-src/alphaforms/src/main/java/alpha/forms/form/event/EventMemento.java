@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -30,7 +31,7 @@ import alpha.forms.util.xml.XMLDocumentSection;
 public class EventMemento implements XMLSerializeableMemento {
 
 	/** The actions. */
-	private List<ActionMemento> actions = new ArrayList<ActionMemento>();
+	private final List<ActionMemento> actions = new ArrayList<ActionMemento>();
 
 	/** The event name. */
 	private String eventName;
@@ -41,7 +42,7 @@ public class EventMemento implements XMLSerializeableMemento {
 	 * @return the event name
 	 */
 	public String getEventName() {
-		return eventName;
+		return this.eventName;
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class EventMemento implements XMLSerializeableMemento {
 	 * @param eventName
 	 *            the new event name
 	 */
-	public void setEventName(String eventName) {
+	public void setEventName(final String eventName) {
 		this.eventName = eventName;
 	}
 
@@ -60,7 +61,7 @@ public class EventMemento implements XMLSerializeableMemento {
 	 * @return the actions
 	 */
 	public List<ActionMemento> getActions() {
-		return actions;
+		return this.actions;
 	}
 
 	/**
@@ -69,8 +70,8 @@ public class EventMemento implements XMLSerializeableMemento {
 	 * @param m
 	 *            the m
 	 */
-	public void addAction(ActionMemento m) {
-		actions.add(m);
+	public void addAction(final ActionMemento m) {
+		this.actions.add(m);
 	}
 
 	/*
@@ -80,11 +81,11 @@ public class EventMemento implements XMLSerializeableMemento {
 	 */
 	@Override
 	public String getXML() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<event name=\"").append(eventName).append("\"");
-		if (actions.size() > 0) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("<event name=\"").append(this.eventName).append("\"");
+		if (this.actions.size() > 0) {
 			sb.append(">");
-			for (ActionMemento m : actions) {
+			for (final ActionMemento m : this.actions) {
 				sb.append(m.getXML());
 			}
 			sb.append("</event>");
@@ -102,14 +103,14 @@ public class EventMemento implements XMLSerializeableMemento {
 	 * .util.xml.XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
-		eventName = xml.getAttribute("name");
-		List<XMLDocumentSection> xmlActionList = xml
+	public void loadXML(final XMLDocumentSection xml) {
+		this.eventName = xml.getAttribute("name");
+		final List<XMLDocumentSection> xmlActionList = xml
 				.getDocumentSections("action");
-		for (XMLDocumentSection xmlAction : xmlActionList) {
-			ActionMemento m = new ActionMemento();
+		for (final XMLDocumentSection xmlAction : xmlActionList) {
+			final ActionMemento m = new ActionMemento();
 			m.loadXML(xmlAction);
-			actions.add(m);
+			this.actions.add(m);
 		}
 	}
 

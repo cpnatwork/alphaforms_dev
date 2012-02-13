@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -46,19 +47,19 @@ public class FormPopupMenu extends JPopupMenu {
 	private static final long serialVersionUID = 1L;
 
 	/** The form. */
-	private AlphaForm form;
+	private final AlphaForm form;
 
 	/** The canvas. */
-	private FormCanvas canvas;
+	private final FormCanvas canvas;
 
 	/** The widget. */
 	private FormWidget widget;
 
 	/** The delete widget. */
-	private DeleteWidgetAction deleteWidget;
+	private final DeleteWidgetAction deleteWidget;
 
 	/** The save template. */
-	private SaveAsTemplateAction saveTemplate;
+	private final SaveAsTemplateAction saveTemplate;
 
 	/**
 	 * Instantiates a new form popup menu.
@@ -68,39 +69,40 @@ public class FormPopupMenu extends JPopupMenu {
 	 * @param canvas
 	 *            the canvas
 	 */
-	public FormPopupMenu(AlphaForm form, FormCanvas canvas) {
+	public FormPopupMenu(final AlphaForm form, final FormCanvas canvas) {
 		this.form = form;
 		this.canvas = canvas;
-		deleteWidget = new DeleteWidgetAction("Delete Widget", form, canvas);
-		JMenuItem deleteWidgetItem = new JMenuItem(deleteWidget);
-		this.add(deleteWidgetItem);
-		saveTemplate = new SaveAsTemplateAction("Save as Template...", form,
+		this.deleteWidget = new DeleteWidgetAction("Delete Widget", form,
 				canvas);
-		JMenuItem saveTemplateItem = new JMenuItem(saveTemplate);
+		final JMenuItem deleteWidgetItem = new JMenuItem(this.deleteWidget);
+		this.add(deleteWidgetItem);
+		this.saveTemplate = new SaveAsTemplateAction("Save as Template...",
+				form, canvas);
+		final JMenuItem saveTemplateItem = new JMenuItem(this.saveTemplate);
 		this.add(saveTemplateItem);
 		this.addSeparator();
-		JMenuItem shrinkForm = new JMenuItem(new ShrinkToFitAction(
+		final JMenuItem shrinkForm = new JMenuItem(new ShrinkToFitAction(
 				"Shrink To Fit", form, canvas));
 		this.add(shrinkForm);
 		this.addSeparator();
-		JCheckBoxMenuItem toggleGrid = new JCheckBoxMenuItem(
+		final JCheckBoxMenuItem toggleGrid = new JCheckBoxMenuItem(
 				new ToggleGridAction("Show Grid", form, canvas));
 		this.add(toggleGrid);
-		JMenu gridSizeMenu = new JMenu("Grid Size");
-		ButtonGroup gridSizeGroup = new ButtonGroup();
-		JRadioButtonMenuItem gridSize5 = new JRadioButtonMenuItem(
+		final JMenu gridSizeMenu = new JMenu("Grid Size");
+		final ButtonGroup gridSizeGroup = new ButtonGroup();
+		final JRadioButtonMenuItem gridSize5 = new JRadioButtonMenuItem(
 				new ChangeGridSizeAction("5x5 Pixels", 5, form, canvas));
 		gridSizeMenu.add(gridSize5);
 		gridSizeGroup.add(gridSize5);
-		JRadioButtonMenuItem gridSize10 = new JRadioButtonMenuItem(
+		final JRadioButtonMenuItem gridSize10 = new JRadioButtonMenuItem(
 				new ChangeGridSizeAction("10x10 Pixels", 10, form, canvas));
 		gridSizeMenu.add(gridSize10);
 		gridSizeGroup.add(gridSize10);
-		JRadioButtonMenuItem gridSize15 = new JRadioButtonMenuItem(
+		final JRadioButtonMenuItem gridSize15 = new JRadioButtonMenuItem(
 				new ChangeGridSizeAction("15x15 Pixels", 15, form, canvas));
 		gridSizeMenu.add(gridSize15);
 		gridSizeGroup.add(gridSize15);
-		JRadioButtonMenuItem gridSize20 = new JRadioButtonMenuItem(
+		final JRadioButtonMenuItem gridSize20 = new JRadioButtonMenuItem(
 				new ChangeGridSizeAction("20x20 Pixels", 20, form, canvas));
 		gridSizeMenu.add(gridSize20);
 		gridSizeGroup.add(gridSize20);
@@ -114,11 +116,11 @@ public class FormPopupMenu extends JPopupMenu {
 	 * @see javax.swing.JPopupMenu#show(java.awt.Component, int, int)
 	 */
 	@Override
-	public void show(Component cmp, int x, int y) {
-		widget = canvas.findWidgetDeep(new Point(x, y));
+	public void show(final Component cmp, final int x, final int y) {
+		this.widget = this.canvas.findWidgetDeep(new Point(x, y));
 
-		deleteWidget.setWidget(widget);
-		saveTemplate.setEnabled(widget != null);
+		this.deleteWidget.setWidget(this.widget);
+		this.saveTemplate.setEnabled(this.widget != null);
 		super.show(cmp, x, y);
 	}
 

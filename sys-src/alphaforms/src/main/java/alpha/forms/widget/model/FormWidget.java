@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -105,23 +106,24 @@ public abstract class FormWidget {
 	 * @param name
 	 *            the name
 	 */
-	public FormWidget(String name) {
-		AlphaForm form = AlphaFormProvider.getForm();
+	public FormWidget(final String name) {
+		final AlphaForm form = AlphaFormProvider.getForm();
 		if (form != null) {
 			try {
 				this.name = form.checkName(name);
-			} catch (WidgetNameExistsException e) {
+			} catch (final WidgetNameExistsException e) {
 				this.name = WidgetNameGenerator.getName(this);
 			}
 		}
-		onCommitChange = EventFactory.getInstance().createDefaultEvent(this);
-		onCreate = EventFactory.getInstance().createDefaultEvent(this);
-		onValidation = EventFactory.getInstance().createDefaultEvent(this);
-		onValidationSuccess = EventFactory.getInstance().createDefaultEvent(
+		this.onCommitChange = EventFactory.getInstance().createDefaultEvent(
 				this);
-		onValidationFailure = EventFactory.getInstance().createDefaultEvent(
-				this);
-		onSave = EventFactory.getInstance().createDefaultEvent(this);
+		this.onCreate = EventFactory.getInstance().createDefaultEvent(this);
+		this.onValidation = EventFactory.getInstance().createDefaultEvent(this);
+		this.onValidationSuccess = EventFactory.getInstance()
+				.createDefaultEvent(this);
+		this.onValidationFailure = EventFactory.getInstance()
+				.createDefaultEvent(this);
+		this.onSave = EventFactory.getInstance().createDefaultEvent(this);
 	}
 
 	/**
@@ -139,7 +141,7 @@ public abstract class FormWidget {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -148,8 +150,8 @@ public abstract class FormWidget {
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) throws WidgetNameExistsException {
-		AlphaForm form = AlphaFormProvider.getForm();
+	public void setName(final String name) throws WidgetNameExistsException {
+		final AlphaForm form = AlphaFormProvider.getForm();
 		this.name = form.checkName(name, this);
 	}
 
@@ -159,7 +161,7 @@ public abstract class FormWidget {
 	 * @return the x
 	 */
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	/**
@@ -168,9 +170,9 @@ public abstract class FormWidget {
 	 * @param x
 	 *            the new x
 	 */
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
-		updateUI();
+		this.updateUI();
 	}
 
 	/**
@@ -179,7 +181,7 @@ public abstract class FormWidget {
 	 * @return the y
 	 */
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	/**
@@ -188,9 +190,9 @@ public abstract class FormWidget {
 	 * @param y
 	 *            the new y
 	 */
-	public void setY(int y) {
+	public void setY(final int y) {
 		this.y = y;
-		updateUI();
+		this.updateUI();
 	}
 
 	/**
@@ -199,7 +201,7 @@ public abstract class FormWidget {
 	 * @return the width
 	 */
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	/**
@@ -208,9 +210,9 @@ public abstract class FormWidget {
 	 * @param width
 	 *            the new width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
-		updateUI();
+		this.updateUI();
 	}
 
 	/**
@@ -219,7 +221,7 @@ public abstract class FormWidget {
 	 * @return the height
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -228,9 +230,9 @@ public abstract class FormWidget {
 	 * @param height
 	 *            the new height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
-		updateUI();
+		this.updateUI();
 	}
 
 	/**
@@ -239,7 +241,7 @@ public abstract class FormWidget {
 	 * @return the ui
 	 */
 	public FormWidgetUI getUi() {
-		return ui;
+		return this.ui;
 	}
 
 	/**
@@ -248,9 +250,9 @@ public abstract class FormWidget {
 	 * @param ui
 	 *            the new ui
 	 */
-	public void setUi(FormWidgetUI ui) {
+	public void setUi(final FormWidgetUI ui) {
 		this.ui = ui;
-		updateUI();
+		this.updateUI();
 	}
 
 	/**
@@ -259,7 +261,7 @@ public abstract class FormWidget {
 	 * @return the parent
 	 */
 	public FormWidget getParent() {
-		return parent;
+		return this.parent;
 	}
 
 	/**
@@ -268,7 +270,7 @@ public abstract class FormWidget {
 	 * @param parent
 	 *            the new parent
 	 */
-	public void setParent(FormWidget parent) {
+	public void setParent(final FormWidget parent) {
 		this.parent = parent;
 	}
 
@@ -278,7 +280,7 @@ public abstract class FormWidget {
 	 * @return true, if is visible
 	 */
 	public boolean isVisible() {
-		return visible;
+		return this.visible;
 	}
 
 	/**
@@ -287,9 +289,9 @@ public abstract class FormWidget {
 	 * @param visible
 	 *            the new visible
 	 */
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		this.visible = visible;
-		ui.doLayout();
+		this.ui.doLayout();
 	}
 
 	/**
@@ -318,10 +320,10 @@ public abstract class FormWidget {
 	 * @param height
 	 *            the height
 	 */
-	public void setSize(int width, int height) {
+	public void setSize(final int width, final int height) {
 		this.width = width;
 		this.height = height;
-		ui.doLayout();
+		this.ui.doLayout();
 	}
 
 	/**
@@ -330,7 +332,7 @@ public abstract class FormWidget {
 	 * @return the size
 	 */
 	public Dimension getSize() {
-		return new Dimension(width, height);
+		return new Dimension(this.width, this.height);
 	}
 
 	/**
@@ -339,7 +341,7 @@ public abstract class FormWidget {
 	 * @return the validators
 	 */
 	public ValidatorGroup getValidators() {
-		return validators;
+		return this.validators;
 	}
 
 	/**
@@ -348,7 +350,7 @@ public abstract class FormWidget {
 	 * @param validators
 	 *            the new validators
 	 */
-	public void setValidators(ValidatorGroup validators) {
+	public void setValidators(final ValidatorGroup validators) {
 		this.validators = validators;
 	}
 
@@ -358,7 +360,7 @@ public abstract class FormWidget {
 	 * @return the bounds
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, width, height);
+		return new Rectangle(this.x, this.y, this.width, this.height);
 	}
 
 	/**
@@ -377,19 +379,19 @@ public abstract class FormWidget {
 	 *            the value
 	 * @return the sets the
 	 */
-	protected Set<ValidationFailure> validateValue(Object value) {
-		ValidationContext ctx = new ValidationContextImpl(
+	protected Set<ValidationFailure> validateValue(final Object value) {
+		final ValidationContext ctx = new ValidationContextImpl(
 				AlphaFormProvider.getForm(), this);
-		return validators.validateAll(ctx, value);
+		return this.validators.validateAll(ctx, value);
 	}
 
 	/**
 	 * Update ui.
 	 */
 	protected void updateUI() {
-		ui.setSize(new Dimension(width, height));
-		ui.setLocation(x, y);
-		ui.updateUI();
+		this.ui.setSize(new Dimension(this.width, this.height));
+		this.ui.setLocation(this.x, this.y);
+		this.ui.updateUI();
 	}
 
 	/**
@@ -398,7 +400,7 @@ public abstract class FormWidget {
 	 * @return the on commit change
 	 */
 	public Event getOnCommitChange() {
-		return onCommitChange;
+		return this.onCommitChange;
 	}
 
 	/**
@@ -407,7 +409,7 @@ public abstract class FormWidget {
 	 * @param onCommitChange
 	 *            the new on commit change
 	 */
-	public void setOnCommitChange(Event onCommitChange) {
+	public void setOnCommitChange(final Event onCommitChange) {
 		this.onCommitChange = onCommitChange;
 	}
 
@@ -417,7 +419,7 @@ public abstract class FormWidget {
 	 * @return the on create
 	 */
 	public Event getOnCreate() {
-		return onCreate;
+		return this.onCreate;
 	}
 
 	/**
@@ -426,7 +428,7 @@ public abstract class FormWidget {
 	 * @param onCreate
 	 *            the new on create
 	 */
-	public void setOnCreate(Event onCreate) {
+	public void setOnCreate(final Event onCreate) {
 		this.onCreate = onCreate;
 	}
 
@@ -436,7 +438,7 @@ public abstract class FormWidget {
 	 * @return the on validation
 	 */
 	public Event getOnValidation() {
-		return onValidation;
+		return this.onValidation;
 	}
 
 	/**
@@ -445,7 +447,7 @@ public abstract class FormWidget {
 	 * @param onValidation
 	 *            the new on validation
 	 */
-	public void setOnValidation(Event onValidation) {
+	public void setOnValidation(final Event onValidation) {
 		this.onValidation = onValidation;
 	}
 
@@ -455,7 +457,7 @@ public abstract class FormWidget {
 	 * @return the on validation success
 	 */
 	public Event getOnValidationSuccess() {
-		return onValidationSuccess;
+		return this.onValidationSuccess;
 	}
 
 	/**
@@ -464,7 +466,7 @@ public abstract class FormWidget {
 	 * @param onValidationSuccess
 	 *            the new on validation success
 	 */
-	public void setOnValidationSuccess(Event onValidationSuccess) {
+	public void setOnValidationSuccess(final Event onValidationSuccess) {
 		this.onValidationSuccess = onValidationSuccess;
 	}
 
@@ -474,7 +476,7 @@ public abstract class FormWidget {
 	 * @return the on validation failure
 	 */
 	public Event getOnValidationFailure() {
-		return onValidationFailure;
+		return this.onValidationFailure;
 	}
 
 	/**
@@ -483,7 +485,7 @@ public abstract class FormWidget {
 	 * @param onValidationFailure
 	 *            the new on validation failure
 	 */
-	public void setOnValidationFailure(Event onValidationFailure) {
+	public void setOnValidationFailure(final Event onValidationFailure) {
 		this.onValidationFailure = onValidationFailure;
 	}
 
@@ -493,7 +495,7 @@ public abstract class FormWidget {
 	 * @return the on save
 	 */
 	public Event getOnSave() {
-		return onSave;
+		return this.onSave;
 	}
 
 	/**
@@ -502,7 +504,7 @@ public abstract class FormWidget {
 	 * @param onSave
 	 *            the new on save
 	 */
-	public void setOnSave(Event onSave) {
+	public void setOnSave(final Event onSave) {
 		this.onSave = onSave;
 	}
 

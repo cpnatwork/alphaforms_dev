@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -35,10 +36,10 @@ public class InfoPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/** The title. */
-	private JLabel title;
+	private final JLabel title;
 
 	/** The description. */
-	private JLabel description;
+	private final JLabel description;
 
 	/**
 	 * Instantiates a new info panel.
@@ -46,11 +47,11 @@ public class InfoPanel extends JPanel {
 	public InfoPanel() {
 		this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		this.setLayout(new GridLayout(2, 1, 4, 4));
-		title = new JLabel();
-		title.setFont(title.getFont().deriveFont(15.0f));
-		description = new JLabel();
-		this.add(title);
-		this.add(description);
+		this.title = new JLabel();
+		this.title.setFont(this.title.getFont().deriveFont(15.0f));
+		this.description = new JLabel();
+		this.add(this.title);
+		this.add(this.description);
 	}
 
 	/**
@@ -59,9 +60,9 @@ public class InfoPanel extends JPanel {
 	 * @param p
 	 *            the p
 	 */
-	public void updateWith(WidgetProperty p) {
-		title.setText(p.getName());
-		description.setText("<strong>(" + p.getCategory() + ")</strong> "
+	public void updateWith(final WidgetProperty p) {
+		this.title.setText(p.getName());
+		this.description.setText("<strong>(" + p.getCategory() + ")</strong> "
 				+ p.getDescription());
 	}
 

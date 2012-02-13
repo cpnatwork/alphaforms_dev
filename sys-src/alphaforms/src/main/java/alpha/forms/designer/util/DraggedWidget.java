@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -60,21 +61,21 @@ public class DraggedWidget {
 	 * @param model
 	 *            the model
 	 */
-	public DraggedWidget(FormWidget widget, AlphaForm model) {
+	public DraggedWidget(final FormWidget widget, final AlphaForm model) {
 		super();
 		this.widget = widget;
 		this.model = model;
 		if (widget.getParent() == null) {
-			x = widget.getX();
-			y = widget.getY();
+			this.x = widget.getX();
+			this.y = widget.getY();
 
 		} else {
-			parent = (ContainerWidget) widget.getParent();
-			x = widget.getX() + ((FormWidget) parent).getX();
-			y = widget.getY() + ((FormWidget) parent).getY();
+			this.parent = (ContainerWidget) widget.getParent();
+			this.x = widget.getX() + ((FormWidget) this.parent).getX();
+			this.y = widget.getY() + ((FormWidget) this.parent).getY();
 		}
-		width = widget.getWidth();
-		height = widget.getHeight();
+		this.width = widget.getWidth();
+		this.height = widget.getHeight();
 
 	}
 
@@ -84,7 +85,7 @@ public class DraggedWidget {
 	 * @return the widget
 	 */
 	public FormWidget getWidget() {
-		return widget;
+		return this.widget;
 	}
 
 	/**
@@ -93,7 +94,7 @@ public class DraggedWidget {
 	 * @param widget
 	 *            the new widget
 	 */
-	public void setWidget(FormWidget widget) {
+	public void setWidget(final FormWidget widget) {
 		this.widget = widget;
 	}
 
@@ -103,7 +104,7 @@ public class DraggedWidget {
 	 * @return the x
 	 */
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	/**
@@ -112,7 +113,7 @@ public class DraggedWidget {
 	 * @param x
 	 *            the new x
 	 */
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
 	}
 
@@ -122,7 +123,7 @@ public class DraggedWidget {
 	 * @return the y
 	 */
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class DraggedWidget {
 	 * @param y
 	 *            the new y
 	 */
-	public void setY(int y) {
+	public void setY(final int y) {
 		this.y = y;
 	}
 
@@ -141,7 +142,7 @@ public class DraggedWidget {
 	 * @return the width
 	 */
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class DraggedWidget {
 	 * @param width
 	 *            the new width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
@@ -160,7 +161,7 @@ public class DraggedWidget {
 	 * @return the height
 	 */
 	public int getHeight() {
-		return height;
+		return this.height;
 	}
 
 	/**
@@ -169,7 +170,7 @@ public class DraggedWidget {
 	 * @param height
 	 *            the new height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
@@ -179,7 +180,7 @@ public class DraggedWidget {
 	 * @return the parent
 	 */
 	public ContainerWidget getParent() {
-		return parent;
+		return this.parent;
 	}
 
 	/**
@@ -188,7 +189,7 @@ public class DraggedWidget {
 	 * @param parent
 	 *            the new parent
 	 */
-	public void setParent(ContainerWidget parent) {
+	public void setParent(final ContainerWidget parent) {
 		this.parent = parent;
 	}
 
@@ -198,11 +199,11 @@ public class DraggedWidget {
 	 * @param g
 	 *            the g
 	 */
-	public void render(Graphics2D g) {
+	public void render(final Graphics2D g) {
 		g.setComposite(AlphaComposite
 				.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-		Image img = widget.getUi().getAsImage();
-		g.drawImage(img, x, y, null);
+		final Image img = this.widget.getUi().getAsImage();
+		g.drawImage(img, this.x, this.y, null);
 	}
 
 	/**
@@ -212,8 +213,8 @@ public class DraggedWidget {
 	 *            the c
 	 * @return true, if successful
 	 */
-	public boolean showDropableOverlay(ContainerWidget c) {
-		return (parent == null || parent != c);
+	public boolean showDropableOverlay(final ContainerWidget c) {
+		return ((this.parent == null) || (this.parent != c));
 	}
 
 	/**
@@ -226,30 +227,30 @@ public class DraggedWidget {
 	 * @param parent
 	 *            the parent
 	 */
-	public void finalize(int x, int y, ContainerWidget parent) {
+	public void finalize(final int x, final int y, final ContainerWidget parent) {
 		if (parent == null) {
 			if (this.parent != null) {
-				this.parent.removeChild(widget);
-				model.addWidget(widget);
+				this.parent.removeChild(this.widget);
+				this.model.addWidget(this.widget);
 				this.parent = null;
 			}
-			widget.setX(x);
-			widget.setY(y);
+			this.widget.setX(x);
+			this.widget.setY(y);
 		} else if (parent != this.parent) {
 			if (this.parent == null) {
-				model.getWidgets().remove(widget);
-				parent.addChild(widget);
+				this.model.getWidgets().remove(this.widget);
+				parent.addChild(this.widget);
 				this.parent = parent;
 			} else {
-				this.parent.removeChild(widget);
-				parent.addChild(widget);
+				this.parent.removeChild(this.widget);
+				parent.addChild(this.widget);
 				this.parent = parent;
 			}
-			widget.setX(x - ((FormWidget) parent).getX());
-			widget.setY(y - ((FormWidget) parent).getY());
+			this.widget.setX(x - ((FormWidget) parent).getX());
+			this.widget.setY(y - ((FormWidget) parent).getY());
 		} else {
-			widget.setX(x - ((FormWidget) parent).getX());
-			widget.setY(y - ((FormWidget) parent).getY());
+			this.widget.setX(x - ((FormWidget) parent).getX());
+			this.widget.setY(y - ((FormWidget) parent).getY());
 		}
 	}
 

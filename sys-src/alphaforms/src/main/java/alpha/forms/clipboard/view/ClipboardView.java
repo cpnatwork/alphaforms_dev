@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -63,20 +64,20 @@ public class ClipboardView extends FormView {
 
 		this.setLayout(new BorderLayout());
 
-		JToolBar toolbar = new JToolBar();
+		final JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
-		JButton button1 = new JButton("Save");
+		final JButton button1 = new JButton("Save");
 		final FormView view = this;
 		button1.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				List<ValidationFailure> valFails = model.validateForm();
+			public void actionPerformed(final ActionEvent ev) {
+				final List<ValidationFailure> valFails = model.validateForm();
 				if (valFails.size() > 0) {
 					switch (model.getValidationLevel()) {
 					case ERROR:
 						StringBuilder sb = new StringBuilder();
 						sb.append("Validation failed for the following reasons:\n");
-						for (ValidationFailure vf : valFails) {
+						for (final ValidationFailure vf : valFails) {
 							sb.append(vf.toString()).append("\n");
 						}
 						JOptionPane.showMessageDialog(view, sb.toString(),
@@ -85,11 +86,11 @@ public class ClipboardView extends FormView {
 					case WARN:
 						sb = new StringBuilder();
 						sb.append("Validation failed for the following reasons:\n");
-						for (ValidationFailure vf : valFails) {
+						for (final ValidationFailure vf : valFails) {
 							sb.append(vf.toString()).append("\n");
 						}
 						sb.append("Do you still want to save the form?");
-						int userOpt = JOptionPane.showConfirmDialog(view,
+						final int userOpt = JOptionPane.showConfirmDialog(view,
 								sb.toString(), "Validation Failed",
 								JOptionPane.YES_NO_OPTION,
 								JOptionPane.WARNING_MESSAGE);
@@ -102,11 +103,11 @@ public class ClipboardView extends FormView {
 			}
 		});
 
-		JButton button2 = new JButton("Go to designer mode");
+		final JButton button2 = new JButton("Go to designer mode");
 		button2.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				SwitchViewSignal s = new SwitchViewSignal();
+			public void actionPerformed(final ActionEvent ev) {
+				final SwitchViewSignal s = new SwitchViewSignal();
 				s.setFromView(SwitchViewSignal.VIEWER);
 				s.setToView(SwitchViewSignal.DESIGNER);
 				SignalManager.getInstance().sendSignal(s, "clipboard");
@@ -116,7 +117,7 @@ public class ClipboardView extends FormView {
 		toolbar.add(button2);
 		toolbar.addSeparator();
 
-		FormViewPanel formView = new FormViewPanel(model);
+		final FormViewPanel formView = new FormViewPanel(model);
 		this.add(toolbar, BorderLayout.NORTH);
 		this.add(formView, BorderLayout.CENTER);
 	}
@@ -128,7 +129,7 @@ public class ClipboardView extends FormView {
 	 */
 	@Override
 	public Dimension getMaximumSize() {
-		return new Dimension(model.getWidth(), model.getHeight());
+		return new Dimension(this.model.getWidth(), this.model.getHeight());
 	}
 
 	/*
@@ -148,7 +149,7 @@ public class ClipboardView extends FormView {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(model.getWidth(), model.getHeight());
+		return new Dimension(this.model.getWidth(), this.model.getHeight());
 	}
 
 }

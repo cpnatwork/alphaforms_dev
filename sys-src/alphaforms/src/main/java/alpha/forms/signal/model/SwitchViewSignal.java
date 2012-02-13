@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -41,7 +42,7 @@ public class SwitchViewSignal extends Signal {
 	 * @return the to view
 	 */
 	public int getToView() {
-		return toView;
+		return this.toView;
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class SwitchViewSignal extends Signal {
 	 * @param toView
 	 *            the new to view
 	 */
-	public void setToView(int toView) {
+	public void setToView(final int toView) {
 		this.toView = toView;
 	}
 
@@ -60,7 +61,7 @@ public class SwitchViewSignal extends Signal {
 	 * @return the from view
 	 */
 	public int getFromView() {
-		return fromView;
+		return this.fromView;
 	}
 
 	/**
@@ -69,7 +70,7 @@ public class SwitchViewSignal extends Signal {
 	 * @param fromView
 	 *            the new from view
 	 */
-	public void setFromView(int fromView) {
+	public void setFromView(final int fromView) {
 		this.fromView = fromView;
 	}
 }

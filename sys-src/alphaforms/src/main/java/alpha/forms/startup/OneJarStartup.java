@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -48,55 +49,56 @@ public class OneJarStartup {
 	 * @param args
 	 *            the arguments
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
-		CodeSource codeSource = OneJarStartup.class.getProtectionDomain()
+		final CodeSource codeSource = OneJarStartup.class.getProtectionDomain()
 				.getCodeSource();
 		System.out.println("alphaForms OneJar");
 		String jarDir = null;
 		String jarFileName = null;
 		try {
-			String jar = codeSource.getLocation().toURI().toString()
+			final String jar = codeSource.getLocation().toURI().toString()
 					.replace("jar:", "").replace("file:", "")
 					.replaceFirst("!/.*", "");
-			File jarFile = new File(jar);
+			final File jarFile = new File(jar);
 			jarFileName = jarFile.getName();
 			jarDir = jarFile.getParentFile().getPath();
-		} catch (Exception e1) {
+		} catch (final Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 
 		}
 
-		AlphaFormsFacade alphaForms = AlphaFormsFactory
+		final AlphaFormsFacade alphaForms = AlphaFormsFactory
 				.createAlphaFormsApplication();
 		final String alphaFormFile;
 
 		if (args.length > 0) {
-			String name = args[0];
-			File file = new File(name);
+			final String name = args[0];
+			final File file = new File(name);
 			try {
-				FileInputStream fs = new FileInputStream(file);
+				final FileInputStream fs = new FileInputStream(file);
 				alphaForms.start(fs);
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				alphaForms.start();
 			}
 			alphaFormFile = name;
 		} else {
 			alphaFormFile = jarDir
 					+ File.separator
-					+ ((jarFileName == null) ? DEFAULT_FORM_NAME : jarFileName
-							.replaceFirst(".jar$", "") + ".a-form.xml");
-			File file = new File(alphaFormFile);
+					+ ((jarFileName == null) ? OneJarStartup.DEFAULT_FORM_NAME
+							: jarFileName.replaceFirst(".jar$", "")
+									+ ".a-form.xml");
+			final File file = new File(alphaFormFile);
 			try {
-				FileInputStream fs = new FileInputStream(file);
+				final FileInputStream fs = new FileInputStream(file);
 				alphaForms.start(fs);
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				alphaForms.start();
 			}
 		}
@@ -104,15 +106,15 @@ public class OneJarStartup {
 		alphaForms.registerSaveListener(new FormSaveListener() {
 
 			@Override
-			public void save(ByteArrayOutputStream form) {
+			public void save(final ByteArrayOutputStream form) {
 				try {
-					File out = new File(alphaFormFile);
-					FileOutputStream fs = new FileOutputStream(out);
+					final File out = new File(alphaFormFile);
+					final FileOutputStream fs = new FileOutputStream(out);
 					form.writeTo(fs);
-				} catch (FileNotFoundException e) {
+				} catch (final FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -124,7 +126,7 @@ public class OneJarStartup {
 
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
-		JFrame window = new JFrame("alphaForms");
+		final JFrame window = new JFrame("alphaForms");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setLayout(new BorderLayout());
 

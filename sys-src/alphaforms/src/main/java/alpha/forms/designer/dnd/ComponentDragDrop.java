@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -57,9 +58,9 @@ public class ComponentDragDrop implements DragGestureListener,
 
 	static {
 		try {
-			supportedFlavors[0] = new DataFlavor(
+			ComponentDragDrop.supportedFlavors[0] = new DataFlavor(
 					DataFlavor.javaJVMLocalObjectMimeType);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -81,13 +82,12 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * .DataFlavor)
 	 */
 	@Override
-	public Object getTransferData(DataFlavor flavor)
+	public Object getTransferData(final DataFlavor flavor)
 			throws UnsupportedFlavorException, IOException {
-		if (flavor.isMimeTypeEqual(DataFlavor.javaJVMLocalObjectMimeType)) {
-			return object;
-		} else {
+		if (flavor.isMimeTypeEqual(DataFlavor.javaJVMLocalObjectMimeType))
+			return this.object;
+		else
 			return null;
-		}
 	}
 
 	/*
@@ -97,7 +97,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 */
 	@Override
 	public DataFlavor[] getTransferDataFlavors() {
-		return supportedFlavors;
+		return ComponentDragDrop.supportedFlavors;
 	}
 
 	/*
@@ -107,7 +107,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * datatransfer.DataFlavor)
 	 */
 	@Override
-	public boolean isDataFlavorSupported(DataFlavor flavor) {
+	public boolean isDataFlavorSupported(final DataFlavor flavor) {
 		return flavor.isMimeTypeEqual(DataFlavor.javaJVMLocalObjectMimeType);
 	}
 
@@ -119,7 +119,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * )
 	 */
 	@Override
-	public void dragEnter(DropTargetDragEvent ev) {
+	public void dragEnter(final DropTargetDragEvent ev) {
 	}
 
 	/*
@@ -129,7 +129,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * java.awt.dnd.DropTargetListener#dragExit(java.awt.dnd.DropTargetEvent)
 	 */
 	@Override
-	public void dragExit(DropTargetEvent ev) {
+	public void dragExit(final DropTargetEvent ev) {
 	}
 
 	/*
@@ -140,15 +140,15 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * )
 	 */
 	@Override
-	public void dragOver(DropTargetDragEvent ev) {
-		if (object != null) {
-			FormCanvas cv = (FormCanvas) ev.getDropTargetContext()
+	public void dragOver(final DropTargetDragEvent ev) {
+		if (this.object != null) {
+			final FormCanvas cv = (FormCanvas) ev.getDropTargetContext()
 					.getComponent();
 			FormWidget w = null;
-			if (object instanceof WidgetTemplate) {
-				w = ((WidgetTemplate) object).createWidgetFromTemplate();
-			} else if (object instanceof FormWidget) {
-				w = (FormWidget) object;
+			if (this.object instanceof WidgetTemplate) {
+				w = ((WidgetTemplate) this.object).createWidgetFromTemplate();
+			} else if (this.object instanceof FormWidget) {
+				w = (FormWidget) this.object;
 			}
 			cv.dragOverEvent(ev.getLocation(), w);
 		}
@@ -161,43 +161,43 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * java.awt.dnd.DropTargetListener#drop(java.awt.dnd.DropTargetDropEvent)
 	 */
 	@Override
-	public void drop(DropTargetDropEvent ev) {
+	public void drop(final DropTargetDropEvent ev) {
 		ev.acceptDrop(ev.getDropAction());
 		try {
-			Object source = ev.getTransferable().getTransferData(
-					supportedFlavors[0]);
+			final Object source = ev.getTransferable().getTransferData(
+					ComponentDragDrop.supportedFlavors[0]);
 			FormWidget cmp = null;
-			FormCanvas canvas = (FormCanvas) ev.getDropTargetContext()
+			final FormCanvas canvas = (FormCanvas) ev.getDropTargetContext()
 					.getComponent();
-			FormDesignerPanel container = canvas.getParentPanel();
-			Point loc = new Point(ev.getLocation().x + offset.x,
-					ev.getLocation().y + offset.y);
-			if (object instanceof WidgetTemplate) {
-				cmp = ((WidgetTemplate) object).createWidgetFromTemplate();
+			final FormDesignerPanel container = canvas.getParentPanel();
+			final Point loc = new Point(ev.getLocation().x + this.offset.x,
+					ev.getLocation().y + this.offset.y);
+			if (this.object instanceof WidgetTemplate) {
+				cmp = ((WidgetTemplate) this.object).createWidgetFromTemplate();
 				cmp.setName(WidgetNameGenerator
-						.getName((WidgetTemplate) object));
+						.getName((WidgetTemplate) this.object));
 			} else {
-				FormWidget component = (FormWidget) source;
+				final FormWidget component = (FormWidget) source;
 				try {
-					Constructor<? extends FormWidget> c = component.getClass()
-							.getConstructor(String.class);
+					final Constructor<? extends FormWidget> c = component
+							.getClass().getConstructor(String.class);
 					cmp = c.newInstance(WidgetNameGenerator.getName(component));
-				} catch (SecurityException e) {
+				} catch (final SecurityException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
+				} catch (final NoSuchMethodException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
+				} catch (final IllegalArgumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+				} catch (final InvocationTargetException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (InstantiationException e) {
+				} catch (final InstantiationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (IllegalAccessException e) {
+				} catch (final IllegalAccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -205,7 +205,7 @@ public class ComponentDragDrop implements DragGestureListener,
 			}
 			container.addWidget(cmp, loc);
 			container.repaint();
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			ex.printStackTrace();
 		}
 		ev.dropComplete(true);
@@ -218,7 +218,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * DropTargetDragEvent)
 	 */
 	@Override
-	public void dropActionChanged(DropTargetDragEvent ev) {
+	public void dropActionChanged(final DropTargetDragEvent ev) {
 		// dropTargetDrag(ev);
 	}
 
@@ -230,7 +230,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * )
 	 */
 	@Override
-	public void dragDropEnd(DragSourceDropEvent ev) {
+	public void dragDropEnd(final DragSourceDropEvent ev) {
 	}
 
 	/*
@@ -241,7 +241,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * )
 	 */
 	@Override
-	public void dragEnter(DragSourceDragEvent ev) {
+	public void dragEnter(final DragSourceDragEvent ev) {
 	}
 
 	/*
@@ -251,7 +251,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * java.awt.dnd.DragSourceListener#dragExit(java.awt.dnd.DragSourceEvent)
 	 */
 	@Override
-	public void dragExit(DragSourceEvent ev) {
+	public void dragExit(final DragSourceEvent ev) {
 	}
 
 	/*
@@ -262,7 +262,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * )
 	 */
 	@Override
-	public void dragOver(DragSourceDragEvent ev) {
+	public void dragOver(final DragSourceDragEvent ev) {
 	}
 
 	/*
@@ -272,7 +272,7 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * DragSourceDragEvent)
 	 */
 	@Override
-	public void dropActionChanged(DragSourceDragEvent arg0) {
+	public void dropActionChanged(final DragSourceDragEvent arg0) {
 	}
 
 	/*
@@ -282,24 +282,25 @@ public class ComponentDragDrop implements DragGestureListener,
 	 * DragGestureEvent)
 	 */
 	@Override
-	public void dragGestureRecognized(DragGestureEvent ev) {
+	public void dragGestureRecognized(final DragGestureEvent ev) {
 		if (ev.getComponent() instanceof JList) {
-			JList list = (JList) ev.getComponent();
+			final JList list = (JList) ev.getComponent();
 			if (!list.isSelectionEmpty()) {
-				object = list.getSelectedValue();
+				this.object = list.getSelectedValue();
 				FormWidget w = null;
-				if (object instanceof WidgetTemplate) {
-					w = ((WidgetTemplate) object).createWidgetFromTemplate();
+				if (this.object instanceof WidgetTemplate) {
+					w = ((WidgetTemplate) this.object)
+							.createWidgetFromTemplate();
 				} else {
-					w = (FormWidget) object;
+					w = (FormWidget) this.object;
 				}
-				Image di = w.getUi().getAsImage();
-				int idx = list.getSelectedIndex();
-				Rectangle cell = list.getCellBounds(idx, idx);
-				Point po = new Point(-ev.getDragOrigin().x + cell.x,
+				final Image di = w.getUi().getAsImage();
+				final int idx = list.getSelectedIndex();
+				final Rectangle cell = list.getCellBounds(idx, idx);
+				final Point po = new Point(-ev.getDragOrigin().x + cell.x,
 						-ev.getDragOrigin().y + cell.y);
-				offset = po;
-				dragImage = di;
+				this.offset = po;
+				this.dragImage = di;
 				ev.startDrag(null, di, po, this, this);
 
 			}

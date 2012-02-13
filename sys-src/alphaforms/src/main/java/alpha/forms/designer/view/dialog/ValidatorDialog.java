@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -43,6 +44,11 @@ import alpha.forms.widget.model.FormWidget;
  */
 public class ValidatorDialog extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3905906111405466499L;
+
 	/** The validator. */
 	private Validator validator;
 
@@ -50,19 +56,19 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	private ValidatorGroup group;
 
 	/** The available validators. */
-	private List<Validator> availableValidators = new ArrayList<Validator>();
+	private final List<Validator> availableValidators = new ArrayList<Validator>();
 
 	/** The validator choice. */
 	private JComboBox validatorChoice;
 
 	/** The panel. */
-	private JPanel panel;
+	private final JPanel panel;
 
 	/** The save. */
-	private JButton save;
+	private final JButton save;
 
 	/** The cancel. */
-	private JButton cancel;
+	private final JButton cancel;
 
 	/** The was cancled. */
 	private boolean wasCancled;
@@ -81,9 +87,9 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 *            the w
 	 * @return the validator dialog
 	 */
-	public static ValidatorDialog create(Validator v, ValidatorGroup group,
-			FormWidget w) {
-		ValidatorDialog dialog = new ValidatorDialog(w, group, v);
+	public static ValidatorDialog create(final Validator v,
+			final ValidatorGroup group, final FormWidget w) {
+		final ValidatorDialog dialog = new ValidatorDialog(w, group, v);
 		// dialog.setGroup(group);
 		// dialog.setValidator(v);
 		return dialog;
@@ -99,45 +105,45 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * @param validator
 	 *            the validator
 	 */
-	public ValidatorDialog(FormWidget w, ValidatorGroup group,
-			Validator validator) {
+	public ValidatorDialog(final FormWidget w, final ValidatorGroup group,
+			final Validator validator) {
 		super((Frame) null, "Validator:", true);
-		setLocationRelativeTo(null);
-		setLayout(new BorderLayout());
-		setResizable(false);
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		this.setResizable(false);
 
-		panel = new JPanel(new BorderLayout());
-		panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		this.panel = new JPanel(new BorderLayout());
+		this.panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		panel.add(new JSeparator(), BorderLayout.CENTER);
+		this.panel.add(new JSeparator(), BorderLayout.CENTER);
 
-		List<Validator> validatorList = ValidatorFactory
+		final List<Validator> validatorList = ValidatorFactory
 				.getAvailableValidators();
 
-		for (Validator v : validatorList) {
+		for (final Validator v : validatorList) {
 			if (!group.contains(v) && v.isCompatibleWith(w.getClass())) {
-				availableValidators.add(v);
+				this.availableValidators.add(v);
 			}
 		}
 
-		JPanel buttonPanel = new JPanel(new FlowLayout());
+		final JPanel buttonPanel = new JPanel(new FlowLayout());
 
-		save = new JButton("Save");
-		save.addActionListener(this);
-		save.setActionCommand("save");
-		cancel = new JButton("Cancel");
-		cancel.addActionListener(this);
-		cancel.setActionCommand("cancel");
+		this.save = new JButton("Save");
+		this.save.addActionListener(this);
+		this.save.setActionCommand("save");
+		this.cancel = new JButton("Cancel");
+		this.cancel.addActionListener(this);
+		this.cancel.setActionCommand("cancel");
 
-		buttonPanel.add(save);
-		buttonPanel.add(cancel);
+		buttonPanel.add(this.save);
+		buttonPanel.add(this.cancel);
 
-		add(panel, BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
-		getRootPane().setDefaultButton(save);
+		this.add(this.panel, BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.SOUTH);
+		this.getRootPane().setDefaultButton(this.save);
 
-		setGroup(group);
-		setValidator(validator);
+		this.setGroup(group);
+		this.setValidator(validator);
 	}
 
 	/**
@@ -146,15 +152,15 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * @param validator
 	 *            the new validator
 	 */
-	public void setValidator(Validator validator) {
+	public void setValidator(final Validator validator) {
 		if (validator != null) {
 			this.validator = validator;
-			validatorChoice.addItem(validator);
-			validatorChoice.setSelectedItem(validator);
-			validatorChoice.setEnabled(false);
-			save.setEnabled(true);
-		} else if (validatorChoice.getModel().getSize() > 0) {
-			validatorChoice.setSelectedIndex(0);
+			this.validatorChoice.addItem(validator);
+			this.validatorChoice.setSelectedItem(validator);
+			this.validatorChoice.setEnabled(false);
+			this.save.setEnabled(true);
+		} else if (this.validatorChoice.getModel().getSize() > 0) {
+			this.validatorChoice.setSelectedIndex(0);
 		}
 	}
 
@@ -164,7 +170,7 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * @return the validator
 	 */
 	public Validator getValidator() {
-		return validator;
+		return this.validator;
 	}
 
 	/*
@@ -172,11 +178,12 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * 
 	 * @see java.awt.Dialog#setVisible(boolean)
 	 */
-	public void setVisible(boolean flag) {
+	@Override
+	public void setVisible(final boolean flag) {
 		if (flag == true) {
-			pack();
-			wasCancled = false;
-			wasSaved = false;
+			this.pack();
+			this.wasCancled = false;
+			this.wasSaved = false;
 		}
 		super.setVisible(flag);
 	}
@@ -187,29 +194,31 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * @param group
 	 *            the new group
 	 */
-	public void setGroup(ValidatorGroup group) {
+	public void setGroup(final ValidatorGroup group) {
 		this.group = group;
 
-		validatorChoice = new JComboBox(availableValidators.toArray());
+		this.validatorChoice = new JComboBox(this.availableValidators.toArray());
 
-		if (availableValidators.size() == 0) {
-			validatorChoice.setEnabled(false);
-			save.setEnabled(false);
+		if (this.availableValidators.size() == 0) {
+			this.validatorChoice.setEnabled(false);
+			this.save.setEnabled(false);
 		}
 
-		validatorChoice.addActionListener(new ActionListener() {
+		this.validatorChoice.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				Validator v = (Validator) validatorChoice.getSelectedItem();
+			public void actionPerformed(final ActionEvent e) {
+				final Validator v = (Validator) ValidatorDialog.this.validatorChoice
+						.getSelectedItem();
 				if (v != null) {
-					validator = v;
-					panel.add(v.getOptionUI(), BorderLayout.SOUTH);
-					pack();
+					ValidatorDialog.this.validator = v;
+					ValidatorDialog.this.panel.add(v.getOptionUI(),
+							BorderLayout.SOUTH);
+					ValidatorDialog.this.pack();
 				}
 			}
 		});
 
-		panel.add(validatorChoice, BorderLayout.NORTH);
+		this.panel.add(this.validatorChoice, BorderLayout.NORTH);
 	}
 
 	/**
@@ -218,7 +227,7 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * @return true, if successful
 	 */
 	public boolean wasCancled() {
-		return wasCancled;
+		return this.wasCancled;
 	}
 
 	/**
@@ -227,7 +236,7 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * @return true, if successful
 	 */
 	public boolean wasSaved() {
-		return wasSaved;
+		return this.wasSaved;
 	}
 
 	/*
@@ -237,13 +246,13 @@ public class ValidatorDialog extends JDialog implements ActionListener {
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals("save")) {
-			setVisible(false);
-			wasSaved = true;
+			this.setVisible(false);
+			this.wasSaved = true;
 		} else if (e.getActionCommand().equals("cancel")) {
-			setVisible(false);
-			wasCancled = true;
+			this.setVisible(false);
+			this.wasCancled = true;
 		}
 	}
 }

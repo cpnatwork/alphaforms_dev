@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -39,8 +40,8 @@ public class WidgetNameGenerator {
 	 *            the w
 	 * @return the name
 	 */
-	public static String getName(FormWidget w) {
-		return getName(w.getClass());
+	public static String getName(final FormWidget w) {
+		return WidgetNameGenerator.getName(w.getClass());
 	}
 
 	/**
@@ -50,14 +51,14 @@ public class WidgetNameGenerator {
 	 *            the clazz
 	 * @return the name
 	 */
-	public static String getName(Class<? extends FormWidget> clazz) {
-		String className = clazz.getSimpleName();
-		Integer num = nums.get(className);
+	public static String getName(final Class<? extends FormWidget> clazz) {
+		final String className = clazz.getSimpleName();
+		Integer num = WidgetNameGenerator.nums.get(className);
 		if (num == null) {
 			num = new Integer(1);
 		}
-		String name = className + num.toString();
-		nums.put(className, ++num);
+		final String name = className + num.toString();
+		WidgetNameGenerator.nums.put(className, ++num);
 		return name;
 	}
 
@@ -68,14 +69,14 @@ public class WidgetNameGenerator {
 	 *            the template
 	 * @return the name
 	 */
-	public static String getName(WidgetTemplate template) {
-		String templName = template.getTemplateName();
-		Integer num = nums.get(templName);
+	public static String getName(final WidgetTemplate template) {
+		final String templName = template.getTemplateName();
+		Integer num = WidgetNameGenerator.nums.get(templName);
 		if (num == null) {
 			num = new Integer(1);
 		}
-		String name = templName + num.toString();
-		nums.put(templName, ++num);
+		final String name = templName + num.toString();
+		WidgetNameGenerator.nums.put(templName, ++num);
 		return name;
 	}
 }

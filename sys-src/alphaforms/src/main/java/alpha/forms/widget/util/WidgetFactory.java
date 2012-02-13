@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -39,33 +40,34 @@ public class WidgetFactory {
 	 *            the name
 	 * @return the form widget
 	 */
-	public static FormWidget createWidget(String className, String name) {
+	public static FormWidget createWidget(final String className,
+			final String name) {
 		try {
-			Class<? extends FormWidget> widgetClass = (Class<? extends FormWidget>) Class
+			final Class<? extends FormWidget> widgetClass = (Class<? extends FormWidget>) Class
 					.forName(className);
-			Constructor<? extends FormWidget> c = widgetClass
+			final Constructor<? extends FormWidget> c = widgetClass
 					.getConstructor(String.class);
-			FormWidget w = c.newInstance(name);
+			final FormWidget w = c.newInstance(name);
 			return w;
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SecurityException e) {
+		} catch (final SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -79,14 +81,15 @@ public class WidgetFactory {
 	 *            the widget
 	 * @return the form widget
 	 */
-	public static FormWidget cloneWidget(FormWidget widget) {
-		WidgetMemento m = ((MementoOriginator) widget).createWidgetMemento();
-		FormWidget clone = createWidget(m.getType().getName(), m.getName());
+	public static FormWidget cloneWidget(final FormWidget widget) {
+		final WidgetMemento m = ((MementoOriginator) widget)
+				.createWidgetMemento();
+		final FormWidget clone = WidgetFactory.createWidget(m.getType()
+				.getName(), m.getName());
 		if (clone != null) {
 			((MementoOriginator) clone).setWidgetMemento(m);
 			return clone;
-		} else {
+		} else
 			return null;
-		}
 	}
 }

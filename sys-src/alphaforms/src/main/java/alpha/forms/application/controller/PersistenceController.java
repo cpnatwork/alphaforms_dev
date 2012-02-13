@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -48,7 +49,7 @@ public class PersistenceController {
 	 * @param controller
 	 *            the controller
 	 */
-	public PersistenceController(ApplicationController controller) {
+	public PersistenceController(final ApplicationController controller) {
 		this.controller = controller;
 	}
 
@@ -60,17 +61,18 @@ public class PersistenceController {
 	 * @param state
 	 *            the state
 	 */
-	public void storeForm(AlphaForm form, String state) {
-		AlphaFormMemento m = ((FormMementoOriginator) form).createMemento();
-		ByteArrayOutputStream data = new ByteArrayOutputStream();
-		PrintWriter writer = new PrintWriter(data);
+	public void storeForm(final AlphaForm form, final String state) {
+		final AlphaFormMemento m = ((FormMementoOriginator) form)
+				.createMemento();
+		final ByteArrayOutputStream data = new ByteArrayOutputStream();
+		final PrintWriter writer = new PrintWriter(data);
 		if (state == null) {
 			writer.print(m.getXML());
 		} else {
 			writer.print(m.getXML(state));
 		}
 		writer.close();
-		controller.fireSaveEvent(data);
+		this.controller.fireSaveEvent(data);
 	}
 
 	/**
@@ -80,23 +82,23 @@ public class PersistenceController {
 	 *            the data
 	 * @return the alpha form
 	 */
-	public AlphaForm loadForm(InputStream data) {
-		AlphaForm form = new AlphaForm();
+	public AlphaForm loadForm(final InputStream data) {
+		final AlphaForm form = new AlphaForm();
 		try {
-			Document xmlDoc = DocumentBuilderFactory.newInstance()
+			final Document xmlDoc = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder().parse(data);
 			xmlDoc.getDocumentElement().normalize();
-			AlphaFormMemento m = new AlphaFormMemento();
+			final AlphaFormMemento m = new AlphaFormMemento();
 			m.loadXML(new XMLDocumentSection(xmlDoc.getDocumentElement(),
 					xmlDoc));
 			form.setMemento(m);
-		} catch (SAXException e) {
+		} catch (final SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
+		} catch (final ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

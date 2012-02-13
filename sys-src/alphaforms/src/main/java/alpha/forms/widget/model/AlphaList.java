@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -76,14 +77,14 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param name
 	 *            the name
 	 */
-	public AlphaList(String name) {
+	public AlphaList(final String name) {
 		super(name);
-		onSelectionChanged = EventFactory.getInstance()
+		this.onSelectionChanged = EventFactory.getInstance()
 				.createDefaultEvent(this);
-		width = 300;
-		height = 27;
-		label = name;
-		ui = new AlphaListUI(this);
+		this.width = 300;
+		this.height = 27;
+		this.label = name;
+		this.ui = new AlphaListUI(this);
 	}
 
 	/*
@@ -93,7 +94,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public Set<ValidationFailure> validate() {
-		return validateValue(items);
+		return this.validateValue(this.items);
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return true, if is multiple selection
 	 */
 	public boolean isMultipleSelection() {
-		return isMultipleSelection;
+		return this.isMultipleSelection;
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param isMultipleSelection
 	 *            the new multiple selection
 	 */
-	public void setMultipleSelection(boolean isMultipleSelection) {
+	public void setMultipleSelection(final boolean isMultipleSelection) {
 		this.isMultipleSelection = isMultipleSelection;
 	}
 
@@ -121,7 +122,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return the label
 	 */
 	public String getLabel() {
-		return label;
+		return this.label;
 	}
 
 	/**
@@ -130,7 +131,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param label
 	 *            the new label
 	 */
-	public void setLabel(String label) {
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 
@@ -140,7 +141,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return the show label
 	 */
 	public WidgetLabelPosition getShowLabel() {
-		return showLabel;
+		return this.showLabel;
 	}
 
 	/**
@@ -149,7 +150,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param showLabel
 	 *            the new show label
 	 */
-	public void setShowLabel(WidgetLabelPosition showLabel) {
+	public void setShowLabel(final WidgetLabelPosition showLabel) {
 		this.showLabel = showLabel;
 	}
 
@@ -159,7 +160,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return the items
 	 */
 	public List<ListItem> getItems() {
-		return items;
+		return this.items;
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param items
 	 *            the new items
 	 */
-	public void setItems(List<ListItem> items) {
+	public void setItems(final List<ListItem> items) {
 		this.items = items;
 	}
 
@@ -178,8 +179,8 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param o
 	 *            the o
 	 */
-	public void addItem(ListItem o) {
-		items.add(o);
+	public void addItem(final ListItem o) {
+		this.items.add(o);
 	}
 
 	/**
@@ -188,8 +189,8 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param o
 	 *            the o
 	 */
-	public void removeItem(ListItem o) {
-		items.remove(o);
+	public void removeItem(final ListItem o) {
+		this.items.remove(o);
 	}
 
 	/**
@@ -198,7 +199,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return true, if is editable
 	 */
 	public boolean isEditable() {
-		return isEditable;
+		return this.isEditable;
 	}
 
 	/**
@@ -207,7 +208,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param isEditable
 	 *            the new editable
 	 */
-	public void setEditable(boolean isEditable) {
+	public void setEditable(final boolean isEditable) {
 		this.isEditable = isEditable;
 	}
 
@@ -217,10 +218,11 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return the selected items
 	 */
 	public List<ListItem> getSelectedItems() {
-		List<ListItem> out = new ArrayList<ListItem>();
-		for (ListItem item : items) {
-			if (item.isSelected())
+		final List<ListItem> out = new ArrayList<ListItem>();
+		for (final ListItem item : this.items) {
+			if (item.isSelected()) {
 				out.add(item);
+			}
 		}
 		return out;
 	}
@@ -231,8 +233,8 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return the selected item
 	 */
 	public ListItem getSelectedItem() {
-		if (getSelectedItemCount() == 1) {
-			for (ListItem item : items) {
+		if (this.getSelectedItemCount() == 1) {
+			for (final ListItem item : this.items) {
 				if (item.isSelected())
 					return item;
 			}
@@ -247,9 +249,10 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 */
 	public int getSelectedItemCount() {
 		int count = 0;
-		for (ListItem item : items) {
-			if (item.isSelected())
+		for (final ListItem item : this.items) {
+			if (item.isSelected()) {
 				count++;
+			}
 		}
 		return count;
 	}
@@ -271,7 +274,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public int getMinimumHeight() {
-		return ui.getMinimumSize().height;
+		return this.ui.getMinimumSize().height;
 	}
 
 	/*
@@ -290,7 +293,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @return the on selection changed
 	 */
 	public Event getOnSelectionChanged() {
-		return onSelectionChanged;
+		return this.onSelectionChanged;
 	}
 
 	/**
@@ -299,7 +302,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * @param onSelectionChanged
 	 *            the new on selection changed
 	 */
-	public void setOnSelectionChanged(Event onSelectionChanged) {
+	public void setOnSelectionChanged(final Event onSelectionChanged) {
 		this.onSelectionChanged = onSelectionChanged;
 	}
 
@@ -322,8 +325,8 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 */
 		public ListItem() {
 			super();
-			id = "0";
-			label = "";
+			this.id = "0";
+			this.label = "";
 		}
 
 		/**
@@ -334,7 +337,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 * @param label
 		 *            the label
 		 */
-		public ListItem(String id, String label) {
+		public ListItem(final String id, final String label) {
 			super();
 			this.id = id;
 			this.label = label;
@@ -346,7 +349,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 * @return the id
 		 */
 		public String getId() {
-			return id;
+			return this.id;
 		}
 
 		/**
@@ -355,7 +358,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 * @param id
 		 *            the new id
 		 */
-		public void setId(String id) {
+		public void setId(final String id) {
 			this.id = id;
 		}
 
@@ -365,7 +368,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 * @return the label
 		 */
 		public String getLabel() {
-			return label;
+			return this.label;
 		}
 
 		/**
@@ -374,7 +377,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 * @param label
 		 *            the new label
 		 */
-		public void setLabel(String label) {
+		public void setLabel(final String label) {
 			this.label = label;
 		}
 
@@ -384,7 +387,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 * @return the boolean
 		 */
 		public Boolean isSelected() {
-			return selected;
+			return this.selected;
 		}
 
 		/**
@@ -393,7 +396,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 * @param selected
 		 *            the new selected
 		 */
-		public void setSelected(Boolean selected) {
+		public void setSelected(final Boolean selected) {
 			this.selected = selected;
 		}
 
@@ -404,7 +407,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 */
 		@Override
 		public String toString() {
-			return label;
+			return this.label;
 		}
 
 		/*
@@ -414,10 +417,10 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 		 */
 		@Override
 		protected ListItem clone() {
-			ListItem i = new ListItem();
-			i.id = id;
-			i.label = label;
-			i.selected = selected;
+			final ListItem i = new ListItem();
+			i.id = this.id;
+			i.label = this.label;
+			i.selected = this.selected;
 			return i;
 		}
 
@@ -430,26 +433,26 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public WidgetMemento createWidgetMemento() {
-		WidgetMemento m = new ListWidgetMemento();
+		final WidgetMemento m = new ListWidgetMemento();
 		m.setName(this.name);
 		m.setType(this.getClass());
-		List<ListItem> copy = new ArrayList<ListItem>();
-		for (ListItem item : items) {
+		final List<ListItem> copy = new ArrayList<ListItem>();
+		for (final ListItem item : this.items) {
 			copy.add(item.clone());
 		}
 		m.setValue(copy);
-		m.addAttribute("isMultiselect", isMultipleSelection);
-		m.addAttribute("isEditable", isEditable);
-		m.addAttribute("label", label);
-		m.addAttribute("showLabel", showLabel);
-		m.addAttribute("x", x);
-		m.addAttribute("y", y);
-		m.addAttribute("width", width);
-		m.addAttribute("height", height);
-		m.addAttribute("ui", ui.getClass().getName());
-		m.setValidators(validators.createMemento());
-		List<EventMemento> events = new ArrayList<EventMemento>();
-		EventMemento ev = onSelectionChanged.createMemento();
+		m.addAttribute("isMultiselect", this.isMultipleSelection);
+		m.addAttribute("isEditable", this.isEditable);
+		m.addAttribute("label", this.label);
+		m.addAttribute("showLabel", this.showLabel);
+		m.addAttribute("x", this.x);
+		m.addAttribute("y", this.y);
+		m.addAttribute("width", this.width);
+		m.addAttribute("height", this.height);
+		m.addAttribute("ui", this.ui.getClass().getName());
+		m.setValidators(this.validators.createMemento());
+		final List<EventMemento> events = new ArrayList<EventMemento>();
+		final EventMemento ev = this.onSelectionChanged.createMemento();
 		ev.setEventName("onSelectionChanged");
 		events.add(ev);
 		m.setEvents(events);
@@ -464,29 +467,29 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * .memento.model.WidgetMemento)
 	 */
 	@Override
-	public void setWidgetMemento(WidgetMemento m) {
+	public void setWidgetMemento(final WidgetMemento m) {
 		if (m != null) {
-			name = m.getName();
-			Map<String, Object> attributes = m.getAttributes();
-			isMultipleSelection = Boolean.parseBoolean(attributes.get(
+			this.name = m.getName();
+			final Map<String, Object> attributes = m.getAttributes();
+			this.isMultipleSelection = Boolean.parseBoolean(attributes.get(
 					"isMultiselect").toString());
-			isEditable = Boolean.parseBoolean(attributes.get("isEditable")
+			this.isEditable = Boolean.parseBoolean(attributes.get("isEditable")
 					.toString());
-			label = attributes.get("label").toString();
-			showLabel = WidgetLabelPosition.valueOf(attributes.get("showLabel")
-					.toString());
-			x = Integer.parseInt(attributes.get("x").toString());
-			y = Integer.parseInt(attributes.get("y").toString());
-			width = Integer.parseInt(attributes.get("width").toString());
-			height = Integer.parseInt(attributes.get("height").toString());
-			setSize(width, height);
-			setX(x);
-			setY(y);
-			items = (List<ListItem>) m.getValue();
-			validators.setMemento(m.getValidators());
-			for (EventMemento em : m.getEvents()) {
+			this.label = attributes.get("label").toString();
+			this.showLabel = WidgetLabelPosition.valueOf(attributes.get(
+					"showLabel").toString());
+			this.x = Integer.parseInt(attributes.get("x").toString());
+			this.y = Integer.parseInt(attributes.get("y").toString());
+			this.width = Integer.parseInt(attributes.get("width").toString());
+			this.height = Integer.parseInt(attributes.get("height").toString());
+			this.setSize(this.width, this.height);
+			this.setX(this.x);
+			this.setY(this.y);
+			this.items = (List<ListItem>) m.getValue();
+			this.validators.setMemento(m.getValidators());
+			for (final EventMemento em : m.getEvents()) {
 				if (em.getEventName().equals("onSelectionChanged")) {
-					onSelectionChanged.setMemento(em);
+					this.onSelectionChanged.setMemento(em);
 				}
 			}
 		}
@@ -501,7 +504,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public DynamicAttributeMemento createDynamicAttributeMemento(
-			WidgetMemento ref) {
+			final WidgetMemento ref) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -514,7 +517,7 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * .memento.model.DynamicAttributeMemento)
 	 */
 	@Override
-	public void setDynamicMemento(DynamicAttributeMemento m) {
+	public void setDynamicMemento(final DynamicAttributeMemento m) {
 		// TODO Auto-generated method stub
 
 	}
@@ -526,10 +529,10 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public ValueMemento createValueMemento() {
-		ListValueMemento vm = new ListValueMemento();
-		vm.setName(name);
-		List<ListItem> copy = new ArrayList<ListItem>();
-		for (ListItem item : items) {
+		final ListValueMemento vm = new ListValueMemento();
+		vm.setName(this.name);
+		final List<ListItem> copy = new ArrayList<ListItem>();
+		for (final ListItem item : this.items) {
 			copy.add(item.clone());
 		}
 		vm.setValue(copy);
@@ -544,8 +547,8 @@ public class AlphaList extends FormWidget implements MementoOriginator {
 	 * .memento.model.ValueMemento)
 	 */
 	@Override
-	public void setValueMemento(ValueMemento m) {
-		items = (List<ListItem>) m.getValue();
+	public void setValueMemento(final ValueMemento m) {
+		this.items = (List<ListItem>) m.getValue();
 	}
 
 }

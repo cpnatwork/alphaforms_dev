@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -68,13 +69,13 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @param name
 	 *            the name
 	 */
-	public Option(String name) {
+	public Option(final String name) {
 		super(name);
-		width = 200;
-		height = 22;
-		options.add(new OptionItem("Option 1", false));
-		options.add(new OptionItem("Option 2", false));
-		ui = new OptionUI(this);
+		this.width = 200;
+		this.height = 22;
+		this.options.add(new OptionItem("Option 1", false));
+		this.options.add(new OptionItem("Option 2", false));
+		this.ui = new OptionUI(this);
 	}
 
 	/**
@@ -83,7 +84,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @return the options
 	 */
 	public List<OptionItem> getOptions() {
-		return options;
+		return this.options;
 	}
 
 	/**
@@ -92,7 +93,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @param options
 	 *            the new options
 	 */
-	public void setOptions(List<OptionItem> options) {
+	public void setOptions(final List<OptionItem> options) {
 		this.options = options;
 	}
 
@@ -103,11 +104,10 @@ public class Option extends FormWidget implements MementoOriginator {
 	 *            the name
 	 * @return the option item
 	 */
-	public OptionItem findOptionByName(String name) {
-		for (OptionItem option : options) {
-			if (option.getName().equals(name)) {
+	public OptionItem findOptionByName(final String name) {
+		for (final OptionItem option : this.options) {
+			if (option.getName().equals(name))
 				return option;
-			}
 		}
 		return null;
 	}
@@ -118,7 +118,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @return true, if is multiselect
 	 */
 	public boolean isMultiselect() {
-		return isMultiselect;
+		return this.isMultiselect;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @param isMultiselect
 	 *            the new multiselect
 	 */
-	public void setMultiselect(boolean isMultiselect) {
+	public void setMultiselect(final boolean isMultiselect) {
 		this.isMultiselect = isMultiselect;
 	}
 
@@ -137,7 +137,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @return the on selection changed
 	 */
 	public Event getOnSelectionChanged() {
-		return onSelectionChanged;
+		return this.onSelectionChanged;
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @param onSelectionChanged
 	 *            the new on selection changed
 	 */
-	public void setOnSelectionChanged(Event onSelectionChanged) {
+	public void setOnSelectionChanged(final Event onSelectionChanged) {
 		this.onSelectionChanged = onSelectionChanged;
 	}
 
@@ -156,7 +156,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @return the layout
 	 */
 	public OptionLayout getLayout() {
-		return layout;
+		return this.layout;
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @param layout
 	 *            the new layout
 	 */
-	public void setLayout(OptionLayout layout) {
+	public void setLayout(final OptionLayout layout) {
 		this.layout = layout;
 	}
 
@@ -175,7 +175,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @return the gap
 	 */
 	public int getGap() {
-		return gap;
+		return this.gap;
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * @param gap
 	 *            the new gap
 	 */
-	public void setGap(int gap) {
+	public void setGap(final int gap) {
 		this.gap = gap;
 	}
 
@@ -195,7 +195,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public int getMinimumHeight() {
-		return ui.getMinimumSize().height;
+		return this.ui.getMinimumSize().height;
 	}
 
 	/*
@@ -242,7 +242,7 @@ public class Option extends FormWidget implements MementoOriginator {
 		 * @param name
 		 *            the name
 		 */
-		public OptionItem(String name) {
+		public OptionItem(final String name) {
 			super();
 			this.name = name;
 		}
@@ -255,7 +255,7 @@ public class Option extends FormWidget implements MementoOriginator {
 		 * @param value
 		 *            the value
 		 */
-		public OptionItem(String name, boolean value) {
+		public OptionItem(final String name, final boolean value) {
 			super();
 			this.name = name;
 			this.value = value;
@@ -267,7 +267,7 @@ public class Option extends FormWidget implements MementoOriginator {
 		 * @return the name
 		 */
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		/**
@@ -276,7 +276,7 @@ public class Option extends FormWidget implements MementoOriginator {
 		 * @param name
 		 *            the new name
 		 */
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -286,7 +286,7 @@ public class Option extends FormWidget implements MementoOriginator {
 		 * @return the boolean
 		 */
 		public Boolean isValue() {
-			return value;
+			return this.value;
 		}
 
 		/**
@@ -295,7 +295,7 @@ public class Option extends FormWidget implements MementoOriginator {
 		 * @param value
 		 *            the new value
 		 */
-		public void setValue(Boolean value) {
+		public void setValue(final Boolean value) {
 			this.value = value;
 		}
 
@@ -306,7 +306,7 @@ public class Option extends FormWidget implements MementoOriginator {
 		 */
 		@Override
 		public String toString() {
-			return name + ": " + value;
+			return this.name + ": " + this.value;
 		}
 
 		/*
@@ -316,9 +316,9 @@ public class Option extends FormWidget implements MementoOriginator {
 		 */
 		@Override
 		protected OptionItem clone() {
-			OptionItem oi = new OptionItem();
-			oi.name = name;
-			oi.value = value;
+			final OptionItem oi = new OptionItem();
+			oi.name = this.name;
+			oi.value = this.value;
 			return oi;
 		}
 
@@ -331,23 +331,23 @@ public class Option extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public WidgetMemento createWidgetMemento() {
-		WidgetMemento m = new OptionWidgetMemento();
+		final WidgetMemento m = new OptionWidgetMemento();
 		m.setName(this.name);
 		m.setType(this.getClass());
-		List<OptionItem> copy = new ArrayList<OptionItem>();
-		for (OptionItem o : options) {
+		final List<OptionItem> copy = new ArrayList<OptionItem>();
+		for (final OptionItem o : this.options) {
 			copy.add(o.clone());
 		}
 		m.setValue(copy);
-		m.addAttribute("isMultiselect", isMultiselect);
-		m.addAttribute("layout", layout);
-		m.addAttribute("gap", gap);
-		m.addAttribute("x", x);
-		m.addAttribute("y", y);
-		m.addAttribute("width", width);
-		m.addAttribute("height", height);
-		m.addAttribute("ui", ui.getClass().getName());
-		m.setValidators(validators.createMemento());
+		m.addAttribute("isMultiselect", this.isMultiselect);
+		m.addAttribute("layout", this.layout);
+		m.addAttribute("gap", this.gap);
+		m.addAttribute("x", this.x);
+		m.addAttribute("y", this.y);
+		m.addAttribute("width", this.width);
+		m.addAttribute("height", this.height);
+		m.addAttribute("ui", this.ui.getClass().getName());
+		m.setValidators(this.validators.createMemento());
 		return m;
 	}
 
@@ -359,22 +359,23 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * .memento.model.WidgetMemento)
 	 */
 	@Override
-	public void setWidgetMemento(WidgetMemento m) {
+	public void setWidgetMemento(final WidgetMemento m) {
 		if (m != null) {
-			name = m.getName();
-			Map<String, Object> attributes = m.getAttributes();
-			gap = Integer.parseInt(attributes.get("gap").toString());
-			isMultiselect = Boolean.parseBoolean(attributes
-					.get("isMultiselect").toString());
-			layout = OptionLayout.valueOf(attributes.get("layout").toString());
-			x = Integer.parseInt(attributes.get("x").toString());
-			y = Integer.parseInt(attributes.get("y").toString());
-			width = Integer.parseInt(attributes.get("width").toString());
-			height = Integer.parseInt(attributes.get("height").toString());
-			setSize(width, height);
-			setX(x);
-			setY(y);
-			options = (List<OptionItem>) m.getValue();
+			this.name = m.getName();
+			final Map<String, Object> attributes = m.getAttributes();
+			this.gap = Integer.parseInt(attributes.get("gap").toString());
+			this.isMultiselect = Boolean.parseBoolean(attributes.get(
+					"isMultiselect").toString());
+			this.layout = OptionLayout.valueOf(attributes.get("layout")
+					.toString());
+			this.x = Integer.parseInt(attributes.get("x").toString());
+			this.y = Integer.parseInt(attributes.get("y").toString());
+			this.width = Integer.parseInt(attributes.get("width").toString());
+			this.height = Integer.parseInt(attributes.get("height").toString());
+			this.setSize(this.width, this.height);
+			this.setX(this.x);
+			this.setY(this.y);
+			this.options = (List<OptionItem>) m.getValue();
 		}
 	}
 
@@ -387,7 +388,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public DynamicAttributeMemento createDynamicAttributeMemento(
-			WidgetMemento ref) {
+			final WidgetMemento ref) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -400,7 +401,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * .memento.model.DynamicAttributeMemento)
 	 */
 	@Override
-	public void setDynamicMemento(DynamicAttributeMemento m) {
+	public void setDynamicMemento(final DynamicAttributeMemento m) {
 		// TODO Auto-generated method stub
 
 	}
@@ -412,10 +413,10 @@ public class Option extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public ValueMemento createValueMemento() {
-		OptionValueMemento m = new OptionValueMemento();
-		m.setName(name);
-		List<OptionItem> copy = new ArrayList<OptionItem>();
-		for (OptionItem o : options) {
+		final OptionValueMemento m = new OptionValueMemento();
+		m.setName(this.name);
+		final List<OptionItem> copy = new ArrayList<OptionItem>();
+		for (final OptionItem o : this.options) {
 			copy.add(o.clone());
 		}
 		m.setValue(copy);
@@ -430,8 +431,8 @@ public class Option extends FormWidget implements MementoOriginator {
 	 * .memento.model.ValueMemento)
 	 */
 	@Override
-	public void setValueMemento(ValueMemento m) {
-		options = (List<OptionItem>) m.getValue();
+	public void setValueMemento(final ValueMemento m) {
+		this.options = (List<OptionItem>) m.getValue();
 	}
 
 	/*
@@ -441,7 +442,7 @@ public class Option extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public Set<ValidationFailure> validate() {
-		return validateValue(options);
+		return this.validateValue(this.options);
 	}
 
 }

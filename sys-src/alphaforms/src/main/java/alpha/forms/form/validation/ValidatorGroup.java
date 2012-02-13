@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -39,8 +40,8 @@ public class ValidatorGroup {
 	 * @param v
 	 *            the v
 	 */
-	public void addValidator(Validator v) {
-		validators.add(v);
+	public void addValidator(final Validator v) {
+		this.validators.add(v);
 	}
 
 	/**
@@ -49,8 +50,8 @@ public class ValidatorGroup {
 	 * @param v
 	 *            the v
 	 */
-	public void removeValidator(Validator v) {
-		validators.remove(v);
+	public void removeValidator(final Validator v) {
+		this.validators.remove(v);
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class ValidatorGroup {
 	 * @return the validators
 	 */
 	public List<Validator> getValidators() {
-		return validators;
+		return this.validators;
 	}
 
 	/**
@@ -71,10 +72,10 @@ public class ValidatorGroup {
 	 *            the value
 	 * @return the sets the
 	 */
-	public Set<ValidationFailure> validateAll(ValidationContext ctx,
-			Object value) {
-		Set<ValidationFailure> failures = new HashSet<ValidationFailure>();
-		for (Validator v : validators) {
+	public Set<ValidationFailure> validateAll(final ValidationContext ctx,
+			final Object value) {
+		final Set<ValidationFailure> failures = new HashSet<ValidationFailure>();
+		for (final Validator v : this.validators) {
 			if (!v.validate(ctx, value)) {
 				failures.add(new ValidationFailure(ctx.getWidget(), v, v
 						.getError()));
@@ -90,11 +91,10 @@ public class ValidatorGroup {
 	 *            the validator
 	 * @return true, if successful
 	 */
-	public boolean contains(Validator validator) {
-		for (Validator v : validators) {
-			if (v.getClass().equals(validator.getClass())) {
+	public boolean contains(final Validator validator) {
+		for (final Validator v : this.validators) {
+			if (v.getClass().equals(validator.getClass()))
 				return true;
-			}
 		}
 		return false;
 	}
@@ -105,8 +105,8 @@ public class ValidatorGroup {
 	 * @return the list
 	 */
 	public List<ValidatorMemento> createMemento() {
-		List<ValidatorMemento> m = new ArrayList<ValidatorMemento>();
-		for (Validator v : validators) {
+		final List<ValidatorMemento> m = new ArrayList<ValidatorMemento>();
+		for (final Validator v : this.validators) {
 			m.add(v.createMemento());
 		}
 		return m;
@@ -118,15 +118,15 @@ public class ValidatorGroup {
 	 * @param validatorMementos
 	 *            the new memento
 	 */
-	public void setMemento(List<ValidatorMemento> validatorMementos) {
-		for (ValidatorMemento m : validatorMementos) {
+	public void setMemento(final List<ValidatorMemento> validatorMementos) {
+		for (final ValidatorMemento m : validatorMementos) {
 			System.out.print("findValidator: ");
-			Validator v = ValidatorFactory.findValidator(m.getHandle());
+			final Validator v = ValidatorFactory.findValidator(m.getHandle());
 			System.out.println(v);
-			validators.clear();
+			this.validators.clear();
 			if (v != null) {
 				v.setMemento(m);
-				validators.add(v);
+				this.validators.add(v);
 			}
 		}
 	}

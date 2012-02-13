@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -37,7 +38,7 @@ public class ActionMemento implements XMLSerializeableMemento {
 	private String scriptCode;
 
 	/** The attributes. */
-	private Map<String, Object> attributes = new HashMap<String, Object>();
+	private final Map<String, Object> attributes = new HashMap<String, Object>();
 
 	/**
 	 * Gets the name.
@@ -45,7 +46,7 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -54,7 +55,7 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -64,7 +65,7 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 * @return the script code
 	 */
 	public String getScriptCode() {
-		return scriptCode;
+		return this.scriptCode;
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 * @param scriptCode
 	 *            the new script code
 	 */
-	public void setScriptCode(String scriptCode) {
+	public void setScriptCode(final String scriptCode) {
 		this.scriptCode = scriptCode;
 	}
 
@@ -83,7 +84,7 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 * @return the attributes
 	 */
 	public Map<String, Object> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	/**
@@ -94,8 +95,8 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 * @param value
 	 *            the value
 	 */
-	public void addAttribute(String key, Object value) {
-		attributes.put(key, value);
+	public void addAttribute(final String key, final Object value) {
+		this.attributes.put(key, value);
 	}
 
 	/*
@@ -105,9 +106,9 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 */
 	@Override
 	public String getXML() {
-		return new XMLFragment(scriptCode).wrapInCDATA().wrapIn("action")
-				.withAttribute("name", name).withAttributes(attributes)
-				.toString();
+		return new XMLFragment(this.scriptCode).wrapInCDATA().wrapIn("action")
+				.withAttribute("name", this.name)
+				.withAttributes(this.attributes).toString();
 	}
 
 	/*
@@ -118,9 +119,9 @@ public class ActionMemento implements XMLSerializeableMemento {
 	 * .util.xml.XMLDocumentSection)
 	 */
 	@Override
-	public void loadXML(XMLDocumentSection xml) {
-		name = xml.getAttribute("name");
-		scriptCode = xml.getCDATAContent();
+	public void loadXML(final XMLDocumentSection xml) {
+		this.name = xml.getAttribute("name");
+		this.scriptCode = xml.getCDATAContent();
 	}
 
 }

@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -31,13 +32,13 @@ import alpha.forms.widget.model.container.AbstractContainerWidget;
 public class FocusArea {
 
 	/** The model. */
-	private AlphaForm model;
+	private final AlphaForm model;
 
 	/** The parent. */
-	private AbstractContainerWidget parent;
+	private final AbstractContainerWidget parent;
 
 	/** The canvas. */
-	private FormCanvas canvas;
+	private final FormCanvas canvas;
 
 	/**
 	 * Instantiates a new focus area.
@@ -49,8 +50,8 @@ public class FocusArea {
 	 * @param canvas
 	 *            the canvas
 	 */
-	public FocusArea(AlphaForm model, AbstractContainerWidget parent,
-			FormCanvas canvas) {
+	public FocusArea(final AlphaForm model,
+			final AbstractContainerWidget parent, final FormCanvas canvas) {
 		this.model = model;
 		this.parent = parent;
 		this.canvas = canvas;
@@ -62,11 +63,10 @@ public class FocusArea {
 	 * @return the focus area bounds
 	 */
 	public Rectangle getFocusAreaBounds() {
-		if (parent != null) {
-			return parent.getBounds();
-		} else {
-			return canvas.getBounds();
-		}
+		if (this.parent != null)
+			return this.parent.getBounds();
+		else
+			return this.canvas.getBounds();
 	}
 
 	/**
@@ -76,12 +76,11 @@ public class FocusArea {
 	 *            the p
 	 * @return the point
 	 */
-	public Point translatePoint(Point p) {
-		if (parent != null) {
-			return new Point(p.x - parent.getX(), p.y - parent.getY());
-		} else {
+	public Point translatePoint(final Point p) {
+		if (this.parent != null)
+			return new Point(p.x - this.parent.getX(), p.y - this.parent.getY());
+		else
 			return new Point(p);
-		}
 	}
 
 	/**
@@ -91,13 +90,12 @@ public class FocusArea {
 	 *            the rect
 	 * @return the rectangle
 	 */
-	public Rectangle translateRect(Rectangle rect) {
-		if (parent != null) {
-			rect.translate(parent.getX(), parent.getY());
+	public Rectangle translateRect(final Rectangle rect) {
+		if (this.parent != null) {
+			rect.translate(this.parent.getX(), this.parent.getY());
 			return new Rectangle(rect);
-		} else {
+		} else
 			return new Rectangle(rect);
-		}
 	}
 
 	/**
@@ -106,11 +104,10 @@ public class FocusArea {
 	 * @return the width
 	 */
 	public int getWidth() {
-		if (parent != null) {
-			return parent.getWidth();
-		} else {
-			return canvas.getWidth();
-		}
+		if (this.parent != null)
+			return this.parent.getWidth();
+		else
+			return this.canvas.getWidth();
 	}
 
 	/**
@@ -119,21 +116,20 @@ public class FocusArea {
 	 * @return the height
 	 */
 	public int getHeight() {
-		if (parent != null) {
-			return parent.getHeight();
-		} else {
-			return canvas.getHeight();
-		}
+		if (this.parent != null)
+			return this.parent.getHeight();
+		else
+			return this.canvas.getHeight();
 	}
 
 	/**
 	 * Update ui.
 	 */
 	public void updateUI() {
-		if (parent != null) {
-			parent.getUi().updateUI();
+		if (this.parent != null) {
+			this.parent.getUi().updateUI();
 		} else {
-			canvas.updateUI();
+			this.canvas.updateUI();
 		}
 	}
 
@@ -143,7 +139,7 @@ public class FocusArea {
 	 * @param g
 	 *            the g
 	 */
-	public void drawOverlayOutside(Graphics2D g) {
+	public void drawOverlayOutside(final Graphics2D g) {
 
 	}
 
@@ -153,7 +149,7 @@ public class FocusArea {
 	 * @param g
 	 *            the g
 	 */
-	public void drawOverlayInside(Graphics2D g) {
+	public void drawOverlayInside(final Graphics2D g) {
 
 	}
 

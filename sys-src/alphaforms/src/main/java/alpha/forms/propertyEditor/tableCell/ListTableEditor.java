@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -57,6 +58,11 @@ import alpha.forms.propertyEditor.model.PropertyEditorModel;
 public class ListTableEditor extends AbstractCellEditor implements
 		TableCellRenderer, TableCellEditor {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -519483586940768013L;
+
 	/** The property editor model. */
 	private final PropertyEditorModel propertyEditorModel;
 
@@ -70,7 +76,7 @@ public class ListTableEditor extends AbstractCellEditor implements
 	private JDialog dialog;
 
 	/** The contents. */
-	private List<Object> contents = new ArrayList<Object>();
+	private final List<Object> contents = new ArrayList<Object>();
 
 	/** The generic type. */
 	private Class genericType;
@@ -85,40 +91,40 @@ public class ListTableEditor extends AbstractCellEditor implements
 	 * @param genericType
 	 *            the generic type
 	 */
-	public ListTableEditor(PropertyEditorModel propertyEditorModel,
-			List<Object> values, final Class genericType) {
+	public ListTableEditor(final PropertyEditorModel propertyEditorModel,
+			final List<Object> values, final Class genericType) {
 
 		this.propertyEditorModel = propertyEditorModel;
 		this.genericType = (genericType == null) ? String.class : genericType;
 
-		panel = new JPanel();
-		label = new JLabel("...");
-		JButton edit = new JButton("...");
+		this.panel = new JPanel();
+		this.label = new JLabel("...");
+		final JButton edit = new JButton("...");
 		edit.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				dialog.setVisible(true);
-				fireEditingStopped();
+			public void actionPerformed(final ActionEvent arg0) {
+				ListTableEditor.this.dialog.setVisible(true);
+				ListTableEditor.this.fireEditingStopped();
 			}
 
 		});
-		panel.setLayout(new BorderLayout());
-		panel.add(label, BorderLayout.CENTER);
-		panel.add(edit, BorderLayout.EAST);
+		this.panel.setLayout(new BorderLayout());
+		this.panel.add(this.label, BorderLayout.CENTER);
+		this.panel.add(edit, BorderLayout.EAST);
 
-		for (Object o : values) {
-			contents.add(o);
+		for (final Object o : values) {
+			this.contents.add(o);
 		}
-		dialog = new JDialog((JFrame) null, "List Editor", true);
-		dialog.setLocationRelativeTo(this.propertyEditorModel.getPanel());
-		dialog.setLayout(new BorderLayout());
-		JPanel panel = new JPanel(new BorderLayout());
+		this.dialog = new JDialog((JFrame) null, "List Editor", true);
+		this.dialog.setLocationRelativeTo(this.propertyEditorModel.getPanel());
+		this.dialog.setLayout(new BorderLayout());
+		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
 		final DefaultListModel lm = new DefaultListModel();
 
-		for (Object s : contents) {
+		for (final Object s : this.contents) {
 			lm.addElement(s);
 		}
 
@@ -129,9 +135,9 @@ public class ListTableEditor extends AbstractCellEditor implements
 		remove.setEnabled(false);
 		remove.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				Object o = list.getSelectedValue();
-				contents.remove(o);
+			public void actionPerformed(final ActionEvent ev) {
+				final Object o = list.getSelectedValue();
+				ListTableEditor.this.contents.remove(o);
 				lm.removeElement(o);
 			}
 		});
@@ -139,11 +145,12 @@ public class ListTableEditor extends AbstractCellEditor implements
 		final JButton add = new JButton("Add");
 		add.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent ev) {
+			public void actionPerformed(final ActionEvent ev) {
 				if (genericType.equals(String.class)) {
-					String s = JOptionPane.showInputDialog("Insert new item:");
-					if (s != null && !s.isEmpty()) {
-						contents.add(s);
+					final String s = JOptionPane
+							.showInputDialog("Insert new item:");
+					if ((s != null) && !s.isEmpty()) {
+						ListTableEditor.this.contents.add(s);
 						lm.addElement(s);
 					}
 				} else {
@@ -151,10 +158,10 @@ public class ListTableEditor extends AbstractCellEditor implements
 					Object itemObject = null;
 
 					try {
-						Constructor c = genericType.getConstructor();
+						final Constructor c = genericType.getConstructor();
 
 						itemObject = c.newInstance();
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						System.err
 								.print("Unable to instantiate generic type class: "
 										+ e.getMessage());
@@ -163,42 +170,42 @@ public class ListTableEditor extends AbstractCellEditor implements
 					if (itemObject == null)
 						return;
 
-					AddItemDialog input = AddItemDialog.create(genericType,
-							itemObject);
+					final AddItemDialog input = AddItemDialog.create(
+							genericType, itemObject);
 
 					input.setVisible(true);
 					if (input.wasSaved()) {
-						Map<String, Object> values = input.getValueMap();
-						for (String name : values.keySet()) {
+						final Map<String, Object> values = input.getValueMap();
+						for (final String name : values.keySet()) {
 							Method setter = null;
 							try {
 								setter = genericType.getMethod("set" + name,
 										values.get(name).getClass());
 								System.out.println(values.get(name).getClass());
 								setter.invoke(itemObject, values.get(name));
-							} catch (Exception e) {
+							} catch (final Exception e) {
 								e.printStackTrace();
 								continue;
 							}
 						}
-						contents.add(itemObject);
+						ListTableEditor.this.contents.add(itemObject);
 						lm.addElement(itemObject);
 					}
 				}
 			}
 		});
 
-		JButton ok = new JButton("Ok");
+		final JButton ok = new JButton("Ok");
 		ok.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent ev) {
-				dialog.setVisible(false);
+			public void actionPerformed(final ActionEvent ev) {
+				ListTableEditor.this.dialog.setVisible(false);
 			}
 
 		});
 
-		JPanel btnPanel = new JPanel(new FlowLayout());
+		final JPanel btnPanel = new JPanel(new FlowLayout());
 		btnPanel.add(add);
 		btnPanel.add(remove);
 		btnPanel.add(ok);
@@ -208,23 +215,24 @@ public class ListTableEditor extends AbstractCellEditor implements
 		list.addMouseListener(new MouseListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent ev) {
+			public void mouseClicked(final MouseEvent ev) {
 				if (ev.getClickCount() >= 2) {
-					int index = list.locationToIndex(ev.getPoint());
-					Object itemObject = list.getModel().getElementAt(index);
-					AddItemDialog dialog = AddItemDialog.create(genericType,
-							itemObject);
+					final int index = list.locationToIndex(ev.getPoint());
+					final Object itemObject = list.getModel().getElementAt(
+							index);
+					final AddItemDialog dialog = AddItemDialog.create(
+							genericType, itemObject);
 					dialog.setVisible(true);
 					if (dialog.wasSaved()) {
-						Map<String, Object> values = dialog.getValueMap();
-						for (String name : values.keySet()) {
+						final Map<String, Object> values = dialog.getValueMap();
+						for (final String name : values.keySet()) {
 							Method setter = null;
 							try {
 								setter = genericType.getMethod("set" + name,
 										values.get(name).getClass());
 								System.out.println(values.get(name).getClass());
 								setter.invoke(itemObject, values.get(name));
-							} catch (Exception e) {
+							} catch (final Exception e) {
 								e.printStackTrace();
 								continue;
 							}
@@ -234,26 +242,26 @@ public class ListTableEditor extends AbstractCellEditor implements
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
+			public void mouseEntered(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseExited(MouseEvent arg0) {
+			public void mouseExited(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mousePressed(MouseEvent arg0) {
+			public void mousePressed(final MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseReleased(MouseEvent arg0) {
+			public void mouseReleased(final MouseEvent arg0) {
 			}
 
 		});
 
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void valueChanged(ListSelectionEvent ev) {
+			public void valueChanged(final ListSelectionEvent ev) {
 
 				if (list.getSelectedIndex() != -1) {
 					remove.setEnabled(true);
@@ -264,8 +272,8 @@ public class ListTableEditor extends AbstractCellEditor implements
 			}
 		});
 
-		dialog.add(panel, BorderLayout.CENTER);
-		dialog.pack();
+		this.dialog.add(panel, BorderLayout.CENTER);
+		this.dialog.pack();
 
 	}
 
@@ -277,22 +285,23 @@ public class ListTableEditor extends AbstractCellEditor implements
 	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
 	 */
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int col) {
+	public Component getTableCellRendererComponent(final JTable table,
+			final Object value, final boolean isSelected,
+			final boolean hasFocus, final int row, final int col) {
 		if (isSelected) {
-			panel.setBackground(table.getSelectionBackground());
-			panel.setForeground(table.getSelectionForeground());
+			this.panel.setBackground(table.getSelectionBackground());
+			this.panel.setForeground(table.getSelectionForeground());
 		} else {
-			panel.setBackground(table.getBackground());
-			panel.setForeground(table.getForeground());
+			this.panel.setBackground(table.getBackground());
+			this.panel.setForeground(table.getForeground());
 		}
-		panel.setOpaque(true);
+		this.panel.setOpaque(true);
 		if (((List) value).isEmpty()) {
-			label.setText("(empty)");
+			this.label.setText("(empty)");
 		} else {
-			label.setText(((List) value).toString());
+			this.label.setText(((List) value).toString());
 		}
-		return panel;
+		return this.panel;
 	}
 
 	/*
@@ -302,7 +311,7 @@ public class ListTableEditor extends AbstractCellEditor implements
 	 */
 	@Override
 	public Object getCellEditorValue() {
-		return contents;
+		return this.contents;
 	}
 
 	/*
@@ -313,15 +322,16 @@ public class ListTableEditor extends AbstractCellEditor implements
 	 * .JTable, java.lang.Object, boolean, int, int)
 	 */
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int arg3, int arg4) {
-		panel.setOpaque(true);
+	public Component getTableCellEditorComponent(final JTable table,
+			final Object value, final boolean isSelected, final int arg3,
+			final int arg4) {
+		this.panel.setOpaque(true);
 		if (((List) value).isEmpty()) {
-			label.setText("(empty)");
+			this.label.setText("(empty)");
 		} else {
-			label.setText(((List) value).toString());
+			this.label.setText(((List) value).toString());
 		}
-		return panel;
+		return this.panel;
 	}
 
 }

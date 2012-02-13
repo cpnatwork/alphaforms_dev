@@ -1,8 +1,9 @@
 /**************************************************************************
- * alpha-Flow
+ * alpha-Forms
  * ==============================================
- * Copyright (C) 2009-2011 by Christoph P. Neumann
- * (http://www.chr15t0ph.de)
+ * Copyright (C) 2011-2012 by 
+ *   - Christoph P. Neumann (http://www.chr15t0ph.de)
+ *   - Florian Wagner
  **************************************************************************
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with
@@ -53,7 +54,7 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * @return the text
 	 */
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	/**
@@ -62,9 +63,9 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * @param text
 	 *            the new text
 	 */
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
-		ui.updateUI();
+		this.ui.updateUI();
 	}
 
 	/**
@@ -73,12 +74,12 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * @param name
 	 *            the name
 	 */
-	public TextField(String name) {
+	public TextField(final String name) {
 		super(name);
-		width = 200;
-		height = 22;
-		label = name;
-		ui = new TextFieldUI(this);
+		this.width = 200;
+		this.height = 22;
+		this.label = name;
+		this.ui = new TextFieldUI(this);
 	}
 
 	/*
@@ -88,7 +89,7 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public Set<ValidationFailure> validate() {
-		return validateValue(text);
+		return this.validateValue(this.text);
 	}
 
 	/*
@@ -108,7 +109,7 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public int getMinimumHeight() {
-		return ui.getMinimumSize().height;
+		return this.ui.getMinimumSize().height;
 	}
 
 	/*
@@ -127,7 +128,7 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * @return the show label
 	 */
 	public WidgetLabelPosition getShowLabel() {
-		return showLabel;
+		return this.showLabel;
 	}
 
 	/**
@@ -136,9 +137,9 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * @param showLabel
 	 *            the new show label
 	 */
-	public void setShowLabel(WidgetLabelPosition showLabel) {
+	public void setShowLabel(final WidgetLabelPosition showLabel) {
 		this.showLabel = showLabel;
-		ui.updateUI();
+		this.ui.updateUI();
 	}
 
 	/**
@@ -147,7 +148,7 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * @return the label
 	 */
 	public String getLabel() {
-		return label;
+		return this.label;
 	}
 
 	/**
@@ -156,9 +157,9 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * @param label
 	 *            the new label
 	 */
-	public void setLabel(String label) {
+	public void setLabel(final String label) {
 		this.label = label;
-		ui.revalidate();
+		this.ui.revalidate();
 	}
 
 	/*
@@ -168,19 +169,19 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public WidgetMemento createWidgetMemento() {
-		WidgetMemento m = new WidgetMemento();
+		final WidgetMemento m = new WidgetMemento();
 		m.setName(this.name);
 		m.setType(this.getClass());
 		m.setValue(this.getText());
-		m.addAttribute("label", label);
-		m.addAttribute("showLabel", showLabel);
-		m.addAttribute("x", x);
-		m.addAttribute("y", y);
-		m.addAttribute("width", width);
-		m.addAttribute("height", height);
-		m.addAttribute("ui", ui.getClass().getName());
-		m.addAttribute("visible", visible);
-		m.setValidators(validators.createMemento());
+		m.addAttribute("label", this.label);
+		m.addAttribute("showLabel", this.showLabel);
+		m.addAttribute("x", this.x);
+		m.addAttribute("y", this.y);
+		m.addAttribute("width", this.width);
+		m.addAttribute("height", this.height);
+		m.addAttribute("ui", this.ui.getClass().getName());
+		m.addAttribute("visible", this.visible);
+		m.setValidators(this.validators.createMemento());
 		return m;
 	}
 
@@ -192,24 +193,24 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * .memento.model.WidgetMemento)
 	 */
 	@Override
-	public void setWidgetMemento(WidgetMemento m) {
+	public void setWidgetMemento(final WidgetMemento m) {
 		if (m != null) {
-			name = m.getName();
-			Map<String, Object> attributes = m.getAttributes();
-			label = attributes.get("label").toString();
-			showLabel = WidgetLabelPosition.valueOf(attributes.get("showLabel")
+			this.name = m.getName();
+			final Map<String, Object> attributes = m.getAttributes();
+			this.label = attributes.get("label").toString();
+			this.showLabel = WidgetLabelPosition.valueOf(attributes.get(
+					"showLabel").toString());
+			this.x = Integer.parseInt(attributes.get("x").toString());
+			this.y = Integer.parseInt(attributes.get("y").toString());
+			this.width = Integer.parseInt(attributes.get("width").toString());
+			this.height = Integer.parseInt(attributes.get("height").toString());
+			this.visible = Boolean.parseBoolean(attributes.get("visible")
 					.toString());
-			x = Integer.parseInt(attributes.get("x").toString());
-			y = Integer.parseInt(attributes.get("y").toString());
-			width = Integer.parseInt(attributes.get("width").toString());
-			height = Integer.parseInt(attributes.get("height").toString());
-			visible = Boolean
-					.parseBoolean(attributes.get("visible").toString());
-			setSize(width, height);
-			setX(x);
-			setY(y);
-			text = (m.getValue() == null) ? "" : m.getValue().toString();
-			validators.setMemento(m.getValidators());
+			this.setSize(this.width, this.height);
+			this.setX(this.x);
+			this.setY(this.y);
+			this.text = (m.getValue() == null) ? "" : m.getValue().toString();
+			this.validators.setMemento(m.getValidators());
 		}
 	}
 
@@ -222,7 +223,7 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public DynamicAttributeMemento createDynamicAttributeMemento(
-			WidgetMemento ref) {
+			final WidgetMemento ref) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -235,7 +236,7 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * .memento.model.DynamicAttributeMemento)
 	 */
 	@Override
-	public void setDynamicMemento(DynamicAttributeMemento m) {
+	public void setDynamicMemento(final DynamicAttributeMemento m) {
 		// TODO Auto-generated method stub
 
 	}
@@ -247,9 +248,9 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 */
 	@Override
 	public ValueMemento createValueMemento() {
-		ValueMemento v = new ValueMemento();
-		v.setName(name);
-		v.setValue(text);
+		final ValueMemento v = new ValueMemento();
+		v.setName(this.name);
+		v.setValue(this.text);
 		return v;
 	}
 
@@ -261,8 +262,8 @@ public class TextField extends FormWidget implements MementoOriginator {
 	 * .memento.model.ValueMemento)
 	 */
 	@Override
-	public void setValueMemento(ValueMemento m) {
-		text = m.getValue().toString();
+	public void setValueMemento(final ValueMemento m) {
+		this.text = m.getValue().toString();
 	}
 
 }
