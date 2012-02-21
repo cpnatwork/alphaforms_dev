@@ -21,44 +21,6 @@
 	
 	<dependencies>
 
-		<!-- LOGGING -->
-		<!-- the slf4j jars -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${lib.slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${lib.logback.version}</version>
-		</dependency>
-
-		<!-- To once-and-for-all suppress commons-logging use no-commons-logging: 
-			http://day-to-day-stuff.blogspot.com/2007/07/no-more-commons-logging.html -->
-		<!-- <dependency> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
-			<version>99.0-does-not-exist</version> </dependency> <dependency> <groupId>commons-logging</groupId> 
-			<artifactId>commons-logging-api</artifactId> <version>99.0-does-not-exist</version> 
-			</dependency> -->
-
-		<!-- redirect all other over slf4j -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${lib.slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-			<version>${lib.slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<!-- remember to call: SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(); -->
-			<groupId>uk.org.lidalia</groupId>
-			<artifactId>sysout-over-slf4j</artifactId>
-			<version>${lib.sysout-over-slf4j.version}</version>
-		</dependency>
-
 		<!-- ********** -->
 		<!-- Scope TEST -->
 		<!-- ********** -->
